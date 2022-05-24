@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#SBATCH -N 1
+#SBATCH -J gptunediffustion2Dtest
+#SBATCH -t 1:00:00
+#SBATCH --mail-type=ALL
+#SBATCH -A sundials
+#SBATCH -o gptunediffusion2Dtest.out
+#SBATCH -e gptunediffusion2Dtest.err
+#SBATCH -p pbatch
+
+srun python3 diffusion2Dtest.py

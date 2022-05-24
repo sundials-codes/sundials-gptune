@@ -1,0 +1,25 @@
+  File "diffusion2Dtest.py", line 117
+    return [runtime,accuracy]
+                            ^
+IndentationError: unindent does not match any outer indentation level
+srun: error: quartz979: task 0: Exited with exit code 1
+  File "diffusion2Dtest.py", line 143
+    problem = TuningProblem(input_space, parameter_space,output_space, objectives, None, None)  
+                                                                                               ^
+TabError: inconsistent use of tabs and spaces in indentation
+srun: error: quartz2925: task 0: Exited with exit code 1
+Traceback (most recent call last):
+  File "diffusion2Dtest.py", line 43, in <module>
+    from autotune.search import *
+ModuleNotFoundError: No module named 'autotune'
+srun: error: quartz1516: task 0: Exited with exit code 1
+Traceback (most recent call last):
+  File "diffusion2Dtest.py", line 46, in <module>
+    from gptune import * # import all
+ModuleNotFoundError: No module named 'gptune'
+srun: error: quartz2548: task 0: Exited with exit code 1
+Traceback (most recent call last):
+  File "diffusion2Dtest.py", line 46, in <module>
+    from gptune import * # import all
+ModuleNotFoundError: No module named 'gptune'
+srun: error: quartz137: task 0: Exited with exit code 1
