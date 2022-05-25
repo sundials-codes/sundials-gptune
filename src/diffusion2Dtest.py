@@ -89,7 +89,7 @@ def parse_args():
 	return args
 
 def execute(params):
-	diffusion2Dfolder = "/g/g20/fish7/workspace/feature-sundialsbuild/benchmarks/diffusion_2D/mpi_serial/"
+	diffusion2Dfolder = os.getenv("SUNDIALSBUILDROOT") + "/benchmarks/diffusion_2D/mpi_serial/"
 	diffusion2Dexe = "arkode_diffusion_2D_mpi"
 	diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
 

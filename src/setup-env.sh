@@ -1,4 +1,6 @@
 export GPTUNEROOT=/g/g20/fish7/workspace/GPTune
+export SUNDIALSBUILDROOT=/g/g20/fish7/workspace/feature-sundialsbuild
+
 export MPI4PY=$GPTUNEROOT/mpi4py
 export SCIKITOPTIMIZE=$GPTUNEROOT/scikit-optimize
 export AUTOTUNE=$GPTUNEROOT/autotune
