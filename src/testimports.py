@@ -11,7 +11,8 @@ logging.getLogger('matplotlib.font_manager').disabled = True
 from autotune.search import *
 from autotune.space import *
 from autotune.problem import *
-from gptune import * # import all
+#from gptune import * # import all
+from GPTune import *
 
 import argparse
 # from mpi4py import MPI
