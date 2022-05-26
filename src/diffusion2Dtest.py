@@ -34,7 +34,10 @@ import sys
 import os
 # import mpi4py
 import logging
-
+import numpy as np
+import mpi4py
+from mpi4py import MPI
+	
 # Removed line, should only apply when in GPTune/src/examples/GPTune-Demo
 #sys.path.insert(0, os.path.abspath(__file__ + "/../../../GPTune/"))
 
@@ -98,22 +101,33 @@ def execute(params):
 	atol = params["atol"]
 	rtol = params["rtol"]
 
-	argslist = ['--order', str(order_arg), '--controller', str(controller_arg), '--atol', str(atol_arg), '--rtol', str(rtol_arg)]
+	argslist = ['--order', str(order), '--controller', str(controller_id), '--atol', str(atol), '--rtol', str(rtol)]
+
+	print(diffusion2Dfullpath)
+	print(" ".join(argslist) + " with tol: " + str(params["targetlog10err"]))
+	print("nodes: " + str(nodes) + ", cores: " + str(cores))
+
+	print("in execute, done with initialization. running mpi now")
 
 	info = MPI.Info.Create()
+	envstr = 'OMP_NUM_THREADS=%d\n' %(1)   
+	info.Set('env',envstr)
 	info.Set('npernode',str(cores))
+	print("spawning now")
 	comm = MPI.COMM_SELF.Spawn(diffusion2Dfullpath, args=argslist, info=info, maxprocs=nodes*cores)
+	print("done spawning")
 
 	recvdata = np.array([0,0],dtype=np.float64)
-	comm.Reduce(sendbuf=None,recvbuf=[recvdata,MPI.DOUBLE],op=MPI.MAX,root=MPI.ROOT)
+	comm.Bcast(buf=recvdata,root=MPI.ROOT)
 	comm.Disconnect()
+	print("done reducing and disconnecting")
 
 	return (recvdata[0],recvdata[1])
 
 def objectives(point):
 	(runtime,error) = execute(point)
 	targetlog10err = point["targetlog10err"]
-	accuracy = (np.log10(err)/targetlog10err-1)*(np.log10(err)/targetlog10err-1)
+	accuracy = (np.log10(err)/targetlog10err-1)**2
 	return [runtime,accuracy]
 
 def main():
@@ -136,11 +150,13 @@ def main():
 	os.environ['TUNER_NAME'] = TUNER_NAME
 
 	input_space = Space([Categoricalnorm(['-1','-2','-3','-4','-5'], transform="onehot", name="targetlog10err")])
-	parameter_space = Space([ICategoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller"),Integer(1, 5, transform="normalize", name="order"), Real(1e-10, 1e-1, transform="normalize", name="atol"), Real(1e-10, 1e-1, transform="normalize", name="rtol")])
+	parameter_space = Space([Categoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller_id"),Integer(1, 5, transform="normalize", name="order"), Real(1e-10, 1e-1, transform="normalize", name="atol"), Real(1e-10, 1e-1, transform="normalize", name="rtol")])
+	constraints = {}
+	constants = {"nodes": nodes, "cores": cores}
 
 	output_space = Space([Real(float('-Inf'), float('Inf'), name="runtime"), Real(float('-Inf'), float('Inf'), name="accuracy")])
 	
-	problem = TuningProblem(input_space, parameter_space,output_space, objectives, None, None)	
+	problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, None, constants=constants)
 
 	computer = Computer(nodes=nodes, cores=cores, hosts=None)
 	options = Options()
@@ -150,7 +166,7 @@ def main():
 	options['distributed_memory_parallelism'] = False
 	options['shared_memory_parallelism'] = False
 
-	# options['objective_evaluation_parallelism'] = True
+	options['objective_evaluation_parallelism'] = False
 	# options['objective_multisample_threads'] = 1
 	# options['objective_multisample_processes'] = 4
 	# options['objective_nprocmax'] = 1
