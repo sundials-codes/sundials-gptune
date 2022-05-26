@@ -23,3 +23,44 @@ Traceback (most recent call last):
     from gptune import * # import all
 ModuleNotFoundError: No module named 'gptune'
 srun: error: quartz137: task 0: Exited with exit code 1
+Traceback (most recent call last):
+  File "diffusion2Dtest.py", line 239, in <module>
+    main()
+  File "diffusion2Dtest.py", line 139, in main
+    parameter_space = Space([ICategoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller"),Integer(1, 5, transform="normalize", name="order"), Real(1e-10, 1e-1, transform="normalize", name="atol"), Real(1e-10, 1e-1, transform="normalize", name="rtol")])
+NameError: name 'ICategoricalnorm' is not defined
+srun: error: quartz2959: task 0: Exited with exit code 1
+Traceback (most recent call last):
+  File "diffusion2Dtest.py", line 239, in <module>
+    main()
+  File "diffusion2Dtest.py", line 190, in main
+    (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=int(NS/2), T_sampleflag=[True]*NI)
+  File "/g/g20/fish7/workspace/GPTune/GPTune/gptune.py", line 927, in MLA
+    return self.MLA_HistoryDB(NS, NS1, NI, Igiven, T_sampleflag, function_evaluations, models_transfer)
+  File "/g/g20/fish7/workspace/GPTune/GPTune/gptune.py", line 707, in MLA_HistoryDB
+    tmpP = sampler.sample_parameters(n_samples = NS1-NSmin, I = self.data.I, IS = self.problem.IS, PS = self.problem.PS, check_constraints = check_constraints, **kwargs)
+  File "/g/g20/fish7/workspace/GPTune/GPTune/sample.py", line 102, in sample_parameters
+    xs = self.sample_constrained(n_samples, PS, check_constraints = check_constraints, check_constraints_kwargs = kwargs2, **kwargs)
+  File "/g/g20/fish7/workspace/GPTune/GPTune/sample.py", line 65, in sample_constrained
+    if (check_constraints(kwargs2)):
+  File "/g/g20/fish7/workspace/GPTune/GPTune/computer.py", line 52, in evaluate_constraints
+    for (cstname, cst) in problem.constraints.items():
+AttributeError: 'NoneType' object has no attribute 'items'
+srun: error: quartz2187: task 0: Exited with exit code 1
+Traceback (most recent call last):
+  File "diffusion2Dtest.py", line 239, in <module>
+    main()
+  File "diffusion2Dtest.py", line 190, in main
+    (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=int(NS/2), T_sampleflag=[True]*NI)
+  File "/g/g20/fish7/workspace/GPTune/GPTune/gptune.py", line 927, in MLA
+    return self.MLA_HistoryDB(NS, NS1, NI, Igiven, T_sampleflag, function_evaluations, models_transfer)
+  File "/g/g20/fish7/workspace/GPTune/GPTune/gptune.py", line 707, in MLA_HistoryDB
+    tmpP = sampler.sample_parameters(n_samples = NS1-NSmin, I = self.data.I, IS = self.problem.IS, PS = self.problem.PS, check_constraints = check_constraints, **kwargs)
+  File "/g/g20/fish7/workspace/GPTune/GPTune/sample.py", line 102, in sample_parameters
+    xs = self.sample_constrained(n_samples, PS, check_constraints = check_constraints, check_constraints_kwargs = kwargs2, **kwargs)
+  File "/g/g20/fish7/workspace/GPTune/GPTune/sample.py", line 65, in sample_constrained
+    if (check_constraints(kwargs2)):
+  File "/g/g20/fish7/workspace/GPTune/GPTune/computer.py", line 52, in evaluate_constraints
+    for (cstname, cst) in problem.constraints.items():
+AttributeError: 'NoneType' object has no attribute 'items'
+srun: error: quartz2853: task 0: Exited with exit code 1
