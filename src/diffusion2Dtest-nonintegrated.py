@@ -101,7 +101,7 @@ def execute(params):
 	atol = params["atol"]
 	rtol = params["rtol"]
 
-	argslist = ['diffusion2D-develop.sh', str(nodes), str(cores), 'diffusion2Dfullpath', '--order', str(order), '--controller', str(controller_id), '--atol', str(atol), '--rtol', str(rtol)]
+	argslist = ['mpirun', '-n', str(nodes), '-npernode', str(cores), diffusion2Dfullpath, '--order', str(order), '--controller', str(controller_id), '--atol', str(atol), '--rtol', str(rtol)]
 
 	print(diffusion2Dfullpath)
 	print(" ".join(argslist) + " with tol: " + str(params["targetlog10err"]))
@@ -110,11 +110,10 @@ def execute(params):
 	print("in execute, done with initialization. running mpi now")
 
 	print("running shell command")
-	p = subprocess.Popen(arglist,stdin=subprocess.PIPE,stderr=subprocess.PIPE)
-	result = p.communicate()
-	resultlist = ','.split(result.decode('ascii'))
-	runtime = float(resultlist[0])
-	error = float(resultlist[1])
+	p = subprocess.run(arglist,capture_output=True)
+	results = p.stdout.decode('ascii').split(',')
+	runtime = float(results[0])
+	error = float(results[1])
 	print("done running shell command")
 
 	return (runtime,error)
