@@ -35,6 +35,7 @@ import os
 # import mpi4py
 import logging
 import numpy as np
+import math
 import mpi4py
 from mpi4py import MPI
 	
@@ -101,27 +102,29 @@ def execute(params):
 	atol = params["atol"]
 	rtol = params["rtol"]
 
-	argslist = ['mpirun', '-n', str(nodes), '-npernode', str(cores), diffusion2Dfullpath, '--order', str(order), '--controller', str(controller_id), '--atol', str(atol), '--rtol', str(rtol)]
+	argslist = ['mpirun', '-n', str(nodes*cores), diffusion2Dfullpath, '--order', str(order), '--controller', str(controller_id), '--atol', str(atol), '--rtol', str(rtol), '--nx', '128', '--ny', '128']
 
-	print(diffusion2Dfullpath)
-	print(" ".join(argslist) + " with tol: " + str(params["targetlog10err"]))
-	print("nodes: " + str(nodes) + ", cores: " + str(cores))
+	#print(diffusion2Dfullpath)
+	#print(" ".join(argslist) + " with tol: " + str(params["targetlog10err"]))
+	#print("nodes: " + str(nodes) + ", cores: " + str(cores))
 
-	print("in execute, done with initialization. running mpi now")
+	#print("in execute, done with initialization. running mpi now")
 
-	print("running shell command")
-	p = subprocess.run(arglist,capture_output=True)
+	#print("running shell command")
+	p = subprocess.run(argslist,capture_output=True)
 	results = p.stdout.decode('ascii').split(',')
 	runtime = float(results[0])
 	error = float(results[1])
-	print("done running shell command")
+	print(" ".join(argslist))
+	print(f"runtime: {runtime}, error: {error}")
+	#print("done running shell command")
 
 	return (runtime,error)
 
 def objectives(point):
 	(runtime,error) = execute(point)
-	targetlog10err = point["targetlog10err"]
-	accuracy = (np.log10(err)/targetlog10err-1)**2
+	targetlog10err = float(point["targetlog10err"])
+	accuracy = (math.log10(error)/targetlog10err-1)**2
 	return [runtime,accuracy]
 
 def main():
@@ -143,8 +146,10 @@ def main():
 	os.environ['MACHINE_NAME'] = machine
 	os.environ['TUNER_NAME'] = TUNER_NAME
 
-	input_space = Space([Categoricalnorm(['-1','-2','-3','-4','-5'], transform="onehot", name="targetlog10err")])
-	parameter_space = Space([Categoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller_id"),Integer(1, 5, transform="normalize", name="order"), Real(1e-10, 1e-1, transform="normalize", name="atol"), Real(1e-10, 1e-1, transform="normalize", name="rtol")])
+	#input_space = Space([Categoricalnorm(['-1','-2','-3','-4','-5'], transform="onehot", name="targetlog10err")])
+	input_space = Space([Categoricalnorm(['-1'], transform="onehot", name="targetlog10err")])
+	#parameter_space = Space([Categoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller_id"),Integer(1, 5, transform="normalize", name="order"), Real(1e-10, 1e-1, transform="normalize", name="atol"), Real(1e-10, 1e-1, transform="normalize", name="rtol")])
+	parameter_space = Space([Categoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller_id"),Integer(2, 5, transform="normalize", name="order"), Real(1e-8, 1e-1, transform="identity", name="atol"), Real(1e-8, 1e-1, transform="identity", name="rtol")])
 	constraints = {}
 	constants = {"nodes": nodes, "cores": cores}
 
@@ -188,7 +193,7 @@ def main():
 	options['verbose'] = False
 	options.validate(computer=computer)
 
-	giventask = [['-1'],['-2'],['-3'],['-4'],['-5']]
+	giventask = [['-1']]
 	NI=len(giventask) 
 	NS=nrun
 

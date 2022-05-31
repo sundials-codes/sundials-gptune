@@ -22,7 +22,9 @@ rtol = params["rtol"]
 nodes=1
 cores=36
 
-argslist = ['mpirun', '-n', str(nodes), '-npernode', str(cores), diffusion2Dfullpath, '--order', str(order), '--controller', str(controller_id), '--atol', str(atol), '--rtol', str(rtol)]
+#argslist = ['mpiexec', '-n', str(nodes), '-npernode', str(cores), diffusion2Dfullpath, '--order', str(order), '--controller', str(controller_id), '--atol', str(atol), '--rtol', str(rtol)]
+#argslist = ['mpiexec', '-n', str(nodes*cores), diffusion2Dfullpath, '--order', str(order), '--controller', str(controller_id), '--atol', str(atol), '--rtol', str(rtol)]
+argslist = ['mpiexec', '-n', str(nodes*cores), diffusion2Dfullpath, '--order', str(order), '--controller', str(controller_id), '--atol', str(atol), '--rtol', str(rtol), '--nx', '128', '--ny', '128']
 
 print(argslist)
 print(diffusion2Dfullpath)
@@ -40,3 +42,7 @@ resultlist = result.decode('ascii').split(",")
 print(resultlist)
 runtime = float(resultlist[0])
 error = float(resultlist[1])
+print("runtime:")
+print(runtime)
+print("error:")
+print(error)

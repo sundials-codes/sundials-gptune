@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#SBATCH -N 1
+#SBATCH -J diffusion2dtest-nonintegrated
+#SBATCH -t 00:45:00
+#SBATCH --mail-type=ALL
+#SBATCH -A sundials
+#SBATCH -o diffusion2Dtest-nonintegrated.out
+#SBATCH -e diffusion2Dtest-nonintegrated.err
+#SBATCH -p pbatch
+
+. setup-env.sh
+python3 diffusion2Dtest-nonintegrated.py
