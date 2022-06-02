@@ -1,23 +1,4 @@
-#! /usr/bin/env python
-
-# GPTune Copyright (c) 2019, The Regents of the University of California,
-# through Lawrence Berkeley National Laboratory (subject to receipt of any
-# required approvals from the U.S.Dept. of Energy) and the University of
-# California, Berkeley.  All rights reserved.
-#
-# If you have questions about your rights to use or distribute this software,
-# please contact Berkeley Lab's Intellectual Property Office at IPO@lbl.gov.
-#
-# NOTICE. This Software was developed under funding from the U.S. Department
-# of Energy and the U.S. Government consequently retains certain rights.
-# As such, the U.S. Government has been granted for itself and others acting
-# on its behalf a paid-up, nonexclusive, irrevocable, worldwide license in
-# the Software to reproduce, distribute copies to the public, prepare
-# derivative works, and perform publicly and display publicly, and to permit
-# other to do so.
-#
-
-
+#! /usr/bin/env python3
 """
 Example of invocation of this script:
 mpirun -n 1 python ./demo.py -nrun 20 -ntask 5 -perfmodel 0 -optimization GPTune
@@ -27,31 +8,19 @@ where:
 	-perfmodel is whether a coarse performance model is used
 	-optimization is the optimization algorithm: GPTune,opentuner,hpbandster
 """
-
-
-################################################################################
 import sys
 import os
-# import mpi4py
 import logging
 import numpy as np
 import math
 import mpi4py
 from mpi4py import MPI
-	
-# Removed line, should only apply when in GPTune/src/examples/GPTune-Demo
-#sys.path.insert(0, os.path.abspath(__file__ + "/../../../GPTune/"))
-
-logging.getLogger('matplotlib.font_manager').disabled = True
-
+#logging.getLogger('matplotlib.font_manager').disabled = True
 from autotune.search import *
 from autotune.space import *
 from autotune.problem import *
 from gptune import * # import all
-
-
 import argparse
-# from mpi4py import MPI
 import numpy as np
 import time
 
@@ -85,10 +54,8 @@ def parse_args():
 	parser.add_argument('-cores', type=int, default=2,help='Number of cores per machine node')
 	parser.add_argument('-machine', type=str,default='-1', help='Name of the computer (not hostname)')
 	parser.add_argument('-optimization', type=str,default='GPTune', help='Optimization algorithm (opentuner, hpbandster, GPTune)')
-	parser.add_argument('-ntask', type=int, default=1, help='Number of tasks')
 	parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
-	parser.add_argument('-perfmodel', type=int, default=0, help='Whether to use the performance model')
-	parser.add_argument('-tvalue', type=float, default=1.0, help='Input task t value')
+	parser.add_argument('-order', type=int, default=3, help='Order of accuracy of the methods used')
 
 	args = parser.parse_args()
 
@@ -102,7 +69,7 @@ def execute(params):
 	# Build up command with command-line options from current set of parameters
 	argslist = ['mpirun', '-n', str(nodes*cores), diffusion2Dfullpath, '--nx', '128', '--ny', '128',
 		'--controller', str(params["controller_id"]),
-		'--order', str(params["order"]),
+		'--method', str(params["method"]),
 		'--itype', str(params["interpolant_type"]),
 		'--idegree', str(params["interpolant_degree"]),
 		'--nlscoef', str(params["nonlin_conv_coef"]),
@@ -150,6 +117,19 @@ def objectives(point):
 	#accuracy = (math.log10(error)/targetlog10err-1)**2
 	return [runtime,error]
 
+def get_methods(order):
+	# https://github.com/LLNL/sundials/blob/develop/include/arkode/arkode_butcher_dirk.h
+	if order == 2:
+		return ["ARKODE_SDIRK_2_1_2"]
+	elif order == 3:
+		return ["ARKODE_BILLINGTON_3_3_2", "ARKODE_TRBDF2_3_3_2", "ARKODE_KVAERNO_4_2_3", "ARKODE_ARK324L2SA_DIRK_4_2_3", "ARKODE_ESDIRK324L2SA_4_2_3", "ARKODE_ESDIRK325L2SA_5_2_3", "ARKODE_ESDIRK32I5L2SA_5_2_3"]
+	elif order == 4:
+		return ["ARKODE_CASH_5_2_4", "ARKODE_CASH_5_3_4", "ARKODE_SDIRK_5_3_4", "ARKODE_KVAERNO_5_3_4", "ARKODE_ARK436L2SA_DIRK_6_3_4", "ARKODE_ARK437L2SA_DIRK_7_3_4", "ARKODE_ESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK43I6L2SA_6_3_4", "ARKODE_QESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK437L2SA_7_3_4"]
+	elif order == 5:
+		return ["ARKODE_KVAERNO_7_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ESDIRK547L2SA_7_4_5", "ARKODE_ESDIRK547L2SA2_7_4_5"]
+	else:
+		return []
+
 def main():
 
 	import matplotlib.pyplot as plt
@@ -158,22 +138,23 @@ def main():
 
 	# Parse command line arguments
 	args = parse_args()
-	ntask = args.ntask
 	nrun = args.nrun
-	tvalue = args.tvalue
 	TUNER_NAME = args.optimization
-	perfmodel = args.perfmodel
+	order = args.order
 
 	(machine, processor, nodes, cores) = GetMachineConfiguration()
 	print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
 	os.environ['MACHINE_NAME'] = machine
 	os.environ['TUNER_NAME'] = TUNER_NAME
 
-	#input_space = Space([Categoricalnorm(['-1','-2','-3','-4','-5'], transform="onehot", name="targetlog10err")])
 	input_space = Space([Categoricalnorm(["diffusion"], transform="onehot", name="problemname")])
+	
+	methods = get_methods(order)
+	print("order: " + str(order))
+	print(methods)
 	parameter_space = Space([
 		Categoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller_id"),
-		Integer(2, 5, transform="normalize", name="order"), 
+		Categoricalnorm(methods, transform="onehot", name="method"), 
 		Categoricalnorm(['0','1'], transform="onehot", name="interpolant_type"),
 		Integer(0, 5, transform="normalize", name="interpolant_degree"),
 		Real(0.0001, 1.0, transform="normalize", name="nonlin_conv_coef"),
@@ -223,7 +204,7 @@ def main():
 	options['model_class'] = 'Model_GPy_LCM' #'Model_LCM'
 	options['model_random_seed'] = 0
 	# Use the following two lines if you want to specify a certain random seed for the search phase
-	options['search_class'] = 'SearchPyGMO'
+	options['search_class'] = 'SearchPyMoo'
 	options['search_random_seed'] = 0
 
 	options['search_algo'] = 'nsga2'
