@@ -55,6 +55,8 @@ import argparse
 import numpy as np
 import time
 
+import pygmo as pg
+
 from callopentuner import OpenTuner
 from callhpbandster import HpBandSter
 
@@ -96,36 +98,57 @@ def execute(params):
 	diffusion2Dfolder = os.getenv("SUNDIALSBUILDROOT") + "/benchmarks/diffusion_2D/mpi_serial/"
 	diffusion2Dexe = "arkode_diffusion_2D_mpi"
 	diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
+	
+	# Build up command with command-line options from current set of parameters
+	argslist = ['mpirun', '-n', str(nodes*cores), diffusion2Dfullpath, '--nx', '128', '--ny', '128',
+		'--controller', str(params["controller_id"]),
+		'--order', str(params["order"]),
+		'--itype', str(params["interpolant_type"]),
+		'--idegree', str(params["interpolant_degree"]),
+		'--nlscoef', str(params["nonlin_conv_coef"]),
+		'--maxncf', str(params["max_conv_fails"]),
+		'--dgmax', str(params["delta_gamma_max"]),
+		'--msbp', str(params["msbp"]),
+		'--msbj', str(params["msbj"])	
+	]
+	if params["deduce_implicit_rhs"] == "true":
+		argslist.append('--deduce')
 
-	order = params["order"]
-	controller_id = params["controller_id"]
-	atol = params["atol"]
-	rtol = params["rtol"]
-
-	argslist = ['mpirun', '-n', str(nodes*cores), diffusion2Dfullpath, '--order', str(order), '--controller', str(controller_id), '--atol', str(atol), '--rtol', str(rtol), '--nx', '128', '--ny', '128']
-
-	#print(diffusion2Dfullpath)
-	#print(" ".join(argslist) + " with tol: " + str(params["targetlog10err"]))
-	#print("nodes: " + str(nodes) + ", cores: " + str(cores))
-
-	#print("in execute, done with initialization. running mpi now")
-
-	#print("running shell command")
+	# Run the command and grab the output
+	print("Running: " + " ".join(argslist))
 	p = subprocess.run(argslist,capture_output=True)
-	results = p.stdout.decode('ascii').split(',')
-	runtime = float(results[0])
-	error = float(results[1])
-	print(" ".join(argslist))
-	print(f"runtime: {runtime}, error: {error}")
+	# Decode the stdout and stderr as they are in "bytes" format
+	stdout = p.stdout.decode('ascii')
+	stderr = p.stderr.decode('ascii')
+
+	runtime = 0
+	error = 0
+	# If no errors occurred in the run, and the output was printed as expected, proceed
+	# else, declare a failed point.
+	if not stderr and stdout and "," in stdout:
+		results = stdout.split(",")
+		runtime = float(results[0])
+		error = float(results[1])
+	else:
+		runtime = 1e8
+		error = 1e8
+
+	if error < 1e-15:
+		runtime = 1e10
+		error = 1e10
+
+	print(f"Finished. runtime: {runtime}, error: {error}")
 	#print("done running shell command")
 
-	return (runtime,error)
+	return [runtime,error]
 
 def objectives(point):
-	(runtime,error) = execute(point)
-	targetlog10err = float(point["targetlog10err"])
-	accuracy = (math.log10(error)/targetlog10err-1)**2
-	return [runtime,accuracy]
+	execute_result = execute(point)
+	runtime = execute_result[0]
+	error = execute_result[1]
+	#targetlog10err = float(point["targetlog10err"])
+	#accuracy = (math.log10(error)/targetlog10err-1)**2
+	return [runtime,error]
 
 def main():
 
@@ -147,15 +170,28 @@ def main():
 	os.environ['TUNER_NAME'] = TUNER_NAME
 
 	#input_space = Space([Categoricalnorm(['-1','-2','-3','-4','-5'], transform="onehot", name="targetlog10err")])
-	input_space = Space([Categoricalnorm(['-1'], transform="onehot", name="targetlog10err")])
-	#parameter_space = Space([Categoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller_id"),Integer(1, 5, transform="normalize", name="order"), Real(1e-10, 1e-1, transform="normalize", name="atol"), Real(1e-10, 1e-1, transform="normalize", name="rtol")])
-	parameter_space = Space([Categoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller_id"),Integer(2, 5, transform="normalize", name="order"), Real(1e-8, 1e-1, transform="identity", name="atol"), Real(1e-8, 1e-1, transform="identity", name="rtol")])
-	constraints = {}
+	input_space = Space([Categoricalnorm(["diffusion"], transform="onehot", name="problemname")])
+	parameter_space = Space([
+		Categoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller_id"),
+		Integer(2, 5, transform="normalize", name="order"), 
+		Categoricalnorm(['0','1'], transform="onehot", name="interpolant_type"),
+		Integer(0, 5, transform="normalize", name="interpolant_degree"),
+		Real(0.0001, 1.0, transform="normalize", name="nonlin_conv_coef"),
+		Integer(1, 10, transform="normalize", name="max_conv_fails"),
+		Categoricalnorm(['false','true'], transform="onehot", name="deduce_implicit_rhs"),
+		Real(0.0001, 1.0, transform="normalize", name="delta_gamma_max"),
+		Integer(1, 100, transform="normalize", name="msbp"),
+		Integer(1, 200, transform="normalize", name="msbj")
+	])
+	constraints = {"cst1": "msbj >= msbp" }
 	constants = {"nodes": nodes, "cores": cores}
 
-	output_space = Space([Real(float('-Inf'), float('Inf'), name="runtime"), Real(float('-Inf'), float('Inf'), name="accuracy")])
+	output_space = Space([
+		Real(float('-Inf'), float('Inf'), name="runtime"), 
+		Real(float('-Inf'), 0.05, name="error",optimize=False)
+	])
 	
-	problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, None, constants=constants)
+	problem = TuningProblem(input_space, parameter_space, output_space, objectives, constraints, None, constants=constants)
 
 	computer = Computer(nodes=nodes, cores=cores, hosts=None)
 	options = Options()
@@ -174,9 +210,9 @@ def main():
 	# options['model_threads'] = 1
 	# options['model_restart_processes'] = 1
 
-	# options['search_multitask_processes'] = 1
-	# options['search_multitask_threads'] = 1
-	# options['search_threads'] = 16
+	options['search_multitask_processes'] = 1
+	options['search_multitask_threads'] = 1
+	options['search_threads'] = 16
 
 	# options['sample_algo'] = 'MCS'
 
@@ -190,10 +226,12 @@ def main():
 	options['search_class'] = 'SearchPyGMO'
 	options['search_random_seed'] = 0
 
+	options['search_algo'] = 'nsga2'
+
 	options['verbose'] = False
 	options.validate(computer=computer)
 
-	giventask = [['-1']]
+	giventask = [['diffusion']]
 	NI=len(giventask) 
 	NS=nrun
 
@@ -207,48 +245,17 @@ def main():
 		print("stats: ", stats)
 		""" Print all input and parameter samples """
 		for tid in range(NI):
+			print(tid)
 			print("tid: %d" % (tid))
-			print("    t:%f " % (data.I[tid][0]))
+			print("    t: " + (data.I[tid][0]))
 			print("    Ps ", data.P[tid])
 			print("    Os ", data.O[tid].tolist())
-			print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-
-	if(TUNER_NAME=='opentuner'):
-		(data,stats)=OpenTuner(T=giventask, NS=NS, tp=problem, computer=computer, run_id="OpenTuner", niter=1, technique=None)
-		print("stats: ", stats)
-		""" Print all input and parameter samples """
-		for tid in range(NI):
-			print("tid: %d" % (tid))
-			print("    t:%f " % (data.I[tid][0]))
-			print("    Ps ", data.P[tid])
-			print("    Os ", data.O[tid].tolist())
-			print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-
-	if(TUNER_NAME=='hpbandster'):
-		(data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, run_id="HpBandSter", niter=1)
-		print("stats: ", stats)
-		""" Print all input and parameter samples """
-		for tid in range(NI):
-			print("tid: %d" % (tid))
-			print("    t:%f " % (data.I[tid][0]))
-			print("    Ps ", data.P[tid])
-			print("    Os ", data.O[tid].tolist())
-			print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-
-	if(TUNER_NAME=='cgp'):
-		from callcgp import cGP
-		options['EXAMPLE_NAME_CGP']='GPTune-Demo'
-		options['N_PILOT_CGP']=int(NS/2)
-		options['N_SEQUENTIAL_CGP']=NS-options['N_PILOT_CGP']
-		(data,stats)=cGP(T=giventask, tp=problem, computer=computer, options=options, run_id="cGP")
-		print("stats: ", stats)
-		""" Print all input and parameter samples """
-		for tid in range(NI):
-			print("tid: %d" % (tid))
-			print("    t:%f " % (data.I[tid][0]))
-			print("    Ps ", data.P[tid])
-			print("    Os ", data.O[tid].tolist())
-			print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+			ndf, dl, dc, ndr = pg.fast_non_dominated_sorting(data.O[tid])
+			front = ndf[0]
+			fopts = data.O[tid][front]
+			xopts = [data.P[tid][i] for i in front]
+			print('    Popt ', xopts)
+			print('    Oopt ', fopts.tolist())
 
 if __name__ == "__main__":
 	main()
