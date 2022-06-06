@@ -1,0 +1,3479 @@
+{
+  "tuning_problem_name": "diffusion-arkode",
+  "tuning_problem_category": null,
+  "surrogate_model": [],
+  "func_eval": [
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.312552,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.764909,
+        "msbp": 36,
+        "msbj": 96,
+        "maxl": 177,
+        "epslin": 0.276351,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 49
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 7.756984
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 7.756984163,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 23,
+        "tm_sec": 32,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "eacc2a84-e5de-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.479922,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.240875,
+        "msbp": 1,
+        "msbj": 26,
+        "maxl": 97,
+        "epslin": 0.942539,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 10
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 23,
+        "tm_sec": 34,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "ec1474d2-e5de-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "3",
+        "method": "ARKODE_TRBDF2_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.235836,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.044109,
+        "msbp": 10,
+        "msbj": 47,
+        "maxl": 66,
+        "epslin": 0.067901,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 18
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 11.121548
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 11.121548164,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 23,
+        "tm_sec": 47,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "f3c9d028-e5de-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.177526,
+        "max_conv_fails": 10,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.647598,
+        "msbp": 55,
+        "msbj": 102,
+        "maxl": 192,
+        "epslin": 0.968024,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 25
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 62.990952
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 62.99095163,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 24,
+        "tm_sec": 52,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "1a8041f2-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.897973,
+        "max_conv_fails": 9,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.75906,
+        "msbp": 45,
+        "msbj": 66,
+        "maxl": 62,
+        "epslin": 0.849467,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 47
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 24,
+        "tm_sec": 54,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "1bbdc760-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "3",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.772955,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.379515,
+        "msbp": 67,
+        "msbj": 139,
+        "maxl": 12,
+        "epslin": 0.337077,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 31
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 24,
+        "tm_sec": 56,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "1cdbc0a2-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 4,
+        "nonlin_conv_coef": 0.009705,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.704453,
+        "msbp": 21,
+        "msbj": 54,
+        "maxl": 33,
+        "epslin": 0.77386,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 35
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 24,
+        "tm_sec": 58,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "1df37192-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_ESDIRK324L2SA_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 0,
+        "nonlin_conv_coef": 0.439781,
+        "max_conv_fails": 4,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.812911,
+        "msbp": 40,
+        "msbj": 117,
+        "maxl": 24,
+        "epslin": 0.815048,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 4
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 15.339996
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 15.339996188,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 25,
+        "tm_sec": 15,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "282b7556-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 5,
+        "nonlin_conv_coef": 0.497324,
+        "max_conv_fails": 1,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.561477,
+        "msbp": 26,
+        "msbj": 131,
+        "maxl": 122,
+        "epslin": 0.138035,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 33
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 47.735126
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 47.735125865,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 26,
+        "tm_sec": 5,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "45b403fe-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.830725,
+        "max_conv_fails": 9,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.308536,
+        "msbp": 96,
+        "msbj": 147,
+        "maxl": 110,
+        "epslin": 0.71562,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 1
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 6.463959
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 6.46395857,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 26,
+        "tm_sec": 13,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "4acb02d4-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_BILLINGTON_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 0,
+        "nonlin_conv_coef": 0.35194,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.516346,
+        "msbp": 85,
+        "msbj": 194,
+        "maxl": 163,
+        "epslin": 0.205005,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 16.846421
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 16.846421395,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 26,
+        "tm_sec": 32,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "55eaddba-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.080031,
+        "max_conv_fails": 3,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.13138,
+        "msbp": 89,
+        "msbj": 178,
+        "maxl": 140,
+        "epslin": 0.398807,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 46
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 26,
+        "tm_sec": 34,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "5709bd06-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.924712,
+        "max_conv_fails": 9,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.427814,
+        "msbp": 59,
+        "msbj": 82,
+        "maxl": 77,
+        "epslin": 0.416106,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 43
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 27,
+        "tm_sec": 19,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "71cf187a-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ESDIRK324L2SA_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.250975,
+        "max_conv_fails": 3,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.618804,
+        "msbp": 83,
+        "msbj": 160,
+        "maxl": 82,
+        "epslin": 0.119284,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 29
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 27,
+        "tm_sec": 21,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "730d3816-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_ESDIRK324L2SA_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.717975,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.455387,
+        "msbp": 17,
+        "msbj": 127,
+        "maxl": 155,
+        "epslin": 0.729136,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 41
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 34.283881
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 34.283881331,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 27,
+        "tm_sec": 57,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "888e66e2-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 5,
+        "nonlin_conv_coef": 0.360181,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.114459,
+        "msbp": 6,
+        "msbj": 171,
+        "maxl": 114,
+        "epslin": 0.532107,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 16
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 12.852081
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 12.852080966,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 28,
+        "tm_sec": 12,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "9152a3b0-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_TRBDF2_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.653803,
+        "max_conv_fails": 3,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.557519,
+        "msbp": 32,
+        "msbj": 75,
+        "maxl": 54,
+        "epslin": 0.66001,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 15
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 17.381924
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 17.381924219,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 28,
+        "tm_sec": 31,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "9cd1e82c-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_BILLINGTON_3_3_2",
+        "interpolant_type": "0",
+        "interpolant_degree": 4,
+        "nonlin_conv_coef": 0.847948,
+        "max_conv_fails": 5,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.214879,
+        "msbp": 76,
+        "msbj": 155,
+        "maxl": 27,
+        "epslin": 0.889754,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 24
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 28,
+        "tm_sec": 33,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "9df8863e-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.602349,
+        "max_conv_fails": 4,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.890275,
+        "msbp": 69,
+        "msbj": 184,
+        "maxl": 188,
+        "epslin": 0.3133,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 8
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 29,
+        "tm_sec": 8,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "b2bff2dc-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.529254,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.991587,
+        "msbp": 25,
+        "msbj": 106,
+        "maxl": 133,
+        "epslin": 0.610763,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 38
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 7.770811
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 7.770811223,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 29,
+        "tm_sec": 17,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "b883856c-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.312552,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.764909,
+        "msbp": 36,
+        "msbj": 96,
+        "maxl": 177,
+        "epslin": 0.276351,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 49
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 7.722425
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 7.722425143,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 29,
+        "tm_sec": 27,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "be5a824c-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.479922,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.240875,
+        "msbp": 1,
+        "msbj": 26,
+        "maxl": 97,
+        "epslin": 0.942539,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 10
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 29,
+        "tm_sec": 29,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "bf69cc7e-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "3",
+        "method": "ARKODE_TRBDF2_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.235836,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.044109,
+        "msbp": 10,
+        "msbj": 47,
+        "maxl": 66,
+        "epslin": 0.067901,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 18
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 11.04117
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 11.041170435,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 29,
+        "tm_sec": 42,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "c7147834-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.177526,
+        "max_conv_fails": 10,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.647598,
+        "msbp": 55,
+        "msbj": 102,
+        "maxl": 192,
+        "epslin": 0.968024,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 25
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 63.925059
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 63.925059003,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 30,
+        "tm_sec": 48,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "ee56e580-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 1
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.897973,
+        "max_conv_fails": 9,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.75906,
+        "msbp": 45,
+        "msbj": 66,
+        "maxl": 62,
+        "epslin": 0.849467,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 47
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 30,
+        "tm_sec": 50,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "ef959072-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.312552,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.764909,
+        "msbp": 36,
+        "msbj": 96,
+        "maxl": 177,
+        "epslin": 0.276351,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 49
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 13.013121
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 13.013120997,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 31,
+        "tm_sec": 5,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "f86f497c-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.479922,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.240875,
+        "msbp": 1,
+        "msbj": 26,
+        "maxl": 97,
+        "epslin": 0.942539,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 10
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 31,
+        "tm_sec": 6,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "f86f497d-e5df-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "3",
+        "method": "ARKODE_TRBDF2_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.235836,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.044109,
+        "msbp": 10,
+        "msbj": 47,
+        "maxl": 66,
+        "epslin": 0.067901,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 18
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 45.750335
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 45.750334815,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 31,
+        "tm_sec": 54,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "15f07eb2-e5e0-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.177526,
+        "max_conv_fails": 10,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.647598,
+        "msbp": 55,
+        "msbj": 102,
+        "maxl": 192,
+        "epslin": 0.968024,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 25
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 241.504439
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 241.504439333,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 35,
+        "tm_sec": 57,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "a70f4b80-e5e0-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.897973,
+        "max_conv_fails": 9,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.75906,
+        "msbp": 45,
+        "msbj": 66,
+        "maxl": 62,
+        "epslin": 0.849467,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 47
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 36,
+        "tm_sec": 0,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "a844f734-e5e0-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "3",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.772955,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.379515,
+        "msbp": 67,
+        "msbj": 139,
+        "maxl": 12,
+        "epslin": 0.337077,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 31
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 36,
+        "tm_sec": 1,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "a844f735-e5e0-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 4,
+        "nonlin_conv_coef": 0.009705,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.704453,
+        "msbp": 21,
+        "msbj": 54,
+        "maxl": 33,
+        "epslin": 0.77386,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 35
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 36,
+        "tm_sec": 3,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "aa781cc0-e5e0-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_ESDIRK324L2SA_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 0,
+        "nonlin_conv_coef": 0.439781,
+        "max_conv_fails": 4,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.812911,
+        "msbp": 40,
+        "msbj": 117,
+        "maxl": 24,
+        "epslin": 0.815048,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 4
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 40.578454
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 40.57845429,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 36,
+        "tm_sec": 46,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "c3c549b4-e5e0-11ec-897b-a4bf0111d7ee"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.312552,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.764909,
+        "msbp": 36,
+        "msbj": 96,
+        "maxl": 177,
+        "epslin": 0.276351,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 49
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 13.014203
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 13.014203411,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 49,
+        "tm_sec": 19,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "84bfeb96-e5e2-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.479922,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.240875,
+        "msbp": 1,
+        "msbj": 26,
+        "maxl": 97,
+        "epslin": 0.942539,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 10
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 49,
+        "tm_sec": 21,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "85eeabf6-e5e2-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "3",
+        "method": "ARKODE_TRBDF2_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.235836,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.044109,
+        "msbp": 10,
+        "msbj": 47,
+        "maxl": 66,
+        "epslin": 0.067901,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 18
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 46.709285
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 46.709284954,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 50,
+        "tm_sec": 9,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "a2db120e-e5e2-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.177526,
+        "max_conv_fails": 10,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.647598,
+        "msbp": 55,
+        "msbj": 102,
+        "maxl": 192,
+        "epslin": 0.968024,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 25
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 238.271849
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 238.271848585,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 54,
+        "tm_sec": 10,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "3211749a-e5e3-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.897973,
+        "max_conv_fails": 9,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.75906,
+        "msbp": 45,
+        "msbj": 66,
+        "maxl": 62,
+        "epslin": 0.849467,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 47
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 54,
+        "tm_sec": 12,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "3343ee56-e5e3-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "3",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.772955,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.379515,
+        "msbp": 67,
+        "msbj": 139,
+        "maxl": 12,
+        "epslin": 0.337077,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 31
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 54,
+        "tm_sec": 14,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "345bfe82-e5e3-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 4,
+        "nonlin_conv_coef": 0.009705,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.704453,
+        "msbp": 21,
+        "msbj": 54,
+        "maxl": 33,
+        "epslin": 0.77386,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 35
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 54,
+        "tm_sec": 15,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "345bfe83-e5e3-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_ESDIRK324L2SA_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 0,
+        "nonlin_conv_coef": 0.439781,
+        "max_conv_fails": 4,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.812911,
+        "msbp": 40,
+        "msbj": 117,
+        "maxl": 24,
+        "epslin": 0.815048,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 4
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 40.999831
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 40.999831366,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 54,
+        "tm_sec": 58,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "4f0e0572-e5e3-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 5,
+        "nonlin_conv_coef": 0.497324,
+        "max_conv_fails": 1,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.561477,
+        "msbp": 26,
+        "msbj": 131,
+        "maxl": 122,
+        "epslin": 0.138035,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 33
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 250.210465
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 250.210464535,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 59,
+        "tm_sec": 11,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "e586665c-e5e3-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.830725,
+        "max_conv_fails": 9,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.308536,
+        "msbp": 96,
+        "msbj": 147,
+        "maxl": 110,
+        "epslin": 0.71562,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 1
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 31.048723
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 31.048722746,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 14,
+        "tm_min": 59,
+        "tm_sec": 44,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "f985fd8e-e5e3-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_BILLINGTON_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 0,
+        "nonlin_conv_coef": 0.35194,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.516346,
+        "msbp": 85,
+        "msbj": 194,
+        "maxl": 163,
+        "epslin": 0.205005,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 46.547745
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 46.547745029,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 0,
+        "tm_sec": 34,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "1723b9d0-e5e4-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.080031,
+        "max_conv_fails": 3,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.13138,
+        "msbp": 89,
+        "msbj": 178,
+        "maxl": 140,
+        "epslin": 0.398807,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 46
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 0,
+        "tm_sec": 39,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "1a1262ae-e5e4-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.924712,
+        "max_conv_fails": 9,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.427814,
+        "msbp": 59,
+        "msbj": 82,
+        "maxl": 77,
+        "epslin": 0.416106,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 43
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 4,
+        "tm_sec": 11,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "98960ba8-e5e4-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ESDIRK324L2SA_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.250975,
+        "max_conv_fails": 3,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.618804,
+        "msbp": 83,
+        "msbj": 160,
+        "maxl": 82,
+        "epslin": 0.119284,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 29
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 4,
+        "tm_sec": 13,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "99d67034-e5e4-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_ESDIRK324L2SA_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.717975,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.455387,
+        "msbp": 17,
+        "msbj": 127,
+        "maxl": 155,
+        "epslin": 0.729136,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 41
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 18.350911
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 18.350910562,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 4,
+        "tm_sec": 34,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "a5e26306-e5e4-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 5,
+        "nonlin_conv_coef": 0.360181,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.114459,
+        "msbp": 6,
+        "msbj": 171,
+        "maxl": 114,
+        "epslin": 0.532107,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 16
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 26.211089
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 26.211088662,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 5,
+        "tm_sec": 3,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "b78709c2-e5e4-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 5
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_TRBDF2_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.653803,
+        "max_conv_fails": 3,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.557519,
+        "msbp": 32,
+        "msbj": 75,
+        "maxl": 54,
+        "epslin": 0.66001,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 15
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 78.094569
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 78.09456946,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 6,
+        "tm_sec": 23,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "e733b5ee-e5e4-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.312552,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.764909,
+        "msbp": 36,
+        "msbj": 96,
+        "maxl": 177,
+        "epslin": 0.276351,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 49
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 13.687584
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 13.687583605,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 6,
+        "tm_sec": 39,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "f08d7aee-e5e4-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.479922,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.240875,
+        "msbp": 1,
+        "msbj": 26,
+        "maxl": 97,
+        "epslin": 0.942539,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 10
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 6,
+        "tm_sec": 41,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "f1acfcf6-e5e4-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "3",
+        "method": "ARKODE_TRBDF2_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.235836,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.044109,
+        "msbp": 10,
+        "msbj": 47,
+        "maxl": 66,
+        "epslin": 0.067901,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 18
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 86.534889
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 86.534889179,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 8,
+        "tm_sec": 9,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "2663283a-e5e5-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.177526,
+        "max_conv_fails": 10,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.647598,
+        "msbp": 55,
+        "msbj": 102,
+        "maxl": 192,
+        "epslin": 0.968024,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 25
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 15,
+        "tm_sec": 38,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "31e0061e-e5e6-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ARK324L2SA_DIRK_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.897973,
+        "max_conv_fails": 9,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.75906,
+        "msbp": 45,
+        "msbj": 66,
+        "maxl": 62,
+        "epslin": 0.849467,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 47
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 15,
+        "tm_sec": 40,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "330ead06-e5e6-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "3",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.772955,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.379515,
+        "msbp": 67,
+        "msbj": 139,
+        "maxl": 12,
+        "epslin": 0.337077,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 31
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 15,
+        "tm_sec": 42,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "34322320-e5e6-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 4,
+        "nonlin_conv_coef": 0.009705,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.704453,
+        "msbp": 21,
+        "msbj": 54,
+        "maxl": 33,
+        "epslin": 0.77386,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 35
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 15,
+        "tm_sec": 44,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "354d9910-e5e6-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_ESDIRK324L2SA_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 0,
+        "nonlin_conv_coef": 0.439781,
+        "max_conv_fails": 4,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.812911,
+        "msbp": 40,
+        "msbj": 117,
+        "maxl": 24,
+        "epslin": 0.815048,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 4
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 70.137367
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 70.13736703,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 16,
+        "tm_sec": 56,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "6034970a-e5e6-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_ESDIRK32I5L2SA_5_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 5,
+        "nonlin_conv_coef": 0.497324,
+        "max_conv_fails": 1,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.561477,
+        "msbp": 26,
+        "msbj": 131,
+        "maxl": 122,
+        "epslin": 0.138035,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 33
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 502.803699
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 502.803699423,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 25,
+        "tm_sec": 20,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "8d1e571e-e5e7-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.830725,
+        "max_conv_fails": 9,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.308536,
+        "msbp": 96,
+        "msbj": 147,
+        "maxl": 110,
+        "epslin": 0.71562,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 1
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 64.095938
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 64.095937626,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 26,
+        "tm_sec": 27,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "b497e56c-e5e7-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_BILLINGTON_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 0,
+        "nonlin_conv_coef": 0.35194,
+        "max_conv_fails": 2,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.516346,
+        "msbp": 85,
+        "msbj": 194,
+        "maxl": 163,
+        "epslin": 0.205005,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 68.194348
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 68.194347837,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 27,
+        "tm_sec": 37,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "de882e40-e5e7-11ec-a3d6-a4bf01002b52"
+    },
+    {
+      "task_parameter": {
+        "diffusion_coeff": 10
+      },
+      "tuning_parameter": {
+        "controller_id": "4",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.080031,
+        "max_conv_fails": 3,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.13138,
+        "msbp": 89,
+        "msbj": 178,
+        "maxl": 140,
+        "epslin": 0.398807,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 46
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 6,
+        "tm_hour": 15,
+        "tm_min": 27,
+        "tm_sec": 39,
+        "tm_wday": 0,
+        "tm_yday": 157,
+        "tm_isdst": 1
+      },
+      "uid": "dfe68d36-e5e7-11ec-a3d6-a4bf01002b52"
+    }
+  ]
+}

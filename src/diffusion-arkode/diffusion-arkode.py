@@ -76,11 +76,17 @@ def execute(params):
 		'--maxncf', str(params["max_conv_fails"]),
 		'--dgmax', str(params["delta_gamma_max"]),
 		'--msbp', str(params["msbp"]),
-		'--msbj', str(params["msbj"])	
+		'--msbj', str(params["msbj"]),
+		'--liniters', str(params['maxl']),
+		'--epslin', str(params['epslin']),
 	]
 	if params["deduce_implicit_rhs"] == "true":
 		argslist.append('--deduce')
 
+	if params["nonlinear_solver"] == "fixedpoint":
+		argslist.append('--fixedpoint')
+		argslist.append(str(params['fixedpointvecs']))
+		
 	# Run the command and grab the output
 	print("Running: " + " ".join(argslist))
 	p = subprocess.run(argslist,capture_output=True)
@@ -101,8 +107,11 @@ def execute(params):
 		error = 1e8
 
 	if error < 1e-15:
-		runtime = 1e10
-		error = 1e10
+		runtime = 1e8
+		error = 1e8
+
+	if error > 1e-2:
+		runtime = 1e8
 
 	print(f"Finished. runtime: {runtime}, error: {error}")
 	#print("done running shell command")
@@ -112,10 +121,8 @@ def execute(params):
 def objectives(point):
 	execute_result = execute(point)
 	runtime = execute_result[0]
-	error = execute_result[1]
-	#targetlog10err = float(point["targetlog10err"])
-	#accuracy = (math.log10(error)/targetlog10err-1)**2
-	return [runtime,error]
+	#error = execute_result[1]
+	return [runtime]
 
 def get_methods(order):
 	# https://github.com/LLNL/sundials/blob/develop/include/arkode/arkode_butcher_dirk.h
@@ -127,6 +134,8 @@ def get_methods(order):
 		return ["ARKODE_CASH_5_2_4", "ARKODE_CASH_5_3_4", "ARKODE_SDIRK_5_3_4", "ARKODE_KVAERNO_5_3_4", "ARKODE_ARK436L2SA_DIRK_6_3_4", "ARKODE_ARK437L2SA_DIRK_7_3_4", "ARKODE_ESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK43I6L2SA_6_3_4", "ARKODE_QESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK437L2SA_7_3_4"]
 	elif order == 5:
 		return ["ARKODE_KVAERNO_7_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ESDIRK547L2SA_7_4_5", "ARKODE_ESDIRK547L2SA2_7_4_5"]
+	elif order == -1:
+		return ["ARKODE_SDIRK_2_1_2", "ARKODE_BILLINGTON_3_3_2", "ARKODE_TRBDF2_3_3_2", "ARKODE_KVAERNO_4_2_3", "ARKODE_ARK324L2SA_DIRK_4_2_3", "ARKODE_ESDIRK324L2SA_4_2_3", "ARKODE_ESDIRK325L2SA_5_2_3", "ARKODE_ESDIRK32I5L2SA_5_2_3", "ARKODE_CASH_5_2_4", "ARKODE_CASH_5_3_4", "ARKODE_SDIRK_5_3_4", "ARKODE_KVAERNO_5_3_4", "ARKODE_ARK436L2SA_DIRK_6_3_4", "ARKODE_ARK437L2SA_DIRK_7_3_4", "ARKODE_ESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK43I6L2SA_6_3_4", "ARK    ODE_QESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK437L2SA_7_3_4", "ARKODE_KVAERNO_7_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ESDIRK547L2SA_7_4_5", "ARKODE_ESDIRK547L2SA2_7_4_5"] 
 	else:
 		return []
 
@@ -162,15 +171,20 @@ def main():
 		Categoricalnorm(['false','true'], transform="onehot", name="deduce_implicit_rhs"),
 		Real(0.0001, 1.0, transform="normalize", name="delta_gamma_max"),
 		Integer(1, 100, transform="normalize", name="msbp"),
-		Integer(1, 200, transform="normalize", name="msbj")
+		Integer(1, 200, transform="normalize", name="msbj"),
+		Integer(1, 200, transform="normalize", name="maxl"),
+		Real(0.001, 1.0, transform="normalize", name="epslin"),
+		Categoricalnorm(['newton', 'fixedpoint'], transform="onehot", name="nonlinear_solver"),
+		Integer(1, 50, transform="normalize", name="fixedpointvecs")
 	])
 	constraints = {"cst1": "msbj >= msbp" }
 	constants = {"nodes": nodes, "cores": cores}
 
-	output_space = Space([
-		Real(float('-Inf'), float('Inf'), name="runtime"), 
-		Real(float('-Inf'), 0.05, name="error",optimize=False)
-	])
+	#output_space = Space([
+	#	Real(float('-Inf'), float('Inf'), name="runtime"), 
+	#	Real(float('-Inf'), 0.05, name="error",optimize=False)
+	#])
+	output_space = Space([Real(float('-Inf'),float('Inf'),name="runtime")])
 	
 	problem = TuningProblem(input_space, parameter_space, output_space, objectives, constraints, None, constants=constants)
 
@@ -182,7 +196,7 @@ def main():
 	options['distributed_memory_parallelism'] = False
 	options['shared_memory_parallelism'] = False
 
-	options['objective_evaluation_parallelism'] = False
+	# options['objective_evaluation_parallelism'] = False
 	# options['objective_multisample_threads'] = 1
 	# options['objective_multisample_processes'] = 4
 	# options['objective_nprocmax'] = 1
@@ -191,9 +205,9 @@ def main():
 	# options['model_threads'] = 1
 	# options['model_restart_processes'] = 1
 
-	options['search_multitask_processes'] = 1
-	options['search_multitask_threads'] = 1
-	options['search_threads'] = 16
+	# options['search_multitask_processes'] = 1
+	# options['search_multitask_threads'] = 1
+	# options['search_threads'] = 16
 
 	# options['sample_algo'] = 'MCS'
 
@@ -204,10 +218,11 @@ def main():
 	options['model_class'] = 'Model_GPy_LCM' #'Model_LCM'
 	options['model_random_seed'] = 0
 	# Use the following two lines if you want to specify a certain random seed for the search phase
-	options['search_class'] = 'SearchPyMoo'
+	options['search_class'] = 'SearchPyGMO'
 	options['search_random_seed'] = 0
 
-	options['search_algo'] = 'nsga2'
+	# If using multiple objectives, uncomment following line 
+	# options['search_algo'] = 'nsga2'
 
 	options['verbose'] = False
 	options.validate(computer=computer)
@@ -231,12 +246,16 @@ def main():
 			print("    t: " + (data.I[tid][0]))
 			print("    Ps ", data.P[tid])
 			print("    Os ", data.O[tid].tolist())
-			ndf, dl, dc, ndr = pg.fast_non_dominated_sorting(data.O[tid])
-			front = ndf[0]
-			fopts = data.O[tid][front]
-			xopts = [data.P[tid][i] for i in front]
-			print('    Popt ', xopts)
-			print('    Oopt ', fopts.tolist())
+			# If single-objective 
+			print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+
+			# If multi-objective
+			# ndf, dl, dc, ndr = pg.fast_non_dominated_sorting(data.O[tid])
+			# front = ndf[0]
+			# fopts = data.O[tid][front]
+			# xopts = [data.P[tid][i] for i in front]
+			# print('    Popt ', xopts)
+			# print('    Oopt ', fopts.tolist())
 
 if __name__ == "__main__":
 	main()

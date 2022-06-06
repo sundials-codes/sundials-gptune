@@ -1,5 +1,5 @@
 {
-  "tuning_problem_name": "GPTune-Demo",
+  "tuning_problem_name": "diffusion-arkode",
   "machine_configuration": {
     "machine_name": "mymachine",
     "myprocessor": {
