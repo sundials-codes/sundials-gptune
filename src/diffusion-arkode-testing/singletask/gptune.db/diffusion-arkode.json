@@ -1,0 +1,3148 @@
+{
+  "tuning_problem_name": "diffusion-arkode",
+  "tuning_problem_category": null,
+  "surrogate_model": [
+    {
+      "hyperparameters": {
+        "rbf_lengthscale": [
+          [
+            9.934742426665468e-24,
+            2.373064368351413,
+            1.0,
+            1.7761276393983794,
+            2.611705419944725,
+            1.2403626092244022,
+            1.0,
+            2.7186414401792702,
+            2.0997994183946926,
+            1.8465590819997906,
+            1.973957670966505,
+            1.380386665230776e-07,
+            1.0,
+            1.6587934987182535
+          ],
+          [
+            2.011739005222658e-35,
+            1.5822971118191569,
+            1.0,
+            1.3212148855008077,
+            1.6539055477205589,
+            1.1038829088482662,
+            1.0,
+            1.7042364234351473,
+            1.449027846436654,
+            1.3824402522316193,
+            1.3994019922832666,
+            0.00023796564840324906,
+            1.0,
+            1.2745501502263685
+          ],
+          [
+            31.846020487651387,
+            0.008688648527069671,
+            1.0,
+            0.00011487580671585532,
+            2.2876978836587652e-10,
+            0.14383107236912776,
+            1.0,
+            3.081946248509549e-08,
+            4.2644812021767817e-07,
+            2.3224785507662045,
+            4.0862370758144195e-06,
+            19.68109451320331,
+            1.0,
+            0.0007044407951914736
+          ]
+        ],
+        "variance": [
+          [
+            1.0
+          ],
+          [
+            1.0
+          ],
+          [
+            1.0
+          ]
+        ],
+        "B_W": [
+          [
+            [
+              -7742304.158806251
+            ],
+            [
+              -4654815.449180139
+            ],
+            [
+              12045231.300817205
+            ]
+          ],
+          [
+            [
+              9155103.570054997
+            ],
+            [
+              1957652.3916332151
+            ],
+            [
+              -15412364.815765258
+            ]
+          ],
+          [
+            [
+              -5028960.069056641
+            ],
+            [
+              -1466679.2529940817
+            ],
+            [
+              -4396314.523942088
+            ]
+          ]
+        ],
+        "B_kappa": [
+          [
+            38644.14930820831,
+            9.59159028945648e-10,
+            4.893566979154307e-81
+          ],
+          [
+            38643.61606562087,
+            1.203204580264682e-09,
+            7.013029873911351e-82
+          ],
+          [
+            38646.61936778571,
+            0.006571151687965246,
+            6.079564440203063e-83
+          ]
+        ],
+        "noise_variance": [
+          [
+            1e-10
+          ],
+          [
+            1e-05
+          ],
+          [
+            1e-05
+          ]
+        ]
+      },
+      "modeling_options": {
+        "model_kernel": "RBF",
+        "model_method": "GPCoregionalizedRegression",
+        "model_sparse": "no",
+        "multitask": "yes"
+      },
+      "model_stats": {
+        "log_marginal_likelihood": -169.88911346490528
+      },
+      "task_parameters": [
+        [
+          "9.0",
+          "diffusion"
+        ],
+        [
+          "3.0",
+          "diffusion"
+        ],
+        [
+          "1.0",
+          "diffusion"
+        ]
+      ],
+      "function_evaluations": [],
+      "input_space": [
+        {
+          "name": "budget",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.999999999999,
+          "upper_bound": 9,
+          "optimize": true
+        },
+        {
+          "name": "problemname",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "diffusion"
+          ]
+        }
+      ],
+      "parameter_space": [
+        {
+          "name": "controller_id",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "method",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "ARKODE_BILLINGTON_3_3_2",
+            "ARKODE_TRBDF2_3_3_2",
+            "ARKODE_KVAERNO_4_2_3",
+            "ARKODE_ARK324L2SA_DIRK_4_2_3",
+            "ARKODE_ESDIRK324L2SA_4_2_3",
+            "ARKODE_ESDIRK325L2SA_5_2_3",
+            "ARKODE_ESDIRK32I5L2SA_5_2_3"
+          ]
+        },
+        {
+          "name": "interpolant_type",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "name": "interpolant_degree",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 0,
+          "upper_bound": 5,
+          "optimize": true
+        },
+        {
+          "name": "nonlin_conv_coef",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "max_conv_fails",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 10,
+          "optimize": true
+        },
+        {
+          "name": "deduce_implicit_rhs",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "false",
+            "true"
+          ]
+        },
+        {
+          "name": "delta_gamma_max",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "msbp",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 100,
+          "optimize": true
+        },
+        {
+          "name": "msbj",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "maxl",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "epslin",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "nonlinear_solver",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "newton",
+            "fixedpoint"
+          ]
+        },
+        {
+          "name": "fixedpointvecs",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 50,
+          "optimize": true
+        }
+      ],
+      "output_space": [
+        {
+          "name": "runtime",
+          "transformer": "identity",
+          "type": "real",
+          "lower_bound": 0.0,
+          "upper_bound": 10000000.0,
+          "optimize": true
+        }
+      ],
+      "modeler": "Model_GPy_LCM",
+      "objective": {
+        "name": "runtime",
+        "transformer": "identity",
+        "type": "real",
+        "lower_bound": 0.0,
+        "upper_bound": 10000000.0,
+        "optimize": true,
+        "objective_id": 0
+      },
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 48,
+        "tm_sec": 49,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "28ea906b-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "hyperparameters": {
+        "rbf_lengthscale": [
+          [
+            6.690347181175231e-95,
+            0.3486140079767206,
+            0.08880431931820117,
+            0.48741204986734094,
+            1.850935023674896,
+            2.9323479227923824e-05,
+            0.052879320970759196,
+            1.5804989421808776e-17,
+            1.146563146293697,
+            1.121191176585703,
+            0.34703220741351126,
+            2.4787171317009626e-68,
+            0.4012611747702516,
+            0.00012828634551726405
+          ],
+          [
+            2.0568111306889707e-55,
+            0.04204104930778898,
+            0.3920758068846543,
+            0.48238733814960516,
+            0.3227812999883181,
+            0.01422634212914721,
+            0.3212475336453408,
+            3.528635607286144e-08,
+            0.5236112038768952,
+            0.02384936766803448,
+            0.3669800436427594,
+            3.587844595768654e-34,
+            0.6925955663703134,
+            0.0221928754052107
+          ],
+          [
+            57.42199167418849,
+            1.369684636937952e-06,
+            2.5329673004571873,
+            0.13992475198618903,
+            4.304478940650638e-10,
+            7.571887463409436,
+            2.843992621980122,
+            20.39344237473288,
+            0.0013726968403031882,
+            7.027238616459002e-19,
+            0.10546986651792448,
+            48.65815004655436,
+            1.6019821952926285,
+            6.377622808529886
+          ]
+        ],
+        "variance": [
+          [
+            1.0
+          ],
+          [
+            1.0
+          ],
+          [
+            1.0
+          ]
+        ],
+        "B_W": [
+          [
+            [
+              743017.2314822335
+            ],
+            [
+              812725.5264088601
+            ],
+            [
+              11325599.64445909
+            ]
+          ],
+          [
+            [
+              414309.2054168757
+            ],
+            [
+              -493793.38213194406
+            ],
+            [
+              -9500575.42296423
+            ]
+          ],
+          [
+            [
+              359435.19549857604
+            ],
+            [
+              2373989.0005525434
+            ],
+            [
+              -2331345.264837051
+            ]
+          ]
+        ],
+        "B_kappa": [
+          [
+            2173.944259698379,
+            5.562684646268137e-309,
+            2.8693432374764634e-161
+          ],
+          [
+            2171.8683145143928,
+            5.562684646268137e-309,
+            4.972124636986316e-164
+          ],
+          [
+            2140.3995158772977,
+            5.562684646268137e-309,
+            7.235702730476372e-167
+          ]
+        ],
+        "noise_variance": [
+          [
+            1e-05
+          ],
+          [
+            1e-05
+          ],
+          [
+            1e-05
+          ]
+        ]
+      },
+      "modeling_options": {
+        "model_kernel": "RBF",
+        "model_method": "GPCoregionalizedRegression",
+        "model_sparse": "no",
+        "multitask": "yes"
+      },
+      "model_stats": {
+        "log_marginal_likelihood": -168.07923114925342
+      },
+      "task_parameters": [
+        [
+          "9.0",
+          "diffusion"
+        ],
+        [
+          "3.0",
+          "diffusion"
+        ],
+        [
+          "1.0",
+          "diffusion"
+        ]
+      ],
+      "function_evaluations": [
+        "5fb4283e-e77d-11ec-adcc-a4bf01002a3a"
+      ],
+      "input_space": [
+        {
+          "name": "budget",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.999999999999,
+          "upper_bound": 9,
+          "optimize": true
+        },
+        {
+          "name": "problemname",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "diffusion"
+          ]
+        }
+      ],
+      "parameter_space": [
+        {
+          "name": "controller_id",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "method",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "ARKODE_BILLINGTON_3_3_2",
+            "ARKODE_TRBDF2_3_3_2",
+            "ARKODE_KVAERNO_4_2_3",
+            "ARKODE_ARK324L2SA_DIRK_4_2_3",
+            "ARKODE_ESDIRK324L2SA_4_2_3",
+            "ARKODE_ESDIRK325L2SA_5_2_3",
+            "ARKODE_ESDIRK32I5L2SA_5_2_3"
+          ]
+        },
+        {
+          "name": "interpolant_type",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "name": "interpolant_degree",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 0,
+          "upper_bound": 5,
+          "optimize": true
+        },
+        {
+          "name": "nonlin_conv_coef",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "max_conv_fails",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 10,
+          "optimize": true
+        },
+        {
+          "name": "deduce_implicit_rhs",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "false",
+            "true"
+          ]
+        },
+        {
+          "name": "delta_gamma_max",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "msbp",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 100,
+          "optimize": true
+        },
+        {
+          "name": "msbj",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "maxl",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "epslin",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "nonlinear_solver",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "newton",
+            "fixedpoint"
+          ]
+        },
+        {
+          "name": "fixedpointvecs",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 50,
+          "optimize": true
+        }
+      ],
+      "output_space": [
+        {
+          "name": "runtime",
+          "transformer": "identity",
+          "type": "real",
+          "lower_bound": 0.0,
+          "upper_bound": 10000000.0,
+          "optimize": true
+        }
+      ],
+      "modeler": "Model_GPy_LCM",
+      "objective": {
+        "name": "runtime",
+        "transformer": "identity",
+        "type": "real",
+        "lower_bound": 0.0,
+        "upper_bound": 10000000.0,
+        "optimize": true,
+        "objective_id": 0
+      },
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 50,
+        "tm_sec": 21,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "5fb4283f-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "hyperparameters": {
+        "rbf_lengthscale": [
+          [
+            1.0918800936974203e-91,
+            2.835307113616613,
+            0.11702765758946403,
+            0.008313632177381593,
+            5.61282107765682,
+            0.0014804827050613604,
+            4.9795610705588855e-09,
+            1.3042926708827605e-07,
+            0.0015281633736211118,
+            10.755133007481625,
+            1.401604250537987,
+            1.8076312910024844e-84,
+            0.0015197890219211022,
+            0.26027606891228683
+          ],
+          [
+            4.538578936125209e-63,
+            0.000931978651114997,
+            0.4720120584352998,
+            0.003121216855412397,
+            0.21632234604700254,
+            0.12658372903225268,
+            1.1189513691270077e-07,
+            0.0006909031653573084,
+            8.435620504479603e-05,
+            0.03729526081021625,
+            0.27886025901804695,
+            5.27515502644328e-60,
+            0.00571831271970509,
+            0.6485166140123136
+          ],
+          [
+            79.63327891780648,
+            4.40392133422775e-05,
+            3.3287156966414235,
+            1.822327112492865,
+            5.390664050483179e-09,
+            10.804828319177037,
+            4.961051197426019,
+            28.068130627119174,
+            0.1897710454522003,
+            3.477193851385906e-92,
+            1.0668234729451003,
+            71.68259785424337,
+            2.285917138237436,
+            9.114688180139469
+          ]
+        ],
+        "variance": [
+          [
+            1.0
+          ],
+          [
+            1.0
+          ],
+          [
+            1.0
+          ]
+        ],
+        "B_W": [
+          [
+            [
+              620175.391515386
+            ],
+            [
+              1549174.0864600437
+            ],
+            [
+              8707517.662929423
+            ]
+          ],
+          [
+            [
+              1551412.1964233299
+            ],
+            [
+              -674227.0424490885
+            ],
+            [
+              -4295367.502084347
+            ]
+          ],
+          [
+            [
+              -50454.965464817986
+            ],
+            [
+              -3827890.8526838333
+            ],
+            [
+              1765127.7487423648
+            ]
+          ]
+        ],
+        "B_kappa": [
+          [
+            2780.1257335469973,
+            3943.8010417780124,
+            3.285806549431462e-219
+          ],
+          [
+            2778.7339492370397,
+            3945.2902041286843,
+            1.7652591961908587e-222
+          ],
+          [
+            2762.845252101154,
+            3929.276889298274,
+            4.219559380613862e-226
+          ]
+        ],
+        "noise_variance": [
+          [
+            1e-05
+          ],
+          [
+            1e-05
+          ],
+          [
+            1e-05
+          ]
+        ]
+      },
+      "modeling_options": {
+        "model_kernel": "RBF",
+        "model_method": "GPCoregionalizedRegression",
+        "model_sparse": "no",
+        "multitask": "yes"
+      },
+      "model_stats": {
+        "log_marginal_likelihood": -215.95933179435156
+      },
+      "task_parameters": [
+        [
+          "9.0",
+          "diffusion"
+        ],
+        [
+          "3.0",
+          "diffusion"
+        ],
+        [
+          "1.0",
+          "diffusion"
+        ]
+      ],
+      "function_evaluations": [
+        "5fb4283e-e77d-11ec-adcc-a4bf01002a3a",
+        "67e6c804-e77d-11ec-adcc-a4bf01002a3a"
+      ],
+      "input_space": [
+        {
+          "name": "budget",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.999999999999,
+          "upper_bound": 9,
+          "optimize": true
+        },
+        {
+          "name": "problemname",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "diffusion"
+          ]
+        }
+      ],
+      "parameter_space": [
+        {
+          "name": "controller_id",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "method",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "ARKODE_BILLINGTON_3_3_2",
+            "ARKODE_TRBDF2_3_3_2",
+            "ARKODE_KVAERNO_4_2_3",
+            "ARKODE_ARK324L2SA_DIRK_4_2_3",
+            "ARKODE_ESDIRK324L2SA_4_2_3",
+            "ARKODE_ESDIRK325L2SA_5_2_3",
+            "ARKODE_ESDIRK32I5L2SA_5_2_3"
+          ]
+        },
+        {
+          "name": "interpolant_type",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "name": "interpolant_degree",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 0,
+          "upper_bound": 5,
+          "optimize": true
+        },
+        {
+          "name": "nonlin_conv_coef",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "max_conv_fails",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 10,
+          "optimize": true
+        },
+        {
+          "name": "deduce_implicit_rhs",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "false",
+            "true"
+          ]
+        },
+        {
+          "name": "delta_gamma_max",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "msbp",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 100,
+          "optimize": true
+        },
+        {
+          "name": "msbj",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "maxl",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "epslin",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "nonlinear_solver",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "newton",
+            "fixedpoint"
+          ]
+        },
+        {
+          "name": "fixedpointvecs",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 50,
+          "optimize": true
+        }
+      ],
+      "output_space": [
+        {
+          "name": "runtime",
+          "transformer": "identity",
+          "type": "real",
+          "lower_bound": 0.0,
+          "upper_bound": 10000000.0,
+          "optimize": true
+        }
+      ],
+      "modeler": "Model_GPy_LCM",
+      "objective": {
+        "name": "runtime",
+        "transformer": "identity",
+        "type": "real",
+        "lower_bound": 0.0,
+        "upper_bound": 10000000.0,
+        "optimize": true,
+        "objective_id": 0
+      },
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 50,
+        "tm_sec": 34,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "67e6c805-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "hyperparameters": {
+        "rbf_lengthscale": [
+          [
+            4.42232882531987e-53,
+            1.4815041597114042e-30,
+            3.966404490335955e-47,
+            0.06535890096111689,
+            0.18175269996982502,
+            3.397298435849938e-14,
+            2.2765056100420024e-12,
+            1.1180267265551698e-21,
+            6.547908776102305e-23,
+            9.781518411540439e-08,
+            2.464835176033597e-09,
+            4.1740492237889695e-41,
+            0.20685608970603536,
+            0.012137602192404598
+          ],
+          [
+            7.631644931151819e-46,
+            1.2129105517523618e-26,
+            6.171073075278785e-32,
+            0.01828947321418016,
+            0.027694538030968083,
+            1.4890997471470512e-11,
+            7.119415490858441e-12,
+            8.487158713359116e-16,
+            6.825649995876607e-21,
+            2.737610965783527e-09,
+            8.93584067425092e-09,
+            9.361481157101274e-33,
+            0.17164848043351927,
+            0.05868184233030869
+          ],
+          [
+            27.70610999413936,
+            0.18138430166444147,
+            5.427661281229498,
+            5.436171038272988e-10,
+            2.389559127402444e-05,
+            6.76165697947996,
+            3.652070846429958,
+            13.69439311274017,
+            0.02998784124571339,
+            1.1642222788994956e-06,
+            0.012969545597652572,
+            24.83569205324537,
+            1.3291869497942876,
+            0.790321204330916
+          ]
+        ],
+        "variance": [
+          [
+            1.0
+          ],
+          [
+            1.0
+          ],
+          [
+            1.0
+          ]
+        ],
+        "B_W": [
+          [
+            [
+              136.04624126669165
+            ],
+            [
+              236.26783339865426
+            ],
+            [
+              2200.1750857778075
+            ]
+          ],
+          [
+            [
+              133.0857817789877
+            ],
+            [
+              264.8134752593461
+            ],
+            [
+              -1553.5821980389535
+            ]
+          ],
+          [
+            [
+              129.9580446476062
+            ],
+            [
+              15.247795277115497
+            ],
+            [
+              -180.65481198500402
+            ]
+          ]
+        ],
+        "B_kappa": [
+          [
+            109.08057202304768,
+            141.92583782253553,
+            1.41586231753469e-105
+          ],
+          [
+            108.16197899037242,
+            143.69281418509348,
+            3.0613590092147443e-107
+          ],
+          [
+            91.97242957804137,
+            119.6704517318521,
+            2.8963173317782313e-109
+          ]
+        ],
+        "noise_variance": [
+          [
+            5.0523364455913584e-06
+          ],
+          [
+            5.13561628131975e-06
+          ],
+          [
+            4.997140842033431e-06
+          ]
+        ]
+      },
+      "modeling_options": {
+        "model_kernel": "RBF",
+        "model_method": "GPCoregionalizedRegression",
+        "model_sparse": "no",
+        "multitask": "yes"
+      },
+      "model_stats": {
+        "log_marginal_likelihood": -695341955.9795959
+      },
+      "task_parameters": [
+        [
+          "9.0",
+          "diffusion"
+        ],
+        [
+          "3.0",
+          "diffusion"
+        ],
+        [
+          "1.0",
+          "diffusion"
+        ]
+      ],
+      "function_evaluations": [
+        "5fb4283e-e77d-11ec-adcc-a4bf01002a3a",
+        "67e6c804-e77d-11ec-adcc-a4bf01002a3a",
+        "822792f2-e77d-11ec-adcc-a4bf01002a3a"
+      ],
+      "input_space": [
+        {
+          "name": "budget",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.999999999999,
+          "upper_bound": 9,
+          "optimize": true
+        },
+        {
+          "name": "problemname",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "diffusion"
+          ]
+        }
+      ],
+      "parameter_space": [
+        {
+          "name": "controller_id",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "method",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "ARKODE_BILLINGTON_3_3_2",
+            "ARKODE_TRBDF2_3_3_2",
+            "ARKODE_KVAERNO_4_2_3",
+            "ARKODE_ARK324L2SA_DIRK_4_2_3",
+            "ARKODE_ESDIRK324L2SA_4_2_3",
+            "ARKODE_ESDIRK325L2SA_5_2_3",
+            "ARKODE_ESDIRK32I5L2SA_5_2_3"
+          ]
+        },
+        {
+          "name": "interpolant_type",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "name": "interpolant_degree",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 0,
+          "upper_bound": 5,
+          "optimize": true
+        },
+        {
+          "name": "nonlin_conv_coef",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "max_conv_fails",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 10,
+          "optimize": true
+        },
+        {
+          "name": "deduce_implicit_rhs",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "false",
+            "true"
+          ]
+        },
+        {
+          "name": "delta_gamma_max",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "msbp",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 100,
+          "optimize": true
+        },
+        {
+          "name": "msbj",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "maxl",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "epslin",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "nonlinear_solver",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "newton",
+            "fixedpoint"
+          ]
+        },
+        {
+          "name": "fixedpointvecs",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 50,
+          "optimize": true
+        }
+      ],
+      "output_space": [
+        {
+          "name": "runtime",
+          "transformer": "identity",
+          "type": "real",
+          "lower_bound": 0.0,
+          "upper_bound": 10000000.0,
+          "optimize": true
+        }
+      ],
+      "modeler": "Model_GPy_LCM",
+      "objective": {
+        "name": "runtime",
+        "transformer": "identity",
+        "type": "real",
+        "lower_bound": 0.0,
+        "upper_bound": 10000000.0,
+        "optimize": true,
+        "objective_id": 0
+      },
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 51,
+        "tm_sec": 18,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "822792f3-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "hyperparameters": {
+        "rbf_lengthscale": [
+          [
+            32.67830604403484,
+            181.64134927516184,
+            132.20261033489058,
+            5.895014556472945e-106,
+            102.86769172211399,
+            92.34291805315111,
+            268.29503199988903,
+            280.78082820817855,
+            203.9156972657627,
+            55.431748081856455,
+            64.2386757187,
+            235.34165635559458,
+            38.027843303490094,
+            1.1438714838326119e-19
+          ],
+          [
+            132.50481862187388,
+            88.92819653575629,
+            55.00313501972349,
+            1.4506408104952815e-49,
+            31.365002664297638,
+            34.337565739475764,
+            169.90204751979533,
+            170.45732357839753,
+            104.95156169437726,
+            6.968738783512591,
+            7.514247790069562,
+            118.84356533206706,
+            11.371689010216338,
+            21.81607662281667
+          ],
+          [
+            14.796721383832523,
+            1.2464566305196764e-10,
+            18.372065196576703,
+            9.953645613148518,
+            18.525007281216464,
+            12.562776589984901,
+            3.1060921203374927,
+            8.053605957585516,
+            1.8441960592535334,
+            1.7935730737866955,
+            43.63505704305962,
+            7.891397283273718e-23,
+            5.1879998944296375,
+            16.165667195691675
+          ]
+        ],
+        "variance": [
+          [
+            1.0
+          ],
+          [
+            1.0
+          ],
+          [
+            1.0
+          ]
+        ],
+        "B_W": [
+          [
+            [
+              -1270803.0313682652
+            ],
+            [
+              2181546.0854375777
+            ],
+            [
+              10128811.32613722
+            ]
+          ],
+          [
+            [
+              2814851.5742123243
+            ],
+            [
+              1325011.0686940653
+            ],
+            [
+              -376642.416792577
+            ]
+          ],
+          [
+            [
+              3185757.230757105
+            ],
+            [
+              -3288438.809946976
+            ],
+            [
+              8633550.64781064
+            ]
+          ]
+        ],
+        "B_kappa": [
+          [
+            711.1507028232428,
+            1476.5014367961514,
+            2.685071439373567e-75
+          ],
+          [
+            711.9853756469817,
+            1477.384446262255,
+            2.5526325650215558e-79
+          ],
+          [
+            703.1366193343192,
+            1461.453745149863,
+            2.2785796512370357e-83
+          ]
+        ],
+        "noise_variance": [
+          [
+            1e-05
+          ],
+          [
+            9.999999999999996e-06
+          ],
+          [
+            1e-10
+          ]
+        ]
+      },
+      "modeling_options": {
+        "model_kernel": "RBF",
+        "model_method": "GPCoregionalizedRegression",
+        "model_sparse": "no",
+        "multitask": "yes"
+      },
+      "model_stats": {
+        "log_marginal_likelihood": -257.8158971329184
+      },
+      "task_parameters": [
+        [
+          "9.0",
+          "diffusion"
+        ],
+        [
+          "3.0",
+          "diffusion"
+        ],
+        [
+          "1.0",
+          "diffusion"
+        ]
+      ],
+      "function_evaluations": [
+        "5fb4283e-e77d-11ec-adcc-a4bf01002a3a",
+        "67e6c804-e77d-11ec-adcc-a4bf01002a3a",
+        "822792f2-e77d-11ec-adcc-a4bf01002a3a",
+        "861c4574-e77d-11ec-adcc-a4bf01002a3a"
+      ],
+      "input_space": [
+        {
+          "name": "budget",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.999999999999,
+          "upper_bound": 9,
+          "optimize": true
+        },
+        {
+          "name": "problemname",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "diffusion"
+          ]
+        }
+      ],
+      "parameter_space": [
+        {
+          "name": "controller_id",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "method",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "ARKODE_BILLINGTON_3_3_2",
+            "ARKODE_TRBDF2_3_3_2",
+            "ARKODE_KVAERNO_4_2_3",
+            "ARKODE_ARK324L2SA_DIRK_4_2_3",
+            "ARKODE_ESDIRK324L2SA_4_2_3",
+            "ARKODE_ESDIRK325L2SA_5_2_3",
+            "ARKODE_ESDIRK32I5L2SA_5_2_3"
+          ]
+        },
+        {
+          "name": "interpolant_type",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "name": "interpolant_degree",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 0,
+          "upper_bound": 5,
+          "optimize": true
+        },
+        {
+          "name": "nonlin_conv_coef",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "max_conv_fails",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 10,
+          "optimize": true
+        },
+        {
+          "name": "deduce_implicit_rhs",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "false",
+            "true"
+          ]
+        },
+        {
+          "name": "delta_gamma_max",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "msbp",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 100,
+          "optimize": true
+        },
+        {
+          "name": "msbj",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "maxl",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "epslin",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "nonlinear_solver",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "newton",
+            "fixedpoint"
+          ]
+        },
+        {
+          "name": "fixedpointvecs",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 50,
+          "optimize": true
+        }
+      ],
+      "output_space": [
+        {
+          "name": "runtime",
+          "transformer": "identity",
+          "type": "real",
+          "lower_bound": 0.0,
+          "upper_bound": 10000000.0,
+          "optimize": true
+        }
+      ],
+      "modeler": "Model_GPy_LCM",
+      "objective": {
+        "name": "runtime",
+        "transformer": "identity",
+        "type": "real",
+        "lower_bound": 0.0,
+        "upper_bound": 10000000.0,
+        "optimize": true,
+        "objective_id": 0
+      },
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 51,
+        "tm_sec": 25,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "861c4575-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "hyperparameters": {
+        "rbf_lengthscale": [
+          [
+            14.84309312590251,
+            306.49104631717483,
+            117.14530663199115,
+            184.0904471314634,
+            172.5594132577535,
+            6.980331338041251e-104,
+            518.0198959086101,
+            473.37663130364814,
+            343.298554713041,
+            103.34672394417285,
+            89.54416050879054,
+            407.6280752444419,
+            194.41128110976868,
+            363.63712296118
+          ],
+          [
+            3.267978776688535e-29,
+            160.99668834200074,
+            15.150413552201403,
+            57.7878389943293,
+            38.2362638847967,
+            6.248927040041931e-13,
+            363.62749867597256,
+            297.77045569157053,
+            187.12919854840095,
+            1.9964354138354653e-10,
+            158.32959048727807,
+            182.42645411681153,
+            10.719869970589984,
+            245.29502845690786
+          ],
+          [
+            40.36637068370141,
+            0.21374359362414316,
+            51.00864701021259,
+            30.15823649096462,
+            36.1582059049789,
+            43.534990547663305,
+            1.084273879316134e-06,
+            2.1542326766733755,
+            2.0807175399041737,
+            17.737584394319732,
+            82.02199147955557,
+            11.421212390802165,
+            12.72935059541586,
+            0.0002922515900468441
+          ]
+        ],
+        "variance": [
+          [
+            1.0
+          ],
+          [
+            1.0
+          ],
+          [
+            1.0
+          ]
+        ],
+        "B_W": [
+          [
+            [
+              10427525.845222909
+            ],
+            [
+              1247123.196401557
+            ],
+            [
+              817352.7470006016
+            ]
+          ],
+          [
+            [
+              10982221.795622192
+            ],
+            [
+              553823.8680938432
+            ],
+            [
+              -16632538.498113606
+            ]
+          ],
+          [
+            [
+              6361653.827031003
+            ],
+            [
+              -1253068.1321284596
+            ],
+            [
+              -187093.06733579375
+            ]
+          ]
+        ],
+        "B_kappa": [
+          [
+            1624.9409627602377,
+            1730.858416698401,
+            3.197586717745716e-177
+          ],
+          [
+            1625.8554316236691,
+            1732.4999551125015,
+            9.478759030478282e-184
+          ],
+          [
+            1612.3107421605648,
+            1704.869457770666,
+            5.784931797444321e-193
+          ]
+        ],
+        "noise_variance": [
+          [
+            1e-05
+          ],
+          [
+            1e-05
+          ],
+          [
+            1e-05
+          ]
+        ]
+      },
+      "modeling_options": {
+        "model_kernel": "RBF",
+        "model_method": "GPCoregionalizedRegression",
+        "model_sparse": "no",
+        "multitask": "yes"
+      },
+      "model_stats": {
+        "log_marginal_likelihood": -287.2027182492394
+      },
+      "task_parameters": [
+        [
+          "9.0",
+          "diffusion"
+        ],
+        [
+          "3.0",
+          "diffusion"
+        ],
+        [
+          "1.0",
+          "diffusion"
+        ]
+      ],
+      "function_evaluations": [
+        "5fb4283e-e77d-11ec-adcc-a4bf01002a3a",
+        "67e6c804-e77d-11ec-adcc-a4bf01002a3a",
+        "822792f2-e77d-11ec-adcc-a4bf01002a3a",
+        "861c4574-e77d-11ec-adcc-a4bf01002a3a",
+        "8a3b254e-e77d-11ec-adcc-a4bf01002a3a"
+      ],
+      "input_space": [
+        {
+          "name": "budget",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.999999999999,
+          "upper_bound": 9,
+          "optimize": true
+        },
+        {
+          "name": "problemname",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "diffusion"
+          ]
+        }
+      ],
+      "parameter_space": [
+        {
+          "name": "controller_id",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "method",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "ARKODE_BILLINGTON_3_3_2",
+            "ARKODE_TRBDF2_3_3_2",
+            "ARKODE_KVAERNO_4_2_3",
+            "ARKODE_ARK324L2SA_DIRK_4_2_3",
+            "ARKODE_ESDIRK324L2SA_4_2_3",
+            "ARKODE_ESDIRK325L2SA_5_2_3",
+            "ARKODE_ESDIRK32I5L2SA_5_2_3"
+          ]
+        },
+        {
+          "name": "interpolant_type",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "name": "interpolant_degree",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 0,
+          "upper_bound": 5,
+          "optimize": true
+        },
+        {
+          "name": "nonlin_conv_coef",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "max_conv_fails",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 10,
+          "optimize": true
+        },
+        {
+          "name": "deduce_implicit_rhs",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "false",
+            "true"
+          ]
+        },
+        {
+          "name": "delta_gamma_max",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.0001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "msbp",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 100,
+          "optimize": true
+        },
+        {
+          "name": "msbj",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "maxl",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 200,
+          "optimize": true
+        },
+        {
+          "name": "epslin",
+          "transformer": "normalize",
+          "type": "real",
+          "lower_bound": 0.001,
+          "upper_bound": 1.0,
+          "optimize": true
+        },
+        {
+          "name": "nonlinear_solver",
+          "transformer": "onehot",
+          "type": "categorical",
+          "categories": [
+            "newton",
+            "fixedpoint"
+          ]
+        },
+        {
+          "name": "fixedpointvecs",
+          "transformer": "normalize",
+          "type": "int",
+          "lower_bound": 1,
+          "upper_bound": 50,
+          "optimize": true
+        }
+      ],
+      "output_space": [
+        {
+          "name": "runtime",
+          "transformer": "identity",
+          "type": "real",
+          "lower_bound": 0.0,
+          "upper_bound": 10000000.0,
+          "optimize": true
+        }
+      ],
+      "modeler": "Model_GPy_LCM",
+      "objective": {
+        "name": "runtime",
+        "transformer": "identity",
+        "type": "real",
+        "lower_bound": 0.0,
+        "upper_bound": 10000000.0,
+        "optimize": true,
+        "objective_id": 0
+      },
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 51,
+        "tm_sec": 32,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "8a3b254f-e77d-11ec-adcc-a4bf01002a3a"
+    }
+  ],
+  "func_eval": [
+    {
+      "task_parameter": {
+        "budget": 9.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.651902,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.887125,
+        "msbp": 17,
+        "msbj": 98,
+        "maxl": 141,
+        "epslin": 0.115991,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 80.081961
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 80.081961097,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 37,
+        "tm_sec": 58,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "a550bf1c-e77b-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 9.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.971179,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.514861,
+        "msbp": 41,
+        "msbj": 190,
+        "maxl": 96,
+        "epslin": 0.787434,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 21
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 84.162755
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 84.16275506,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 39,
+        "tm_sec": 24,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "d8c272c8-e77b-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 9.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.651902,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.887125,
+        "msbp": 17,
+        "msbj": 98,
+        "maxl": 141,
+        "epslin": 0.115991,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 80.144594
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 80.144594402,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 40,
+        "tm_sec": 46,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "09d9a76e-e77c-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 3.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.651902,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.887125,
+        "msbp": 17,
+        "msbj": 98,
+        "maxl": 141,
+        "epslin": 0.115991,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 81.954101
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 81.954101442,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 42,
+        "tm_sec": 11,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "3c068810-e77c-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 3.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.971179,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.514861,
+        "msbp": 41,
+        "msbj": 190,
+        "maxl": 96,
+        "epslin": 0.787434,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 21
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 84.089945
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 84.089944553,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 43,
+        "tm_sec": 37,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "6f7718c2-e77c-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 3.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.651902,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.887125,
+        "msbp": 17,
+        "msbj": 98,
+        "maxl": 141,
+        "epslin": 0.115991,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 81.852762
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 81.852762421,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 45,
+        "tm_sec": 1,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "a18f8150-e77c-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 1.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.651902,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.887125,
+        "msbp": 17,
+        "msbj": 98,
+        "maxl": 141,
+        "epslin": 0.115991,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 46,
+        "tm_sec": 11,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "cb349b80-e77c-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 1.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "5",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.971179,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.514861,
+        "msbp": 41,
+        "msbj": 190,
+        "maxl": 96,
+        "epslin": 0.787434,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 21
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 83.901699
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 83.901699256,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 47,
+        "tm_sec": 37,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "fecc3db8-e77c-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 1.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.651902,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.887125,
+        "msbp": 17,
+        "msbj": 98,
+        "maxl": 141,
+        "epslin": 0.115991,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 48,
+        "tm_sec": 48,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "28ea9068-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 1.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "3",
+        "method": "ARKODE_ESDIRK324L2SA_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.546872,
+        "max_conv_fails": 3,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.180385,
+        "msbp": 23,
+        "msbj": 42,
+        "maxl": 102,
+        "epslin": 0.872535,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 36
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 84.434156
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 84.434156444,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 50,
+        "tm_sec": 20,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "5fb4283e-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 1.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_TRBDF2_3_3_2",
+        "interpolant_type": "0",
+        "interpolant_degree": 5,
+        "nonlin_conv_coef": 0.951418,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.865704,
+        "msbp": 85,
+        "msbj": 161,
+        "maxl": 85,
+        "epslin": 0.797234,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 11
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 6.175363
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 6.17536329,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 50,
+        "tm_sec": 34,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "67e6c804-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 1.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_BILLINGTON_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.807226,
+        "max_conv_fails": 3,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.445882,
+        "msbp": 83,
+        "msbj": 184,
+        "maxl": 45,
+        "epslin": 0.212174,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 16
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 37.222412
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 37.22241199,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 51,
+        "tm_sec": 18,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "822792f2-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 1.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_TRBDF2_3_3_2",
+        "interpolant_type": "0",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.458884,
+        "max_conv_fails": 6,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.127685,
+        "msbp": 75,
+        "msbj": 133,
+        "maxl": 171,
+        "epslin": 0.710755,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 10
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 51,
+        "tm_sec": 24,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "861c4574-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 1.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 0,
+        "nonlin_conv_coef": 0.674498,
+        "max_conv_fails": 9,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.670468,
+        "msbp": 49,
+        "msbj": 79,
+        "maxl": 117,
+        "epslin": 0.317265,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 39
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 100000000.0
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 100000000.0,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 51,
+        "tm_sec": 31,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "8a3b254e-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 1.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.360097,
+        "max_conv_fails": 6,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.994293,
+        "msbp": 85,
+        "msbj": 98,
+        "maxl": 102,
+        "epslin": 0.123548,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 83.884578
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 83.884578227,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 53,
+        "tm_sec": 2,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "c041a17c-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 9.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_ESDIRK325L2SA_5_2_3",
+        "interpolant_type": "0",
+        "interpolant_degree": 2,
+        "nonlin_conv_coef": 0.651902,
+        "max_conv_fails": 8,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.887125,
+        "msbp": 17,
+        "msbj": 98,
+        "maxl": 141,
+        "epslin": 0.115991,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 79.868662
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 79.868662301,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 54,
+        "tm_sec": 24,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "f11f8548-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 3.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_TRBDF2_3_3_2",
+        "interpolant_type": "0",
+        "interpolant_degree": 5,
+        "nonlin_conv_coef": 0.951418,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.865704,
+        "msbp": 85,
+        "msbj": 161,
+        "maxl": 85,
+        "epslin": 0.797234,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 11
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 9.677801
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 9.67780054,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 54,
+        "tm_sec": 36,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "f826beec-e77d-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 3.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "0",
+        "method": "ARKODE_BILLINGTON_3_3_2",
+        "interpolant_type": "1",
+        "interpolant_degree": 1,
+        "nonlin_conv_coef": 0.807226,
+        "max_conv_fails": 3,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.445882,
+        "msbp": 83,
+        "msbj": 184,
+        "maxl": 45,
+        "epslin": 0.212174,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 16
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 38.911371
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 38.911371371,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 55,
+        "tm_sec": 16,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "1077395e-e77e-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 3.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "1",
+        "method": "ARKODE_KVAERNO_4_2_3",
+        "interpolant_type": "1",
+        "interpolant_degree": 3,
+        "nonlin_conv_coef": 0.360097,
+        "max_conv_fails": 6,
+        "deduce_implicit_rhs": "false",
+        "delta_gamma_max": 0.994293,
+        "msbp": 85,
+        "msbj": 98,
+        "maxl": 102,
+        "epslin": 0.123548,
+        "nonlinear_solver": "fixedpoint",
+        "fixedpointvecs": 12
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 84.275288
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 84.27528765,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 56,
+        "tm_sec": 43,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "43ccbfea-e77e-11ec-adcc-a4bf01002a3a"
+    },
+    {
+      "task_parameter": {
+        "budget": 9.0,
+        "problemname": "diffusion"
+      },
+      "tuning_parameter": {
+        "controller_id": "2",
+        "method": "ARKODE_TRBDF2_3_3_2",
+        "interpolant_type": "0",
+        "interpolant_degree": 5,
+        "nonlin_conv_coef": 0.951418,
+        "max_conv_fails": 7,
+        "deduce_implicit_rhs": "true",
+        "delta_gamma_max": 0.865704,
+        "msbp": 85,
+        "msbj": 161,
+        "maxl": 85,
+        "epslin": 0.797234,
+        "nonlinear_solver": "newton",
+        "fixedpointvecs": 11
+      },
+      "constants": {
+        "nodes": 1,
+        "cores": 36
+      },
+      "machine_configuration": {
+        "machine_name": "mymachine",
+        "myprocessor": {
+          "nodes": 1,
+          "cores": 36
+        }
+      },
+      "software_configuration": {},
+      "evaluation_result": {
+        "runtime": 12.302005
+      },
+      "evaluation_detail": {
+        "runtime": {
+          "evaluations": 12.302005422,
+          "objective_scheme": "average"
+        }
+      },
+      "additional_output": {},
+      "source": "measure",
+      "time": {
+        "tm_year": 2022,
+        "tm_mon": 6,
+        "tm_mday": 8,
+        "tm_hour": 15,
+        "tm_min": 56,
+        "tm_sec": 57,
+        "tm_wday": 2,
+        "tm_yday": 159,
+        "tm_isdst": 1
+      },
+      "uid": "4c713162-e77e-11ec-adcc-a4bf01002a3a"
+    }
+  ]
+}

@@ -63,17 +63,12 @@ def parse_args():
 
 def execute(params):
 	diffusion2Dfolder = os.getenv("SUNDIALSBUILDROOT") + "/benchmarks/diffusion_2D/mpi_serial/"
-	diffusion2Dexe = "arkode_diffusion_2D_mpi"
+	diffusion2Dexe = "cvode_diffusion_2D_mpi"
 	diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
 	
 	# Build up command with command-line options from current set of parameters
 	argslist = ['mpirun', '-n', str(nodes*cores), diffusion2Dfullpath, '--nx', '128', '--ny', '128',
-		'--kx', str(params["diffusion_coeff"]),
-		'--ky', str(params["diffusion_coeff"]),
-		'--controller', str(params["controller_id"]),
-		'--method', str(params["method"]),
-		'--itype', str(params["interpolant_type"]),
-		'--idegree', str(params["interpolant_degree"]),
+		'--maxord', str(params["maxord"]),
 		'--nlscoef', str(params["nonlin_conv_coef"]),
 		'--maxncf', str(params["max_conv_fails"]),
 		'--dgmax', str(params["delta_gamma_max"]),
@@ -124,22 +119,7 @@ def objectives(point):
 	execute_result = execute(point)
 	runtime = execute_result[0]
 	#error = execute_result[1]
-	return [runtime]
-
-def get_methods(order):
-	# https://github.com/LLNL/sundials/blob/develop/include/arkode/arkode_butcher_dirk.h
-	if order == 2:
-		return ["ARKODE_SDIRK_2_1_2"]
-	elif order == 3:
-		return ["ARKODE_BILLINGTON_3_3_2", "ARKODE_TRBDF2_3_3_2", "ARKODE_KVAERNO_4_2_3", "ARKODE_ARK324L2SA_DIRK_4_2_3", "ARKODE_ESDIRK324L2SA_4_2_3", "ARKODE_ESDIRK325L2SA_5_2_3", "ARKODE_ESDIRK32I5L2SA_5_2_3"]
-	elif order == 4:
-		return ["ARKODE_CASH_5_2_4", "ARKODE_CASH_5_3_4", "ARKODE_SDIRK_5_3_4", "ARKODE_KVAERNO_5_3_4", "ARKODE_ARK436L2SA_DIRK_6_3_4", "ARKODE_ARK437L2SA_DIRK_7_3_4", "ARKODE_ESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK43I6L2SA_6_3_4", "ARKODE_QESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK437L2SA_7_3_4"]
-	elif order == 5:
-		return ["ARKODE_KVAERNO_7_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ESDIRK547L2SA_7_4_5", "ARKODE_ESDIRK547L2SA2_7_4_5"]
-	elif order == -1:
-		return ["ARKODE_SDIRK_2_1_2", "ARKODE_BILLINGTON_3_3_2", "ARKODE_TRBDF2_3_3_2", "ARKODE_KVAERNO_4_2_3", "ARKODE_ARK324L2SA_DIRK_4_2_3", "ARKODE_ESDIRK324L2SA_4_2_3", "ARKODE_ESDIRK325L2SA_5_2_3", "ARKODE_ESDIRK32I5L2SA_5_2_3", "ARKODE_CASH_5_2_4", "ARKODE_CASH_5_3_4", "ARKODE_SDIRK_5_3_4", "ARKODE_KVAERNO_5_3_4", "ARKODE_ARK436L2SA_DIRK_6_3_4", "ARKODE_ARK437L2SA_DIRK_7_3_4", "ARKODE_ESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK43I6L2SA_6_3_4", "ARK    ODE_QESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK437L2SA_7_3_4", "ARKODE_KVAERNO_7_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ESDIRK547L2SA_7_4_5", "ARKODE_ESDIRK547L2SA2_7_4_5"] 
-	else:
-		return []
+	return runtime
 
 def main():
 
@@ -158,16 +138,10 @@ def main():
 	os.environ['MACHINE_NAME'] = machine
 	os.environ['TUNER_NAME'] = TUNER_NAME
 
-	input_space = Space([Integer(1, 20, transform="normalize", name="diffusion_coeff")])
+	input_space = Space([Categoricalnorm(["diffusion"], transform="onehot", name="problemname")])
 	
-	methods = get_methods(order)
-	print("order: " + str(order))
-	print(methods)
 	parameter_space = Space([
-		Categoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller_id"),
-		Categoricalnorm(methods, transform="onehot", name="method"), 
-		Categoricalnorm(['0','1'], transform="onehot", name="interpolant_type"),
-		Integer(0, 5, transform="normalize", name="interpolant_degree"),
+		Integer(1, 5, 1.0, transform="normalize", name="maxord"),
 		Real(0.0001, 1.0, transform="normalize", name="nonlin_conv_coef"),
 		Integer(1, 10, transform="normalize", name="max_conv_fails"),
 		Categoricalnorm(['false','true'], transform="onehot", name="deduce_implicit_rhs"),
@@ -182,11 +156,10 @@ def main():
 	constraints = {"cst1": "msbj >= msbp" }
 	constants = {"nodes": nodes, "cores": cores}
 
-	#output_space = Space([
-	#	Real(float('-Inf'), float('Inf'), name="runtime"), 
-	#	Real(float('-Inf'), 0.05, name="error",optimize=False)
-	#])
-	output_space = Space([Real(float('-Inf'),float('Inf'),name="runtime")])
+	output_space = Space([
+		Real(0.0,1e7, name="runtime") 
+		#Real(float('-Inf'), 0.05, name="error",optimize=False)
+	])
 	
 	problem = TuningProblem(input_space, parameter_space, output_space, objectives, constraints, None, constants=constants)
 
@@ -198,7 +171,7 @@ def main():
 	options['distributed_memory_parallelism'] = False
 	options['shared_memory_parallelism'] = False
 
-	# options['objective_evaluation_parallelism'] = False
+	options['objective_evaluation_parallelism'] = False
 	# options['objective_multisample_threads'] = 1
 	# options['objective_multisample_processes'] = 4
 	# options['objective_nprocmax'] = 1
@@ -208,8 +181,8 @@ def main():
 	# options['model_restart_processes'] = 1
 
 	options['search_multitask_processes'] = 1
-	# options['search_multitask_threads'] = 1
-	# options['search_threads'] = 16
+	options['search_multitask_threads'] = 1
+	options['search_threads'] = 16
 
 	# options['sample_algo'] = 'MCS'
 
@@ -220,7 +193,7 @@ def main():
 	options['model_class'] = 'Model_GPy_LCM' #'Model_LCM'
 	options['model_random_seed'] = 0
 	# Use the following two lines if you want to specify a certain random seed for the search phase
-	options['search_class'] = 'SearchPyGMO'
+	options['search_class'] = 'SearchPyMoo'
 	options['search_random_seed'] = 0
 
 	# If using multiple objectives, uncomment following line 
@@ -229,7 +202,7 @@ def main():
 	options['verbose'] = False
 	options.validate(computer=computer)
 
-	giventask = [[1],[5],[10],[20]]
+	giventask = [['diffusion']]
 	NI=len(giventask) 
 	NS=nrun
 
@@ -248,16 +221,12 @@ def main():
 			print("    t: " + (data.I[tid][0]))
 			print("    Ps ", data.P[tid])
 			print("    Os ", data.O[tid].tolist())
-			# If single-objective 
-			print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-
-			# If multi-objective
-			# ndf, dl, dc, ndr = pg.fast_non_dominated_sorting(data.O[tid])
-			# front = ndf[0]
-			# fopts = data.O[tid][front]
-			# xopts = [data.P[tid][i] for i in front]
-			# print('    Popt ', xopts)
-			# print('    Oopt ', fopts.tolist())
+			ndf, dl, dc, ndr = pg.fast_non_dominated_sorting(data.O[tid])
+			front = ndf[0]
+			fopts = data.O[tid][front]
+			xopts = [data.P[tid][i] for i in front]
+			print('    Popt ', xopts)
+			print('    Oopt ', fopts.tolist())
 
 if __name__ == "__main__":
 	main()
