@@ -1,0 +1,22 @@
+{
+  "tuning_problem_name": "diffusion-arkode",
+  "machine_configuration": {
+    "machine_name": "mymachine",
+    "myprocessor": {
+      "nodes": 1,
+      "cores": 36
+    }
+  },
+  "software_configuration": {
+  },
+  "loadable_machine_configurations": {
+    "mymachine": {
+      "myprocessor": {
+        "nodes": 1,
+        "cores": 36
+      }
+    }
+  },
+  "loadable_software_configurations": {
+  }
+}
