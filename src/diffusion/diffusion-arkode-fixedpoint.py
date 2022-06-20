@@ -24,7 +24,7 @@ import argparse
 import numpy as np
 import time
 
-import pygmo as pg
+#import pygmo as pg
 
 from callopentuner import OpenTuner
 from callhpbandster import HpBandSter
@@ -224,12 +224,13 @@ def main():
 			print("    t: " + (data.I[tid][0]))
 			print("    Ps ", data.P[tid])
 			print("    Os ", data.O[tid].tolist())
-			ndf, dl, dc, ndr = pg.fast_non_dominated_sorting(data.O[tid])
-			front = ndf[0]
-			fopts = data.O[tid][front]
-			xopts = [data.P[tid][i] for i in front]
-			print('    Popt ', xopts)
-			print('    Oopt ', fopts.tolist())
+                        print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+			#ndf, dl, dc, ndr = pg.fast_non_dominated_sorting(data.O[tid])
+			#front = ndf[0]
+			#fopts = data.O[tid][front]
+			#xopts = [data.P[tid][i] for i in front]
+			#print('    Popt ', xopts)
+			#print('    Oopt ', fopts.tolist())
 
 if __name__ == "__main__":
 	main()
