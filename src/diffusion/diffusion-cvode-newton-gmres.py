@@ -64,7 +64,7 @@ def execute(params):
     diffusion2Dexe = "cvode_diffusion_2D_mpi"
     diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
     mpirun_command = os.getenv("MPIRUN")
-
+    
     # Build up command with command-line options from current set of parameters
     argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--nx', '128', '--ny', '128',
             '--maxord', str(params["maxord"]),
@@ -75,15 +75,14 @@ def execute(params):
             '--epslin', str(params['epslin']),
             ]
     if params["deduce_implicit_rhs"] == "true":
-        argslist.append('--deduce')
-
+        argslist.append('--deduce') 
     # Run the command and grab the output
-    print("Running: " + " ".join(argslist))
+    print("Running: " + " ".join(argslist),flush=True)
     p = subprocess.run(argslist,capture_output=True)
     # Decode the stdout and stderr as they are in "bytes" format
     stdout = p.stdout.decode('ascii')
     stderr = p.stderr.decode('ascii')
-
+    
     runtime = 0
     error = 0
     # If no errors occurred in the run, and the output was printed as expected, proceed
@@ -95,17 +94,17 @@ def execute(params):
     else:
         runtime = 1e8
         error = 1e8
-
+    
     if error < 1e-15:
         runtime = 1e8
         error = 1e8
-
+    
     if error > 1e-2:
         runtime = 1e8
-
-    print(f"Finished. runtime: {runtime}, error: {error}")
+    
+    print(f"Finished. runtime: {runtime}, error: {error}",flush=True)
     #print("done running shell command")
-
+    
     return [runtime,error]
 
 def objectives(point):
@@ -171,7 +170,7 @@ def main():
     # options['sample_algo'] = 'MCS'
 
     # Use the following two lines if you want to specify a certain random seed for the random pilot sampling
-    options['sample_class'] = 'SampleOpenTURNS'
+    options['sample_class'] = 'SampleLHSMDU'  # 'SampleOpenTURNS'
     options['sample_random_seed'] = 0
     # Use the following two lines if you want to specify a certain random seed for surrogate modeling
     options['model_class'] = 'Model_GPy_LCM' #'Model_LCM'
