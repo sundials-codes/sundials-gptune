@@ -1,0 +1,11 @@
+#!/bin/bash
+# This job should be submitted from within sundials-gptune/src/diffusion/diffusion-arkode-fixedpoint-multifidelity directory
+#BSUB -P CSC326
+#BSUB -W 2:00
+#BSUB -nnodes 1
+#BSUB -J diffusion-arkode-fixedpoint-multifidelity
+#BSUB -o diffusion-arkode-fixedpoint-multifidelity.out
+#BSUB -e diffusion-arkode-fixedpoint-multifidelity.err
+
+. ../../setup-env-summit.sh
+jsrun -n 1 python diffusion-arkode-fixedpoint-multifidelity.py -nrun 10
