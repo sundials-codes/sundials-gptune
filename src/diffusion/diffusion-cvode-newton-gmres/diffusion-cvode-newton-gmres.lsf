@@ -7,5 +7,5 @@
 #BSUB -o diffusion-cvode-newton-gmres.out
 #BSUB -e diffusion-cvode-newton-gmres.err
 
-. ../setup-env-summit.sh
+. ../../setup-env-summit.sh
 jsrun -n 1 python diffusion-cvode-newton-gmres.py -nrun 120

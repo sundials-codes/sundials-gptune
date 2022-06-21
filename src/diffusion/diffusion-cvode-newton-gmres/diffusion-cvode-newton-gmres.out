@@ -1,0 +1,768 @@
+machine: mymachine processor: myprocessor num_nodes: 1 num_cores: 22
+GPTune History Database Init
+[HistoryDB] Found a history database file
+
+
+
+------Starting MLA with HistoryDB with 1 tasks and 120 samples each 
+[HistoryDB] Found a history database file
+
+existing data has at least NSmin=9 samples per task, GPTune will generate at most NS-NSmin=111 additional samples.
+
+NS1:  60
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.465727 --maxncf 50 --gmres --liniters 121 --epslin 0.404037
+Finished. runtime: 2.150281713, error: 0.0002555601452887
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.504613 --maxncf 21 --gmres --liniters 401 --epslin 0.664179
+Finished. runtime: 2.523522131, error: 0.0002428118843497
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.37936 --maxncf 9 --gmres --liniters 7 --epslin 0.628484
+Finished. runtime: 1.895136251, error: 0.0002348046053436
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 0.335085 --maxncf 26 --gmres --liniters 180 --epslin 0.548239 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 0.514177 --maxncf 14 --gmres --liniters 104 --epslin 0.309155 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.700505 --maxncf 37 --gmres --liniters 309 --epslin 0.726181 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.307142 --maxncf 12 --gmres --liniters 489 --epslin 0.789485
+Finished. runtime: 3.105178599, error: 0.0002336748670493
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.289916 --maxncf 24 --gmres --liniters 166 --epslin 0.220811
+Finished. runtime: 3.112226046, error: 0.0002065303617724
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.824429 --maxncf 3 --gmres --liniters 352 --epslin 0.647301 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.62987 --maxncf 22 --gmres --liniters 403 --epslin 0.494858
+Finished. runtime: 2.428798337, error: 0.0002501563482292
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.158677 --maxncf 40 --gmres --liniters 66 --epslin 0.460325
+Finished. runtime: 2.394821323, error: 0.0001869012851691
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.037569 --maxncf 28 --gmres --liniters 173 --epslin 0.824407
+Finished. runtime: 2.278657696, error: 0.0001955869124886
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.760662 --maxncf 45 --gmres --liniters 42 --epslin 0.830685 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.189261 --maxncf 18 --gmres --liniters 337 --epslin 0.848317 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.663151 --maxncf 19 --gmres --liniters 254 --epslin 0.406102
+Finished. runtime: 2.004734149, error: 0.0002395774300326
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.428373 --maxncf 8 --gmres --liniters 34 --epslin 0.775704
+Finished. runtime: 1.625892233, error: 0.0002586966891938
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.354349 --maxncf 33 --gmres --liniters 86 --epslin 0.436549 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 0.089756 --maxncf 48 --gmres --liniters 366 --epslin 0.482709
+Finished. runtime: 20.805324294, error: 0.0001268942892231
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.562842 --maxncf 9 --gmres --liniters 442 --epslin 0.111124
+Finished. runtime: 2.542717579, error: 0.0001946223378052
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.585742 --maxncf 47 --gmres --liniters 142 --epslin 0.253237 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.129245 --maxncf 5 --gmres --liniters 393 --epslin 0.543086 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.639297 --maxncf 35 --gmres --liniters 157 --epslin 0.80579
+Finished. runtime: 21.764708372, error: 0.0001972881249998
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.076862 --maxncf 22 --gmres --liniters 266 --epslin 0.038572
+Finished. runtime: 3.24542966, error: 0.0002135480179617
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 0.248291 --maxncf 20 --gmres --liniters 417 --epslin 0.020729
+Finished. runtime: 30.038182795, error: 0.0001262096326815
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.750338 --maxncf 7 --gmres --liniters 72 --epslin 0.178215
+Finished. runtime: 2.564980723, error: 0.0002128660979667
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.530609 --maxncf 11 --gmres --liniters 232 --epslin 0.894005 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.014134 --maxncf 13 --gmres --liniters 329 --epslin 0.525258 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 0.392365 --maxncf 43 --gmres --liniters 196 --epslin 0.092922 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.68012 --maxncf 42 --gmres --liniters 277 --epslin 0.67096
+Finished. runtime: 4.078089502, error: 0.0002836306278492
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.615534 --maxncf 37 --gmres --liniters 427 --epslin 0.28381
+Finished. runtime: 2.925764155, error: 0.0002440956756504
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.117377 --maxncf 40 --gmres --liniters 492 --epslin 0.334733 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.803524 --maxncf 15 --gmres --liniters 357 --epslin 0.446395
+Finished. runtime: 2.281875594, error: 0.0002524086392531
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.729255 --maxncf 32 --gmres --liniters 439 --epslin 0.013584 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.88823 --maxncf 25 --gmres --liniters 95 --epslin 0.611027
+Finished. runtime: 18.289417289, error: 0.0001974826348338
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.029471 --maxncf 48 --gmres --liniters 319 --epslin 0.57145
+Finished. runtime: 4.387613092, error: 0.0001907396867773
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.246963 --maxncf 45 --gmres --liniters 455 --epslin 0.374224 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.170511 --maxncf 41 --gmres --liniters 56 --epslin 0.866848 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.786315 --maxncf 30 --gmres --liniters 303 --epslin 0.59321 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.859953 --maxncf 30 --gmres --liniters 294 --epslin 0.278383 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 0.219982 --maxncf 32 --gmres --liniters 480 --epslin 0.170195 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.442243 --maxncf 28 --gmres --liniters 206 --epslin 0.362305 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.274636 --maxncf 5 --gmres --liniters 376 --epslin 0.688978 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.581609 --maxncf 44 --gmres --liniters 117 --epslin 0.087688 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.832506 --maxncf 34 --gmres --liniters 465 --epslin 0.719979
+Finished. runtime: 128.751348964, error: 0.0001970599799657
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.206302 --maxncf 6 --gmres --liniters 269 --epslin 0.746346
+Finished. runtime: 2.314744469, error: 0.0001968553214897
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.868252 --maxncf 36 --gmres --liniters 245 --epslin 0.211419
+Finished. runtime: 2.3144064, error: 0.0002376042725423
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.415344 --maxncf 18 --gmres --liniters 130 --epslin 0.134159 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.054657 --maxncf 26 --gmres --liniters 216 --epslin 0.151463 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.484423 --maxncf 38 --gmres --liniters 222 --epslin 0.24262
+Finished. runtime: 2.863445089, error: 0.0002106007764376
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.348644 --maxncf 17 --gmres --liniters 19 --epslin 0.349626 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.712018 --maxncf 16 --gmres --liniters 29 --epslin 0.064535 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+NSmin:  60
+NS:  120
+MLA iteration:  0
+M:  
+Name : GP regression
+Objective : 288906638.15731895
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  175131869.29078448  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 1e-05 --maxncf 3 --gmres --liniters 500 --epslin 0.455473
+Finished. runtime: 62.234515214, error: 0.0001279090928479
+MLA iteration:  1
+M:  
+Name : GP regression
+Objective : 549425702.3551972
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  109920664.11763488  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 1e-05 --maxncf 3 --gmres --liniters 3 --epslin 1e-05
+Finished. runtime: 785.482275614, error: 0.0001948890227843
+MLA iteration:  2
+M:  
+Name : GP regression
+Objective : 253529334.60907292
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  185622105.9622528  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.9 --maxncf 26 --gmres --liniters 500 --epslin 1e-05
+Finished. runtime: 8.293993406, error: 0.0001992981046091
+MLA iteration:  3
+M:  
+Name : GP regression
+Objective : 128371097.32606807
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  471999293.2081705  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.048703 --maxncf 27 --gmres --liniters 3 --epslin 1e-05
+Finished. runtime: 36.737533037, error: 0.0002704429370134
+MLA iteration:  4
+M:  
+Name : GP regression
+Objective : 107127193.4669549
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  460630662.0970889  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 1e-05 --maxncf 19 --gmres --liniters 500 --epslin 0.88809
+Finished. runtime: 8.277805, error: 0.0001992991389094
+MLA iteration:  5
+M:  
+Name : GP regression
+Objective : 107306766.26300639
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  446726014.9906196  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 1e-05 --maxncf 50 --gmres --liniters 3 --epslin 1e-05
+Finished. runtime: 432.160040274, error: 0.0001970691743064
+MLA iteration:  6
+M:  
+Name : GP regression
+Objective : 165742622.60502014
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  260943299.3793396  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 1e-05 --maxncf 19 --gmres --liniters 332 --epslin 1e-05
+Finished. runtime: 125.618018416, error: 0.0001279008178481
+MLA iteration:  7
+M:  
+Name : GP regression
+Objective : 221181717.0948624
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  246383322.57177284  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 1e-05 --maxncf 10 --gmres --liniters 3 --epslin 0.000215
+Finished. runtime: 523.588284284, error: 0.0001938458031847
+MLA iteration:  8
+M:  
+Name : GP regression
+Objective : 196883921.35446402
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  268942221.2465882  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.662016 --maxncf 6 --gmres --liniters 500 --epslin 0.9
+Finished. runtime: 45.938613331, error: 0.0001977880080898
+MLA iteration:  9
+M:  
+Name : GP regression
+Objective : 148060197.74407566
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  291014845.34198344  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 1e-05 --maxncf 32 --gmres --liniters 3 --epslin 0.9
+Finished. runtime: 34.618685332, error: 0.000197084432357
+MLA iteration:  10
+M:  
+Name : GP regression
+Objective : 1082092.1500355857
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  68050388433.27416  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.487386 --maxncf 31 --gmres --liniters 316 --epslin 0.668412 --deduce
+Finished. runtime: 100000000.0, error: 100000000.0
+MLA iteration:  11
+M:  
+Name : GP regression
+Objective : 929435.5322842072
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  150780121279.32446  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.000561 --maxncf 50 --gmres --liniters 500 --epslin 0.899994
+Finished. runtime: 4.032934687, error: 0.0001964818733227
+MLA iteration:  12
+M:  
+Name : GP regression
+Objective : 198071145.28160736
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  321534147.4345351  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 1e-05 --maxncf 30 --gmres --liniters 3 --epslin 0.000851
+Finished. runtime: 257.432165097, error: 0.0001970647247804
+MLA iteration:  13
+M:  
+Name : GP regression
+Objective : 225626655.39333373
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  235232192.1689132  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 1e-05 --maxncf 3 --gmres --liniters 500 --epslin 0.9
+Finished. runtime: 7.742086998, error: 0.0001931617022886
+MLA iteration:  14
+M:  
+Name : GP regression
+Objective : 590175401.0117753
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  110915498.75957778  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 1e-05 --maxncf 3 --gmres --liniters 3 --epslin 1e-05
+Finished. runtime: 100000000.0, error: 100000000.0
+MLA iteration:  15
+M:  
+Name : GP regression
+Objective : 120152675.2621165
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  496622654.60200846  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.9 --maxncf 34 --gmres --liniters 3 --epslin 0.239983
+Finished. runtime: 2.830885605, error: 0.0010215775376078
+MLA iteration:  16
+M:  
+Name : GP regression
+Objective : 189722143.0661981
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  336666451.2473538  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.9 --maxncf 39 --gmres --liniters 18 --epslin 1e-05
+Finished. runtime: 2.017046059, error: 0.0002114565238315
+MLA iteration:  17
+M:  
+Name : GP regression
+Objective : 187816008.93957928
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  342504393.6814879  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.620711 --maxncf 5 --gmres --liniters 498 --epslin 0.9
+Finished. runtime: 143.737499098, error: 0.0001970942038085
+MLA iteration:  18
+M:  
+Name : GP regression
+Objective : 111146142.07933012
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  579829714.3569521  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.896236 --maxncf 27 --gmres --liniters 41 --epslin 1e-05
+Finished. runtime: 3.121172726, error: 0.0001939577176967
+MLA iteration:  19
+M:  
+Name : GP regression
+Objective : 321242092.1534441
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  240779059.19283572  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.066122 --maxncf 50 --gmres --liniters 234 --epslin 0.007037
+Finished. runtime: 4.62276272, error: 0.0002306374902918
+MLA iteration:  20
+M:  
+Name : GP regression
+Objective : 374986469.31001806
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  190623925.2676121  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.857055 --maxncf 16 --gmres --liniters 500 --epslin 1e-05
+Finished. runtime: 15.833211774, error: 0.0001951608491753
+MLA iteration:  21
+M:  
+Name : GP regression
+Objective : 166644532.68442214
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  438053995.25129473  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.9 --maxncf 9 --gmres --liniters 500 --epslin 0.9
+Finished. runtime: 112.255265462, error: 0.0001948443990264
+MLA iteration:  22
+M:  
+Name : GP regression
+Objective : 209077282.6744127
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  328930612.8477506  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 1e-05 --maxncf 23 --gmres --liniters 285 --epslin 1.8e-05
+Finished. runtime: 19.235517712, error: 0.0001929677165101
+MLA iteration:  23
+M:  
+Name : GP regression
+Objective : 322074434.9169345
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  245282961.0248986  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.899968 --maxncf 13 --gmres --liniters 500 --epslin 0.40431
+Finished. runtime: 3.117314654, error: 0.000275225487432
+MLA iteration:  24
+M:  
+Name : GP regression
+Objective : 154582631.31006533
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  364143746.10098964  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.619593 --maxncf 28 --gmres --liniters 3 --epslin 0.004471
+Finished. runtime: 2.67180371, error: 0.0008809349263967
+MLA iteration:  25
+M:  
+Name : GP regression
+Objective : 237574785.54991361
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  237357269.3120835  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.9 --maxncf 21 --gmres --liniters 258 --epslin 0.899988
+Finished. runtime: 53.496820584, error: 0.0001948444733822
+MLA iteration:  26
+M:  
+Name : GP regression
+Objective : 142555447.99102294
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  400622869.18662226  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.368731 --maxncf 31 --gmres --liniters 3 --epslin 0.001233
+Finished. runtime: 3.114257652, error: 0.0018674019737261
+MLA iteration:  27
+M:  
+Name : GP regression
+Objective : 429771061.94937116
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  135538350.67133594  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.782737 --maxncf 25 --gmres --liniters 3 --epslin 1e-05
+Finished. runtime: 2.408206444, error: 0.0011509196663041
+MLA iteration:  28
+M:  
+Name : GP regression
+Objective : 242831835.9858633
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  266678881.5249314  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.183269 --maxncf 27 --gmres --liniters 3 --epslin 9.7e-05
+Finished. runtime: 4.59179119, error: 0.0005002124824367
+MLA iteration:  29
+M:  
+Name : GP regression
+Objective : 251070623.79557198
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  255776563.68401256  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.899952 --maxncf 27 --gmres --liniters 3 --epslin 0.016072
+Finished. runtime: 2.642522144, error: 0.0009897004676579
+MLA iteration:  30
+M:  
+Name : GP regression
+Objective : 131817111.31042455
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |             value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  420218794.803807  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |              (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |             1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.17929 --maxncf 31 --gmres --liniters 3 --epslin 0.001622
+Finished. runtime: 4.400989655, error: 0.0007815521462934
+MLA iteration:  31
+M:  
+Name : GP regression
+Objective : 222347679.92836532
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  297422699.8141884  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.000289 --maxncf 6 --gmres --liniters 403 --epslin 0.898295
+Finished. runtime: 9.723679676, error: 0.0001951272250734
+MLA iteration:  32
+M:  
+Name : GP regression
+Objective : 120676239.69254547
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  587694497.7505772  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 4.9e-05 --maxncf 26 --gmres --liniters 87 --epslin 0.00495
+Finished. runtime: 55.722208448, error: 0.000127900085045
+MLA iteration:  33
+M:  
+Name : GP regression
+Objective : 182829623.77033445
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  356962699.28888303  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.899695 --maxncf 47 --gmres --liniters 3 --epslin 1e-05
+Finished. runtime: 2.361957999, error: 0.0010999789198171
+MLA iteration:  34
+M:  
+Name : GP regression
+Objective : 123220149.26261885
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  534272577.08643115  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 0.9 --maxncf 4 --gmres --liniters 405 --epslin 1e-05
+Finished. runtime: 7.697099863, error: 0.0001931617022886
+MLA iteration:  35
+M:  
+Name : GP regression
+Objective : 168884620.78999478
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  393553166.3989345  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.89984 --maxncf 3 --gmres --liniters 415 --epslin 0.000377
+Finished. runtime: 4.868385519, error: 0.0002286712876116
+MLA iteration:  36
+M:  
+Name : GP regression
+Objective : 190648054.79851145
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  291137251.9158973  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.300246 --maxncf 31 --gmres --liniters 16 --epslin 0.000568
+Finished. runtime: 2.595200461, error: 0.0002241390174699
+MLA iteration:  37
+M:  
+Name : GP regression
+Objective : 390210680.0833145
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  150477791.97952878  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 1e-05 --maxncf 40 --gmres --liniters 84 --epslin 1e-05
+Finished. runtime: 114.083984529, error: 0.0001362778782568
+MLA iteration:  38
+M:  
+Name : GP regression
+Objective : 115643415.27549212
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  553528976.6942046  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 1 --nlscoef 1e-05 --maxncf 50 --gmres --liniters 73 --epslin 1e-05
+Finished. runtime: 114.342381607, error: 0.0001410123297428
+MLA iteration:  39
+M:  
+Name : GP regression
+Objective : 199022679.08562145
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  283130286.4191815  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.24434 --maxncf 33 --gmres --liniters 8 --epslin 1e-05
+Finished. runtime: 2.699833085, error: 0.0002200135935722
+MLA iteration:  40
+M:  
+Name : GP regression
+Objective : 187729527.95392773
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  344398323.25648606  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 5 --nlscoef 1e-05 --maxncf 33 --gmres --liniters 43 --epslin 0.005678
+Finished. runtime: 26.304583805, error: 0.0001970640467708
+MLA iteration:  41
+M:  
+Name : GP regression
+Objective : 209720627.00242415
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  313237269.20372844  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 1e-05 --maxncf 24 --gmres --liniters 69 --epslin 2.6e-05
+Finished. runtime: 59.004756972, error: 0.0001972095529794
+MLA iteration:  42
+M:  
+Name : GP regression
+Objective : 163697749.84693074
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |              value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  408291715.6530773  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |               (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |              1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 2 --nlscoef 0.9 --maxncf 6 --gmres --liniters 389 --epslin 4.7e-05
+Finished. runtime: 12.448132758, error: 0.0001951554704007
+MLA iteration:  43
+M:  
+Name : GP regression
+Objective : 235504497.251098
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  289010115.66161764  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 4 --nlscoef 0.70661 --maxncf 24 --gmres --liniters 80 --epslin 0.899999
+Finished. runtime: 35.806442884, error: 0.0001970601753594
+MLA iteration:  44
+M:  
+Name : GP regression
+Objective : 164431396.14182603
+Number of Parameters : 8
+Number of Optimization Parameters : 8
+Updates : True
+Parameters:
+  [1mGP_regression.         [0;0m  |               value  |  constraints  |  priors
+  [1mGPy_GP.variance        [0;0m  |  388974793.29890203  |      +ve      |        
+  [1mGPy_GP.lengthscale     [0;0m  |                (6,)  |      +ve      |        
+  [1mGaussian_noise.variance[0;0m  |               1e-10  |  1e-10,1e-05  |        
+Running: jsrun -n 22 /ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi/benchmarks/diffusion_2D/mpi_serial/cvode_diffusion_2D_mpi --nx 128 --ny 128 --maxord 3 --nlscoef 0.017622 --maxncf 37 --gmres --liniters 11 --epslin 0.205868
+Finished. runtime: 9.180212491, error: 0.0002008266347518
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@batch4>
+Subject: Job 2186395: <diffusion-cvode-newton-gmres> in cluster <summit> Exited
+
+Job <diffusion-cvode-newton-gmres> was submitted from host <login2> by user <afish> in cluster <summit> at Tue Jun 21 09:29:58 2022
+Job was executed on host(s) <1*batch4>, in queue <batch>, as user <afish> in cluster <summit> at Tue Jun 21 09:31:29 2022
+                            <42*h30n15>
+</ccs/home/afish> was used as the home directory.
+</gpfs/alpine/csc326/proj-shared/afish/sundials-gptune/src/diffusion> was used as the working directory.
+Started at Tue Jun 21 09:31:29 2022
+Terminated at Tue Jun 21 11:31:55 2022
+Results reported at Tue Jun 21 11:31:55 2022
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <diffusion-cvode-newton-gmres.err> for stderr output of this job.
+
