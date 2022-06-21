@@ -1,0 +1,11 @@
+#!/bin/bash
+# This job should be submitted from within sundials-gptune/src/diffusion directory
+#BSUB -P CSC326
+#BSUB -W 2:00
+#BSUB -nnodes 1
+#BSUB -J diffusion-cvode-fixedpoint
+#BSUB -o diffusion-cvode-fixedpoint.out
+#BSUB -e diffusion-cvode-fixedpoint.err
+
+. ../setup-env-summit.sh
+jsrun -n 1 python diffusion-cvode-fixedpoint.py -nrun 120
