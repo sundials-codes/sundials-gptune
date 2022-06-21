@@ -53,25 +53,30 @@ def parse_args():
     parser.add_argument('-nodes', type=int, default=1,help='Number of machine nodes')
     parser.add_argument('-cores', type=int, default=2,help='Number of cores per machine node')
     parser.add_argument('-machine', type=str,default='-1', help='Name of the computer (not hostname)')
-    parser.add_argument('-optimization', type=str,default='GPTune', help='Optimization algorithm (opentuner, hpbandster, GPTune)')
     parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
-    parser.add_argument('-order', type=int, default=3, help='Order of accuracy of the methods used')
 
     args = parser.parse_args()
 
     return args
 
+def get_rtol_from_budget(budget):
+    if budget == 1:
+        return 1e-2
+    elif budget == 3:
+        return 1e-3
+    elif budget == 9:
+        return 1e-4
+
 def execute(params):
     diffusion2Dfolder = os.getenv("SUNDIALSBUILDROOT") + "/benchmarks/diffusion_2D/mpi_serial/"
-    diffusion2Dexe = "arkode_diffusion_2D_mpi"
+    diffusion2Dexe = "cvode_diffusion_2D_mpi"
     diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
-
     mpirun_command = os.getenv("MPIRUN")
     
     # Build up command with command-line options from current set of parameters
     argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--nx', '128', '--ny', '128',
-        '--controller', str(params["controller_id"]),
-        '--method', str(params["method"]),
+        '--rtol', str(get_rtol_from_budget(params['budget'])),
+        '--maxord', str(params["maxord"]),
         '--nlscoef', str(params["nonlin_conv_coef"]),
         '--maxncf', str(params["max_conv_fails"]),
         '--fixedpoint', str(params["fixedpointvecs"])
@@ -105,7 +110,7 @@ def execute(params):
     if error > 5e-3:
         runtime = 1e8
 
-    print(f"Finished. runtime: {runtime}, error: {error}")
+    print(f"Finished. runtime: {runtime}, error: {error}",flush=True)
     #print("done running shell command")
 
     return [runtime,error]
@@ -116,21 +121,6 @@ def objectives(point):
     #error = execute_result[1]
     return [runtime]
 
-def get_methods(order):
-    # https://github.com/LLNL/sundials/blob/develop/include/arkode/arkode_butcher_dirk.h
-    if order == 2:
-        return ["ARKODE_SDIRK_2_1_2"]
-    elif order == 3:
-        return ["ARKODE_BILLINGTON_3_3_2", "ARKODE_TRBDF2_3_3_2", "ARKODE_KVAERNO_4_2_3", "ARKODE_ARK324L2SA_DIRK_4_2_3", "ARKODE_ESDIRK324L2SA_4_2_3", "ARKODE_ESDIRK325L2SA_5_2_3", "ARKODE_ESDIRK32I5L2SA_5_2_3"]
-    elif order == 4:
-        return ["ARKODE_CASH_5_2_4", "ARKODE_CASH_5_3_4", "ARKODE_SDIRK_5_3_4", "ARKODE_KVAERNO_5_3_4", "ARKODE_ARK436L2SA_DIRK_6_3_4", "ARKODE_ARK437L2SA_DIRK_7_3_4", "ARKODE_ESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK43I6L2SA_6_3_4", "ARKODE_QESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK437L2SA_7_3_4"]
-    elif order == 5:
-        return ["ARKODE_KVAERNO_7_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ESDIRK547L2SA_7_4_5", "ARKODE_ESDIRK547L2SA2_7_4_5"]
-    elif order == -1:
-        return ["ARKODE_SDIRK_2_1_2", "ARKODE_BILLINGTON_3_3_2", "ARKODE_TRBDF2_3_3_2", "ARKODE_KVAERNO_4_2_3", "ARKODE_ARK324L2SA_DIRK_4_2_3", "ARKODE_ESDIRK324L2SA_4_2_3", "ARKODE_ESDIRK325L2SA_5_2_3", "ARKODE_ESDIRK32I5L2SA_5_2_3", "ARKODE_CASH_5_2_4", "ARKODE_CASH_5_3_4", "ARKODE_SDIRK_5_3_4", "ARKODE_KVAERNO_5_3_4", "ARKODE_ARK436L2SA_DIRK_6_3_4", "ARKODE_ARK437L2SA_DIRK_7_3_4", "ARKODE_ESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK43I6L2SA_6_3_4", "ARK    ODE_QESDIRK436L2SA_6_3_4", "ARKODE_ESDIRK437L2SA_7_3_4", "ARKODE_KVAERNO_7_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ARK548L2SA_DIRK_8_4_5", "ARKODE_ESDIRK547L2SA_7_4_5", "ARKODE_ESDIRK547L2SA2_7_4_5"] 
-    else:
-        return []
-
 def main():
 
     global nodes
@@ -139,20 +129,17 @@ def main():
     # Parse command line arguments
     args = parse_args()
     nrun = args.nrun
-    TUNER_NAME = 'GPTune'
-    order = args.order
+    TUNER_NAME = 'GPTune' 
 
     (machine, processor, nodes, cores) = GetMachineConfiguration()
     print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
     os.environ['MACHINE_NAME'] = machine
     os.environ['TUNER_NAME'] = TUNER_NAME
 
-    input_space = Space([Categoricalnorm(["diffusion-arkode-fixedpoint"], transform="onehot", name="problemname")])
+    input_space = Space([Categoricalnorm(["diffusion-cvode-fixedpoint-multifidelity"], transform="onehot", name="problemname")])
     
-    methods = get_methods(order)
     parameter_space = Space([
-        Categoricalnorm(['0','1','2','3','4','5'], transform="onehot", name="controller_id"),
-        Categoricalnorm(methods, transform="onehot", name="method"),
+        Integer(1, 5, transform="normalize", name="maxord"),
         Real(1e-5, 0.9, transform="normalize", name="nonlin_conv_coef"),
         Integer(3, 50, transform="normalize", name="max_conv_fails"),
         Categoricalnorm(['false','true'], transform="onehot", name="deduce_implicit_rhs"),
@@ -206,15 +193,18 @@ def main():
     options['verbose'] = False
     options.validate(computer=computer)
 
-    giventask = [['diffusion-arkode-fixedpoint']]
+    # Multifidelity options
+    options['budget_min'] = 1
+    options['budget_max'] = 9
+    options['budget_base'] = 3
+
+    giventask = [['diffusion-cvode-fixedpoint-multifidelity']]
     NI=len(giventask) 
     NS=nrun
 
-
     if(TUNER_NAME=='GPTune'):
-        data = Data(problem)
-        gt = GPTune(problem, computer=computer, data=data, options=options,driverabspath=os.path.abspath(__file__))
-        (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=int(NS/2), T_sampleflag=[True]*NI)
+        gt = GPTune_MB(problem, computer=computer, options=options)
+        (data, modeler, stats) = gt.MB_LCM(NS=NS, Igiven=giventask, NI=NI, NS1=int(NS/2), Pdefault=None)
         # (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=NS-1)
         print("stats: ", stats)
         """ Print all input and parameter samples """

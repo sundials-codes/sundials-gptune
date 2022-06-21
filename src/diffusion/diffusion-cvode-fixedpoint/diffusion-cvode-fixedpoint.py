@@ -63,9 +63,10 @@ def execute(params):
     diffusion2Dfolder = os.getenv("SUNDIALSBUILDROOT") + "/benchmarks/diffusion_2D/mpi_serial/"
     diffusion2Dexe = "cvode_diffusion_2D_mpi"
     diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
+    mpirun_command = os.getenv("MPIRUN")
     
     # Build up command with command-line options from current set of parameters
-    argslist = ['mpirun', '-n', str(nodes*cores), diffusion2Dfullpath, '--nx', '128', '--ny', '128',
+    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--nx', '128', '--ny', '128',
         '--maxord', str(params["maxord"]),
         '--nlscoef', str(params["nonlin_conv_coef"]),
         '--maxncf', str(params["max_conv_fails"]),
