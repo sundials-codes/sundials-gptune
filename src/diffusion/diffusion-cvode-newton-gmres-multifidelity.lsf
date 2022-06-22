@@ -1,6 +1,7 @@
 #!/bin/bash
 # This job should be submitted from within sundials-gptune/src/diffusion/ directory
 #BSUB -P CSC326
+#BSUB -q killable
 #BSUB -W 2:00
 #BSUB -nnodes 1
 #BSUB -J diffusion-cvode-newton-gmres-multifidelity
@@ -8,4 +9,4 @@
 #BSUB -e diffusion-cvode-newton-gmres-multifidelity.err
 
 . ../setup-env-summit.sh
-jsrun -n 1 python diffusion-cvode-newton-gmres-multifidelity.py -nrun 4
+jsrun -n 1 python diffusion-cvode-newton-gmres-multifidelity.py -nrun 1
