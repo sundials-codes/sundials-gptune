@@ -77,8 +77,9 @@ def execute(params):
     mpirun_command = os.getenv("MPIRUN")
     
     # Build up command with command-line options from current set of parameters
+    rtol = get_rtol_from_budget(params['budget'])
     argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--nx', '128', '--ny', '128',
-        '--rtol', str(get_rtol_from_budget(params['budget'])),
+        '--rtol', str(rtol),
         '--controller', str(params["controller_id"]),
         '--method', str(params["method"]),
         '--nlscoef', str(params["nonlin_conv_coef"]),
@@ -111,10 +112,10 @@ def execute(params):
         runtime = 1e8
         error = 1e8
 
-    if error > 5e-3:
+    if error > 5e2*rtol:
         runtime = 1e8
 
-    print(f"Finished. runtime: {runtime}, error: {error}")
+    print(f"Finished. runtime: {runtime}, error: {error}",flush=True)
     #print("done running shell command")
 
     return [runtime,error]

@@ -1,5 +1,5 @@
 #!/bin/bash
-# This job should be submitted from within sundials-gptune/src/diffusion/diffusion-arkode-newton-gmres directory
+# This job should be submitted from within sundials-gptune/src/diffusion/ directory
 #BSUB -P CSC326
 #BSUB -W 2:00
 #BSUB -nnodes 1
@@ -7,5 +7,5 @@
 #BSUB -o diffusion-arkode-newton-gmres.out
 #BSUB -e diffusion-arkode-newton-gmres.err
 
-. ../../setup-env-summit.sh
+. ../setup-env-summit.sh
 jsrun -n 1 python diffusion-arkode-newton-gmres.py -nrun 120

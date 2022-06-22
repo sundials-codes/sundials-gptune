@@ -1,10 +1,10 @@
 {
-  "tuning_problem_name": "diffusion-cvode-newton-gmres",
+  "tuning_problem_name": "diffusion",
   "machine_configuration": {
     "machine_name": "mymachine",
     "myprocessor": {
       "nodes": 1,
-      "cores": 22
+      "cores": 40
     }
   },
   "software_configuration": {
@@ -13,7 +13,7 @@
     "mymachine": {
       "myprocessor": {
         "nodes": 1,
-        "cores": 22
+        "cores": 40
       }
     }
   },
