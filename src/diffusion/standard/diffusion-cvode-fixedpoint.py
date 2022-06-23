@@ -29,7 +29,7 @@ import time
 from callopentuner import OpenTuner
 from callhpbandster import HpBandSter
 
-
+import matplotlib.pyplot as plt
 
 # from GPTune import *
 
@@ -54,6 +54,12 @@ def parse_args():
     parser.add_argument('-cores', type=int, default=2,help='Number of cores per machine node')
     parser.add_argument('-machine', type=str,default='-1', help='Name of the computer (not hostname)')
     parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
+
+    parser.add_argument('-plot_runtime', action='store_true', dest='plot_runtime')
+    parser.add_argument('-plot_params', action='store_true', dest='plot_params')
+    parser.set_defaults(plot_runtime=False)
+    parset.set_defaults(plot_params=False)
+     
 
     args = parser.parse_args()
 
@@ -120,6 +126,8 @@ def main():
     # Parse command line arguments
     args = parse_args()
     nrun = args.nrun
+    plot_runtime = args.plot_runtime
+    plot_params = args.plot_params
     TUNER_NAME = 'GPTune' 
 
     (machine, processor, nodes, cores) = GetMachineConfiguration()
@@ -202,6 +210,34 @@ def main():
             print("    Ps ", data.P[tid])
             print("    Os ", data.O[tid].tolist())
             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+            
+            if plot_runtime:
+                runtimes = [ elem[0] for elem in data.O.tid.tolist() ]
+                runtimes = filter(lambda x: x != 1e8, runtimes)
+                plt.plot(runtimes)
+                plt.title('Runtime vs Sample Number, with failed Samples removed')
+                plt.xlabel('Filtered Sample Number')
+                plt.ylabel('Runtime (s)')
+                plt.savefig('diffusion-cvode-fixedpoint-runtime.png')
+                plt.close()
+            
+            if plot_params:
+                plot_datas = [
+                    { 'name': 'max_ord', 'values': [ elem[0] for elem in data.P[tid] ] },
+                    { 'name': 'nonlin_conv_coef', 'values': [ elem[1] for elem in data.P[tid] ] },
+                    { 'name': 'max_conv_fails', 'values': [ elem[2] for elem in data.P[tid] ] },
+                    { 'name': 'deduce_implicit_rhs', 'values': [ int(elem[3] == 'true') for elem in data.P[tid] ] },
+                    { 'name': 'fixedpointvecs', 'values': [ elem[4] for elem in data.P[tid] ] }
+                ]
+                for plot_data in plot_datas:
+                    plt.plot(plot_data['values'])
+                    plt.title(plot_data['name'] + ' vs Sample Number, with failed Samples removed')
+                    plt.xlabel('Sample Number')
+                    plt.ylabel(plot_data['name'])
+                    plt.savefig('diffusion-cvode-fixedpoint-' + plot_data['name'] + '.png')
+                    plt.close()
+
+                
             #ndf, dl, dc, ndr = pg.fast_non_dominated_sorting(data.O[tid])
             #front = ndf[0]
             #fopts = data.O[tid][front]

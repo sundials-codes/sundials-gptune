@@ -7,6 +7,7 @@
 #BSUB -J diffusion-cvode-fixedpoint
 #BSUB -o diffusion-cvode-fixedpoint.out
 #BSUB -e diffusion-cvode-fixedpoint.err
+#BSUB -N
 
 . ../../setup-env-summit.sh
-jsrun -n 1 python diffusion-cvode-fixedpoint.py -nrun 120
+jsrun -n 1 python diffusion-cvode-fixedpoint.py -nrun 120 -plot_runtimes -plot_params
