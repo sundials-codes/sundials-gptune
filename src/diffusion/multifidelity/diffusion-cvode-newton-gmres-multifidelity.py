@@ -74,7 +74,7 @@ def execute(params):
     mpirun_command = os.getenv("MPIRUN")
     
     # Build up command with command-line options from current set of parameters
-    rtol = get_rtol_form_budget(params['budget'])
+    rtol = get_rtol_from_budget(params['budget'])
     argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--nx', '128', '--ny', '128',
             '--rtol', str(rtol),
             '--maxord', str(params["maxord"]),
