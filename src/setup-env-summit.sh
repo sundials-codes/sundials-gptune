@@ -1,11 +1,12 @@
 export GPTUNEROOT=/ccs/home/afish/workspace/GPTune
 export SUNDIALSBUILDROOT=/ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi
+export SUNDIALSGPTUNEROOT=/gpfs/alpine/csc326/proj-shared/afish/sundials-gptune
 
 export SCIKITOPTIMIZE=$GPTUNEROOT/scikit-optimize
 export AUTOTUNE=$GPTUNEROOT/autotune
 
 # By experimentation, found that $GPTUNROOT/GPTune is required in the $PYTHONPATH to use gptune outside of the GPTune repo.
-export PYTHONPATH=$PYTHONPATH:$SCIKITOPTIMIZE:$AUTOTUNE:$GPTUNEROOT:$GPTUNEROOT/GPTune
+export PYTHONPATH=$PYTHONPATH:$SCIKITOPTIMIZE:$AUTOTUNE:$GPTUNEROOT:$GPTUNEROOT/GPTune:$SUNDIALSGPTUNEROOT/src/common
 
 # Declare mpi execution command 
 export MPIRUN=jsrun

@@ -1,12 +1,13 @@
 export GPTUNEROOT=/g/g20/fish7/workspace/GPTune
 export SUNDIALSBUILDROOT=/g/g20/fish7/workspace/feature-gptune-optimization-nonintegrated-mpi
+export SUNDIALSGPTUNEROOT=/g/g20/fish7/workspace/sundials-gptune
 
 export MPI4PY=$GPTUNEROOT/mpi4py
 export SCIKITOPTIMIZE=$GPTUNEROOT/scikit-optimize
 export AUTOTUNE=$GPTUNEROOT/autotune
 
 # By experimentation, found that $GPTUNROOT/GPTune is required in the $PYTHONPATH to use gptune outside of the GPTune repo.
-export PYTHONPATH=$PYTHONPATH:$MPI4PY:$SCIKITOPTIMIZE:$AUTOTUNE:$GPTUNEROOT:$GPTUNEROOT/GPTune
+export PYTHONPATH=$PYTHONPATH:$MPI4PY:$SCIKITOPTIMIZE:$AUTOTUNE:$GPTUNEROOT:$GPTUNEROOT/GPTune:$SUNDIALSGPTUNEROOT/src/common
 
 # Declare the mpi execution command
 export MPIRUN=mpiexec
