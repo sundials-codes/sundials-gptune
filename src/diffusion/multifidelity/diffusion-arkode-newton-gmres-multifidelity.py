@@ -23,6 +23,7 @@ from gptune import * # import all
 import argparse
 import numpy as np
 import time
+import matplotlib.pyplot as plt
 
 #import pygmo as pg
 
@@ -56,6 +57,10 @@ def parse_args():
     parser.add_argument('-optimization', type=str,default='GPTune', help='Optimization algorithm (opentuner, hpbandster, GPTune)')
     parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
     parser.add_argument('-order', type=int, default=3, help='Order of accuracy of the methods used')
+    parser.add_argument('-plot_runtime', action='store_true', dest='plot_runtime')
+    parser.add_argument('-plot_params', action='store_true', dest='plot_params')
+    parser.set_defaults(plot_runtime=False)
+    parser.set_defaults(plot_params=False)
 
     args = parser.parse_args()
 
@@ -247,6 +252,32 @@ def main():
             #xopts = [data.P[tid][i] for i in front]
             #print('    Popt ', xopts)
             #print('    Oopt ', fopts.tolist())
+
+            if plot_runtime:
+                runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
+                runtimes = list(filter(lambda x: x != 1e8, runtimes))
+                plt.plot(runtimes)
+                plt.title('Runtime vs Sample Number, with failed Samples removed')
+                plt.xlabel('Filtered Sample Number')
+                plt.ylabel('Runtime (s)')
+                plt.savefig('diffusion-arkode-newton-gmres-runtime.png')
+                plt.close()
+            
+            if plot_params:
+                plot_datas = [
+                    { 'name': 'nonlin_conv_coef', 'values': [ elem[2] for elem in data.P[tid] ] },
+                    { 'name': 'max_conv_fails', 'values': [ elem[3] for elem in data.P[tid] ] },
+                    { 'name': 'deduce_implicit_rhs', 'values': [ int(elem[4] == 'true') for elem in data.P[tid] ] },
+                    { 'name': 'maxl', 'values': [ elem[5] for elem in data.P[tid] ] },
+                    { 'name': 'epslin', 'values': [ elem[6] for elem in data.P[tid] ] }
+                ]
+                for plot_data in plot_datas:
+                    plt.plot(plot_data['values'])
+                    plt.title(plot_data['name'] + ' vs Sample Number')
+                    plt.xlabel('Sample Number')
+                    plt.ylabel(plot_data['name'])
+                    plt.savefig('diffusion-arkode-newton-gmres-' + plot_data['name'] + '.png')
+                    plt.close()
 
 if __name__ == "__main__":
     main()
