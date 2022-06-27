@@ -1,3 +1,4 @@
-*.out
-*.err
-*.db
+*.out*
+*.err*
+*.db*
+*.png*

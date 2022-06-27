@@ -58,7 +58,7 @@ def parse_args():
     parser.add_argument('-plot_runtime', action='store_true', dest='plot_runtime')
     parser.add_argument('-plot_params', action='store_true', dest='plot_params')
     parser.set_defaults(plot_runtime=False)
-    parset.set_defaults(plot_params=False)
+    parser.set_defaults(plot_params=False)
      
 
     args = parser.parse_args()
@@ -212,8 +212,8 @@ def main():
             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
             
             if plot_runtime:
-                runtimes = [ elem[0] for elem in data.O.tid.tolist() ]
-                runtimes = filter(lambda x: x != 1e8, runtimes)
+                runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
+                runtimes = list(filter(lambda x: x != 1e8, runtimes))
                 plt.plot(runtimes)
                 plt.title('Runtime vs Sample Number, with failed Samples removed')
                 plt.xlabel('Filtered Sample Number')
@@ -231,7 +231,7 @@ def main():
                 ]
                 for plot_data in plot_datas:
                     plt.plot(plot_data['values'])
-                    plt.title(plot_data['name'] + ' vs Sample Number, with failed Samples removed')
+                    plt.title(plot_data['name'] + ' vs Sample Number')
                     plt.xlabel('Sample Number')
                     plt.ylabel(plot_data['name'])
                     plt.savefig('diffusion-cvode-fixedpoint-' + plot_data['name'] + '.png')
