@@ -134,6 +134,8 @@ def main():
     # Parse command line arguments
     args = parse_args()
     nrun = args.nrun
+    plot_runtime = args.plot_runtime
+    plot_params = args.plot_params
     TUNER_NAME = 'GPTune' 
 
     (machine, processor, nodes, cores) = GetMachineConfiguration()
