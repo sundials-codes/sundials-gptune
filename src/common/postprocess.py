@@ -10,14 +10,16 @@ def plot_runtime(runtimes,problem_name,bad_runtime_value):
     plt.close()
 
 def plot_params(datas,problem_name):
-    # simple line plots
+    # datas: list of dicts, dict structure: { 'name': 'PARAMNAME', 'type': 'integer/real/categorical', 'values': [] }
+    # problem_name: string
     for data in datas:
-        plt.plot(data['values'])
-        plt.title(data['name'] + ' vs Sample Number')
-        plt.xlabel('Sample Number')
-        plt.ylabel(data['name'])
-        plt.savefig(problem_name + '-' + data['name'] + '.png')
-        plt.close()
+        if data['type'] == 'real' or data['type'] == 'integer':
+            plt.plot(data['values'])
+            plt.title(data['name'] + ' vs Sample Number')
+            plt.xlabel('Sample Number')
+            plt.ylabel(data['name'])
+            plt.savefig(problem_name + '-' + data['name'] + '.png')
+            plt.close()
 
 def plot_params_vs_runtime(runtimes,datas,problem_name,bad_runtime_value):
     # runtimes: list
@@ -39,6 +41,7 @@ def plot_params_vs_runtime(runtimes,datas,problem_name,bad_runtime_value):
             plt.xlabel(data['name'])
             plt.ylabel('Runtime')
             plt.savefig(problem_name + '-Runtimevs' + data['name'] + '.png') 
+            plt.close()
         elif data['type'] == 'real':
             param_values_filtered = []
             runtime_values_filtered = []
@@ -52,4 +55,4 @@ def plot_params_vs_runtime(runtimes,datas,problem_name,bad_runtime_value):
             plt.xlabel(data['name'])
             plt.ylabel('Runtime')
             plt.savefig(problem_name + '-Runtimevs' + data['name'] + '.png') 
-            
+            plt.close()
