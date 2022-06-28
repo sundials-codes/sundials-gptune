@@ -6,6 +6,7 @@
 #BSUB -J diffusion-cvode-newton-gmres
 #BSUB -o diffusion-cvode-newton-gmres.out
 #BSUB -e diffusion-cvode-newton-gmres.err
+#BSUB -N
 
 . ../../setup-env-summit.sh
-jsrun -n 1 python diffusion-cvode-newton-gmres.py -nrun 120
+jsrun -n 1 python diffusion-cvode-newton-gmres.py -nrun 120 -gen_plots
