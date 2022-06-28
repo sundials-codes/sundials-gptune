@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 def plot_runtime(runtimes,problem_name,bad_runtime_value):
-    plot_runtimes = list(filter(x: x != runtime_value, runtimes))
+    plot_runtimes = list(filter(lambda x: x != bad_runtime_value, runtimes))
     plt.plot(runtimes)
     plt.title('Runtime vs Sample Number, with failed Samples filtered')
     plt.xlabel('Filtered Sample Number')
@@ -34,7 +34,7 @@ def plot_params_vs_runtime(runtimes,datas,problem_name,bad_runtime_value):
                 runtimes_per_param_value[unique_param_values[i]] = []
             for i in range(len(data['values'])):
                 if runtimes[i] != bad_runtime_value:
-                    runtimes_per_param_value[i].append(runtimes[i])
+                    runtimes_per_param_value[data['values'][i]].append(runtimes[i])
 
             plt.boxplot(list(runtimes_per_param_value.values()))
             plt.title('Runtime vs ' + data['name'])
