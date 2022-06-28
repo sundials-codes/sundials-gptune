@@ -24,6 +24,7 @@ import argparse
 import numpy as np
 import time
 import matplotlib.pyplot as plt
+import postprocess
 
 #import pygmo as pg
 
@@ -55,10 +56,8 @@ def parse_args():
     parser.add_argument('-cores', type=int, default=2,help='Number of cores per machine node')
     parser.add_argument('-machine', type=str,default='-1', help='Name of the computer (not hostname)')
     parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
-    parser.add_argument('-plot_runtime', action='store_true', dest='plot_runtime')
-    parser.add_argument('-plot_params', action='store_true', dest='plot_params')
-    parser.set_defaults(plot_runtime=False)
-    parser.set_defaults(plot_params=False)
+    parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
+    parser.set_defaults(gen_plots=False)
 
     args = parser.parse_args()
 
@@ -125,16 +124,16 @@ def main():
     # Parse command line arguments
     args = parse_args()
     nrun = args.nrun
-    plot_runtime = args.plot_runtime
-    plot_params = args.plot_params
+    gen_plots = args.gen_plots
     TUNER_NAME = "GPTune" # args.optimization
+    problem_name = 'diffusion-cvode-newton-gmres'
 
     (machine, processor, nodes, cores) = GetMachineConfiguration()
     print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
     os.environ['MACHINE_NAME'] = machine
     os.environ['TUNER_NAME'] = TUNER_NAME
 
-    input_space = Space([Categoricalnorm(["diffusion-cvode-newton-gmres"], transform="onehot", name="problemname")])
+    input_space = Space([Categoricalnorm([problem_name], transform="onehot", name="problemname")])
 
     parameter_space = Space([
         Integer(1, 5, transform="normalize", name="maxord"),
@@ -192,7 +191,7 @@ def main():
     options['verbose'] = False
     options.validate(computer=computer)
 
-    giventask = [['diffusion-cvode-newton-gmres']]
+    giventask = [[problem_name]]
     NI=len(giventask) 
     NS=nrun
 
@@ -219,32 +218,22 @@ def main():
             #print('    Popt ', xopts)
             #print('    Oopt ', fopts.tolist())
 
-            if plot_runtime:
+            if gen_plots:
                 runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
-                runtimes = list(filter(lambda x: x != 1e8, runtimes))
-                plt.plot(runtimes)
-                plt.title('Runtime vs Sample Number, with failed Samples removed')
-                plt.xlabel('Filtered Sample Number')
-                plt.ylabel('Runtime (s)')
-                plt.savefig('diffusion-cvode-newton-gmres-runtime.png')
-                plt.close()
-            
-            if plot_params:
+                postprocess.plot_runtime(runtimes,problem_name,1e8)
                 plot_datas = [
-                    { 'name': 'max_ord', 'values': [ elem[0] for elem in data.P[tid] ] },
-                    { 'name': 'nonlin_conv_coef', 'values': [ elem[1] for elem in data.P[tid] ] },
-                    { 'name': 'max_conv_fails', 'values': [ elem[2] for elem in data.P[tid] ] },
-                    { 'name': 'deduce_implicit_rhs', 'values': [ int(elem[3] == 'true') for elem in data.P[tid] ] },
-                    { 'name': 'maxl', 'values': [ elem[4] for elem in data.P[tid] ] },
-                    { 'name': 'epslin', 'values': [ elem[5] for elem in data.P[tid] ] }
+                    { 'name': 'max_ord', 'type': 'integer', 'values': [ elem[0] for elem in data.P[tid] ] },
+                    { 'name': 'nonlin_conv_coef', 'type': 'real', 'values': [ elem[1] for elem in data.P[tid] ] },
+                    { 'name': 'max_conv_fails', 'type': 'integer', 'values': [ elem[2] for elem in data.P[tid] ] },
+                    { 'name': 'deduce_implicit_rhs', 'type': 'integer', 'values': [ int(elem[3] == 'true') for elem in data.P[tid] ] },
+                    { 'name': 'maxl', 'type': 'integer', 'values': [ elem[4] for elem in data.P[tid] ] },
+                    { 'name': 'epslin', 'type': 'real', 'values': [ elem[5] for elem in data.P[tid] ] }
                 ]
-                for plot_data in plot_datas:
-                    plt.plot(plot_data['values'])
-                    plt.title(plot_data['name'] + ' vs Sample Number')
-                    plt.xlabel('Sample Number')
-                    plt.ylabel(plot_data['name'])
-                    plt.savefig('diffusion-cvode-newton-gmres-' + plot_data['name'] + '.png')
-                    plt.close()
+                postprocess.plot_params(param_datas,problem_name)
+                postprocess.plot_params_vs_runtime(runtimes,param_datas,problem_name,1e8)
+                postprocess.plot_cat_bool_param_freq_period(param_datas,problem_name,4)
+                postprocess.plot_real_int_param_std_period(param_datas,problem_name,4)
+                postprocess.plot_real_int_param_std_window(param_datas,problem_name,10) 
 
 if __name__ == "__main__":
     main()

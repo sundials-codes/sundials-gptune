@@ -61,8 +61,8 @@ def plot_params_vs_runtime(runtimes,datas,problem_name,bad_runtime_value):
 def get_param_periods(values,num_periods):
     # Split the list of values into <num_periods> equally sized subsections, using only the non-random set (second half)
     non_random_samples = values[len(values)//2:]
-    num_samples = len(non_random_samples)/num_periods
-    param_periods = [ non_random_samples[i:i+num_samples] for i in range(0, len(non_random_samples), n) ]
+    num_samples = int(len(non_random_samples)/num_periods)
+    param_periods = [ non_random_samples[i:i+num_samples] for i in range(0, len(non_random_samples), num_samples) ]
     return param_periods
 
 def plot_cat_bool_param_freq_period(datas,problem_name,num_periods):
@@ -96,6 +96,19 @@ def plot_real_int_param_std_period(datas,problem_name,num_periods):
             plt.savefig(problem_name + '-' + data['name'] + '-PeriodStd.png')
             plt.close() 
 
+def plot_real_int_param_std_window(datas,problem_name,window_size):
+    for data in datas:
+        if data['type'] == 'real' or data['type'] == 'integer':
+            plot_data = []
+            
+            for i in range(int(len(data['values'])/2-window_size+1)):
+                plot_data.append(np.std(np.array(data['values'][int(i+len(data['values'])/2):int(i+len(data['values'])/2+window_size)])))
+            plt.plot(plot_data)
+            plt.title('Std of ' + data['name'] + ' over time, window size: ' + str(window_size))
+            plt.xlabel('Window number')
+            plt.ylabel('Std')
+            plt.savefig(problem_name + '-' + data['name'] + '-WindowStd.png')
+            plt.close() 
 
 
 

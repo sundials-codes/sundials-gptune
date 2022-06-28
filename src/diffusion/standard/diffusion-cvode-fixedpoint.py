@@ -221,10 +221,11 @@ def main():
                     { 'name': 'deduce_implicit_rhs', 'type': 'integer', 'values': [ int(elem[3] == 'true') for elem in data.P[tid] ] },
                     { 'name': 'fixedpointvecs', 'type': 'integer', 'values': [ elem[4] for elem in data.P[tid] ] }
                 ]
-                problem_name = 'diffusion-cvode-fixedpoint'
                 postprocess.plot_params(param_datas,problem_name)
                 postprocess.plot_params_vs_runtime(runtimes,param_datas,problem_name,1e8)
-                
+                postprocess.plot_cat_bool_param_freq_period(param_datas,problem_name,4)
+                postprocess.plot_real_int_param_std_period(param_datas,problem_name,4)
+                postprocess.plot_real_int_param_std_window(param_datas,problem_name,10) 
 
 if __name__ == "__main__":
     main()
