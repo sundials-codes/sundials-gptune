@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 def plot_runtime(runtimes,problem_name,bad_runtime_value):
     plot_runtimes = list(filter(lambda x: x != bad_runtime_value, runtimes))
@@ -10,7 +11,7 @@ def plot_runtime(runtimes,problem_name,bad_runtime_value):
     plt.close()
 
 def plot_params(datas,problem_name):
-    # datas: list of dicts, dict structure: { 'name': 'PARAMNAME', 'type': 'integer/real/categorical', 'values': [] }
+    # datas: list of dicts, dict structure: { 'name': 'PARAMNAME', 'type': 'integer/real/categorical/boolean', 'values': [] }
     # problem_name: string
     for data in datas:
         if data['type'] == 'real' or data['type'] == 'integer':
@@ -23,11 +24,11 @@ def plot_params(datas,problem_name):
 
 def plot_params_vs_runtime(runtimes,datas,problem_name,bad_runtime_value):
     # runtimes: list
-    # datas: list of dicts, dict structure: { 'name': 'PARAMNAME', 'type': 'integer/real/categorical', 'values': [] }
+    # datas: list of dicts, dict structure: { 'name': 'PARAMNAME', 'type': 'integer/real/categorical/boolean', 'values': [] }
     # problem_name: string
     # bad_runtime_value: number to throw away for runtimes, indicating bad solves (for me, 1e8)
     for data in datas:
-        if data['type'] == 'categorical' or data['type'] == 'integer':
+        if data['type'] == 'categorical' or data['type'] == 'boolean':
             unique_param_values = list(set(data['values']))
             runtimes_per_param_value = {}
             for i in range(len(unique_param_values)):
@@ -42,7 +43,7 @@ def plot_params_vs_runtime(runtimes,datas,problem_name,bad_runtime_value):
             plt.ylabel('Runtime')
             plt.savefig(problem_name + '-Runtimevs' + data['name'] + '.png') 
             plt.close()
-        elif data['type'] == 'real':
+        elif data['type'] == 'real' or data['type'] == 'integer':
             param_values_filtered = []
             runtime_values_filtered = []
             for i in range(len(data['values'])):
@@ -50,9 +51,51 @@ def plot_params_vs_runtime(runtimes,datas,problem_name,bad_runtime_value):
                     runtime_values_filtered.append(runtimes[i])
                     param_values_filtered.append(data['values'][i])
 
-            plt.plot(param_values_filtered,runtime_values_filtered)
+            plt.scatter(param_values_filtered,runtime_values_filtered)
             plt.title('Runtime vs ' + data['name'])
             plt.xlabel(data['name'])
             plt.ylabel('Runtime')
             plt.savefig(problem_name + '-Runtimevs' + data['name'] + '.png') 
             plt.close()
+
+def get_param_periods(values,num_periods):
+    # Split the list of values into <num_periods> equally sized subsections, using only the non-random set (second half)
+    non_random_samples = values[len(values)//2:]
+    num_samples = len(non_random_samples)/num_periods
+    param_periods = [ non_random_samples[i:i+num_samples] for i in range(0, len(non_random_samples), n) ]
+    return param_periods
+
+def plot_cat_bool_param_freq_period(datas,problem_name,num_periods):
+    for data in datas:
+        if data['type'] == 'categorical' or data['type'] == 'boolean':
+            param_periods = get_param_periods(data['values'],num_periods)
+            unique_vals = list(set(data['values']))
+            plot_data = []
+            for param_period in param_periods:
+                param_data = [param_period.count(i)/len(param_period)*100.0 for i in unique_vals]
+                plot_data.append(param_data)
+            
+            x = np.arange(num_periods)
+            for i in range(num_periods):
+                plt.bar(x,plot_data[i]) 
+            plt.title('% Occurence of ' + data['name'] + ' value per period')
+            plt.xlabel('Period number')
+            plt.savefig(problem_name + '-' + data['name'] +  '-PeriodFreq.png')
+            plt.close()        
+
+def plot_real_int_param_std_period(datas,problem_name,num_periods):
+    for data in datas:
+        if data['type'] == 'real' or data['type'] == 'integer':
+            param_periods = get_param_periods(data['values'],num_periods)
+            plot_data = [ np.std(np.array(i)) for i in param_periods ]
+            x = np.arange(num_periods)
+            plt.plot(x,plot_data)
+            plt.title('Std of ' + data['name'] + ' by period')
+            plt.xlabel('Period number')
+            plt.ylabel('Std')
+            plt.savefig(problem_name + '-' + data['name'] + '-PeriodStd.png')
+            plt.close() 
+
+
+
+
