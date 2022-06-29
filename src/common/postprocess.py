@@ -3,7 +3,7 @@ import numpy as np
 
 def plot_runtime(runtimes,problem_name,bad_runtime_value):
     plot_runtimes = list(filter(lambda x: x != bad_runtime_value, runtimes))
-    plt.plot(runtimes)
+    plt.plot(plot_runtimes)
     plt.title('Runtime vs Sample Number, with failed Samples filtered')
     plt.xlabel('Filtered Sample Number')
     plt.ylabel('Runtime (s)')
