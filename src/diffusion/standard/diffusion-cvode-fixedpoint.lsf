@@ -10,4 +10,4 @@
 #BSUB -N
 
 . ../../setup-env-summit.sh
-jsrun -n 1 python diffusion-cvode-fixedpoint.py -nrun 120 -gen_plots
+jsrun -n 1 python diffusion-cvode.py -nrun 150 -gen_plots

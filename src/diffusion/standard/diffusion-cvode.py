@@ -129,6 +129,7 @@ def main():
     if additional_params:
         problem_name += '-additional'
 
+    print("problem_name: " + problem_name)
     meta_config_dict = { 
         'tuning_problem_name': problem_name,
         'machine_configuration': {
@@ -137,7 +138,17 @@ def main():
                 'nodes': 1,
                 'cores': 40
             }
-        }
+        },
+        'software_configuration': {},
+        'loadable_machine_configurations': {
+            'mymachine': {
+                'myprocessor': {
+                    'nodes': 1,
+                    'cores': 40
+                }
+            }
+        },
+        'loadable_software_configurations': {}
     }
 
     (machine, processor, nodes, cores) = GetMachineConfiguration(meta_dict = meta_config_dict)
@@ -166,13 +177,13 @@ def main():
         ]
 
     if additional_params:
-       parameter_space_list += [ 
+        parameter_space_list += [ 
             Real(1e-5, 0.9, transform="normalize", name="eta_cf"),
             Real(1e-5, 20, transform="normalize", name="eta_max_fx"),
             Real(1e-5, 20, transform="normalize", name="eta_min_fx"),
             Real(1e-2, 20, transform="normalize", name="eta_max_gs"),
             Real(1e-2, 1, transform="normalize", name="eta_min"),
-            Real(1e-5, 0.9, transform="normalize", name="eta_min_ef"),
+            Real(1e-5, 0.9, transform="normalize", name="eta_min_ef")
         ]
         constraints['cst1'] = 'eta_max_fx > eta_min_fx'
 
@@ -273,6 +284,7 @@ def main():
                     { 'name': 'eta_min_ef', 'type': 'real', 'values': [ elem[start_index+5] for elem in data.P[tid] ] }
                 ]
             postprocess.plot_params(param_datas,problem_name)
+            postprocess.plot_params_with_fails(runtimes,param_datas,problem_name,1e8)
             postprocess.plot_params_vs_runtime(runtimes,param_datas,problem_name,1e8)
             postprocess.plot_cat_bool_param_freq_period(param_datas,problem_name,4)
             postprocess.plot_real_int_param_std_period(param_datas,problem_name,4)

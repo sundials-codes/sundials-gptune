@@ -10,5 +10,5 @@
 #BSUB -N
 
 . ../../setup-env-summit.sh
-jsrun -n 1 python diffusion-cvode-newton-gmres.py -nrun 120 -gen_plots
+jsrun -n 1 python diffusion-cvode.py -newton_gmres -nrun 150 -gen_plots
 

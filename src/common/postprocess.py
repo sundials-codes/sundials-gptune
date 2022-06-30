@@ -22,6 +22,23 @@ def plot_params(datas,problem_name):
             plt.savefig(problem_name + '-' + data['name'] + '.png')
             plt.close()
 
+def plot_params_with_fails(runtimes,datas,problem_name,bad_runtime_value):
+    for data in datas:
+        if data['type'] == 'real' or data['type'] == 'integer':
+            failed_params = []
+            failed_samples = []
+            for i in range(len(runtimes)):
+                if runtimes[i] == bad_runtime_value:
+                    failed_params.append(data['values'][i])
+                    failed_samples.append(i)
+            plt.plot(data['values'])
+            plt.scatter(failed_samples,failed_params
+            plt.title(data['name'] + ' vs Sample Number')
+            plt.xlabel('Sample Number')
+            plt.ylabel(data['name'])
+            plt.savefig(problem_name + '-' + data['name'] + '-withfails.png')
+            plt.close()
+
 def plot_params_vs_runtime(runtimes,datas,problem_name,bad_runtime_value):
     # runtimes: list
     # datas: list of dicts, dict structure: { 'name': 'PARAMNAME', 'type': 'integer/real/categorical/boolean', 'values': [] }
