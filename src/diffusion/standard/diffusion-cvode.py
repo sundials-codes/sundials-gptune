@@ -252,7 +252,7 @@ def main():
         print("    Os ", data.O[tid].tolist())
         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
-        if gen_plots:
+        if args.gen_plots:
             runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
             postprocess.plot_runtime(runtimes,problem_name,1e8)
             param_datas = [
@@ -287,7 +287,7 @@ def main():
             postprocess.plot_params_with_fails(runtimes,param_datas,problem_name,1e8)
             postprocess.plot_params_vs_runtime(runtimes,param_datas,problem_name,1e8)
             postprocess.plot_cat_bool_param_freq_period(param_datas,problem_name,4)
-            postprocess.plot_real_int_param_std_period(param_datas,problem_name,4)
+            #postprocess.plot_real_int_param_std_period(param_datas,problem_name,4)
             postprocess.plot_real_int_param_std_window(param_datas,problem_name,10) 
 
 if __name__ == "__main__":

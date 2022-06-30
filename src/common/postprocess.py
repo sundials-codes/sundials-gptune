@@ -32,7 +32,7 @@ def plot_params_with_fails(runtimes,datas,problem_name,bad_runtime_value):
                     failed_params.append(data['values'][i])
                     failed_samples.append(i)
             plt.plot(data['values'])
-            plt.scatter(failed_samples,failed_params
+            plt.scatter(failed_samples,failed_params,color="r")
             plt.title(data['name'] + ' vs Sample Number')
             plt.xlabel('Sample Number')
             plt.ylabel(data['name'])
