@@ -43,8 +43,6 @@ def execute(params):
             '--nlscoef', str(params["nonlin_conv_coef"]),
             '--maxncf', str(params["max_conv_fails"])
     ]
-    if params["deduce_implicit_rhs"] == "true":
-        argslist.append('--deduce') 
 
     if newton_gmres:
         newton_gmres_args = [
@@ -162,8 +160,7 @@ def main():
     parameter_space_list = [
         Integer(1, 5, transform="normalize", name="maxord"),
         Real(1e-5, 0.9, transform="normalize", name="nonlin_conv_coef"),
-        Integer(3, 50, transform="normalize", name="max_conv_fails"),
-        Categoricalnorm(['false','true'], transform="onehot", name="deduce_implicit_rhs")
+        Integer(3, 50, transform="normalize", name="max_conv_fails")
     ]
     constraints = {}
     if newton_gmres:
@@ -258,21 +255,20 @@ def main():
             param_datas = [
                 { 'name': 'max_ord', 'type': 'integer', 'values': [ elem[0] for elem in data.P[tid] ] },
                 { 'name': 'nonlin_conv_coef', 'type': 'real', 'values': [ elem[1] for elem in data.P[tid] ] },
-                { 'name': 'max_conv_fails', 'type': 'integer', 'values': [ elem[2] for elem in data.P[tid] ] },
-                { 'name': 'deduce_implicit_rhs', 'type': 'integer', 'values': [ int(elem[3] == 'true') for elem in data.P[tid] ] },
+                { 'name': 'max_conv_fails', 'type': 'integer', 'values': [ elem[2] for elem in data.P[tid] ] }
             ]
             if newton_gmres:
                 param_datas += [
-                    { 'name': 'maxl', 'type': 'integer', 'values': [ elem[4] for elem in data.P[tid] ] },
-                    { 'name': 'epslin', 'type': 'real', 'values': [ elem[5] for elem in data.P[tid] ] },
+                    { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
+                    { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
                 ]
             else:
                 param_datas += [
-                    { 'name': 'fixedpointvecs', 'type': 'integer', 'values': [ elem[4] for elem in data.P[tid] ] },
+                    { 'name': 'fixedpointvecs', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
                 ]
 
             if additional_params:
-                start_index = 5
+                start_index = 4
                 if newton_gmres:
                     start_index += 1
                 param_datas += [
