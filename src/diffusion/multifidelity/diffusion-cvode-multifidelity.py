@@ -45,9 +45,10 @@ def execute(params):
     diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
     mpirun_command = os.getenv("MPIRUN")
     
+    rtol = get_rtol_from_budget(params['budget'])
     # Build up command with command-line options from current set of parameters
     argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--nx', '128', '--ny', '128',
-            '--rtol', str(get_rtol_from_budget(params['budget'])),
+            '--rtol', str(rtol),
             '--maxord', str(params["maxord"]),
             '--nlscoef', str(params["nonlin_conv_coef"]),
             '--maxncf', str(params["max_conv_fails"])

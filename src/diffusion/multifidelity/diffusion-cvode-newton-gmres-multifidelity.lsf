@@ -2,7 +2,7 @@
 # This job should be submitted from within sundials-gptune/src/diffusion/multifidelity directory
 #BSUB -P CSC326
 #BSUB -q killable
-#BSUB -W 2:00
+#BSUB -W 4:00
 #BSUB -nnodes 1
 #BSUB -J diffusion-cvode-newton-gmres-multifidelity
 #BSUB -o diffusion-cvode-newton-gmres-multifidelity.out
