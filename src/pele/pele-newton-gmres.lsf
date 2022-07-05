@@ -1,0 +1,13 @@
+#!/bin/bash
+# This job should be submitted from within sundials-gptune/src/diffusion/standard directory
+#BSUB -P CSC326
+#BSUB -q killable
+#BSUB -W 10:00
+#BSUB -nnodes 1
+#BSUB -J pele-cvode-newton-gmres
+#BSUB -o pele-cvode-newton-gmres.out
+#BSUB -e pele-cvode-newton-gmres.err
+#BSUB -N
+
+. ../../setup-env-summit.sh
+jsrun -n 1 python pele-cvode.py -solve_type newton_gmres -nrun 300 -gen_plots

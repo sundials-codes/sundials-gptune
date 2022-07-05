@@ -10,6 +10,7 @@ from autotune.problem import *
 from gptune import * # import all
 import argparse
 import postprocess
+import time
 
 def parse_args():
 
@@ -39,8 +40,8 @@ def execute(params):
     # Build up command with command-line options from current set of parameters
     argslist = [mpirun_command, '-n', str(nodes*cores), pelefullpath,
             'cvode.max_order=' + str(params["maxord"]),
-            'cvode.nlscoef=' + str(params["nonlin_conv_coef"]),
-            'cvode.maxncf=' + str(params["max_conv_fails"])
+            'ode.nlscoef=' + str(params["nonlin_conv_coef"]),
+            'ode.maxncf=' + str(params["max_conv_fails"])
     ]
 
     if solve_type == 'newton_gmres':
@@ -52,7 +53,7 @@ def execute(params):
         argslist += newton_gmres_args
     elif solve_type == 'fixedpoint':
         fixedpoint_args = [
-        'ode.solve_type=fixed_point', 
+        'cvode.solve_type=fixed_point', 
         'ode.max_fp_accel=' + str(params['fixedpointvecs'])
         ]
         argslist += fixedpoint_args
@@ -70,7 +71,12 @@ def execute(params):
 
     # Run the command and grab the output
     print("Running: " + " ".join(argslist),flush=True)
-    p = subprocess.run(argslist,capture_output=True)
+    start = time.time()
+    subprocess.run(argslist)
+    #p = subprocess.run(argslist,capture_output=True)
+    end = time.time()
+    runtime = end - start
+    """
     # Decode the stdout and stderr as they are in "bytes" format
     stdout = p.stdout.decode('ascii')
     stderr = p.stderr.decode('ascii')
@@ -96,8 +102,8 @@ def execute(params):
     
     print(f"Finished. runtime: {runtime}, error: {error}",flush=True)
     #print("done running shell command")
-    
-    return [runtime,error]
+    """
+    return [runtime]
 
 def objectives(point):
     execute_result = execute(point)
