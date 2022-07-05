@@ -11,9 +11,8 @@ export PYTHONPATH=$PYTHONPATH:$SCIKITOPTIMIZE:$AUTOTUNE:$GPTUNEROOT:$GPTUNEROOT/
 # Declare mpi execution command 
 export MPIRUN=jsrun
 
-# GPTune requires OpenMPI built with the same compiler as the Lapack/Blas/Scalapack libraries
-# module load gcc/8.3.1 # default on summit
-# module load openmpi-4.1.4-gcc-8.3.1-a2mevfu # ensure installed locally through spack
+# Load Pele-required modules
+module load cmake gcc/9.1.0 cuda/11.0.3 openblas
 
 # By experimentation, found that the default python/3.7.2 is too old. Importing newer python.
 # Issue: filelock library is not found when running with python/3.7.2
