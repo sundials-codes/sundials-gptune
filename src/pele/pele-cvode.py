@@ -71,7 +71,7 @@ def execute(params):
         'ode.eta_min=' + str(params['eta_min']),
         'ode.eta_min_ef=' + str(params['eta_min_ef'])
         ]
-        argslist += additional_params
+        argslist += additional_params_args
 
     # Run the command and grab the output
     print("Running: " + " ".join(argslist),flush=True)
