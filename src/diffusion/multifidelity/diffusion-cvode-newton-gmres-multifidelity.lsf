@@ -9,4 +9,4 @@
 #BSUB -e diffusion-cvode-newton-gmres-multifidelity.err
 
 . ../../setup-env-summit.sh
-jsrun -n 1 python diffusion-cvode-newton-gmres-multifidelity.py -nrun 1
+jsrun -n 1 python diffusion-cvode-multifidelity.py -nloop 4 -newton_gmres -gen_plots
