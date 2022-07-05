@@ -32,13 +32,17 @@ def parse_args():
     return args
 
 def execute(params):
-    pelefolder = os.getenv("SUNDIALSPELEBUILDROOT") + "/PeleLMeX/Exec/RegTests/FlameSheet"
+    pelefolder = os.getenv("SUNDIALSPELEBUILDROOT") + "/PeleLMeX/Exec/RegTests/FlameSheet/"
     peleexe = "PeleLMeX3d.gnu.TPROF.MPI.CUDA.ex"
-    pelefullpath = pelefolder + peleexe
+    peleinput = "inputs.3d_Dodecane"
     mpirun_command = os.getenv("MPIRUN")
     
     # Build up command with command-line options from current set of parameters
-    argslist = [mpirun_command, '-n', str(nodes*cores), pelefullpath,
+    argslist = [mpirun_command, '-n', str(nodes*6), '-a', '1', '-c', '1', '-g', '1', './' + peleexe, peleinput,
+                'geometry.prob_lo=0.0 0.0 0.0', 'geometry.prob_hi=0.008 0.008 0.016', 'amr.n_cell=32 32 64', 'amr.max_level=1', 'amr.plot_int=-1',
+                'amr.max_step=10', 'amr.cfl=0.5', 'amr.fixed_dt=1e-7', 'amr.dt_shrink=1.0', 'amrex.abort_on_out_of_gpu_memory=1',
+                'amrex.the_arena_is_managed=0', 'peleLM.chem_integrator=ReactorCvode', 'peleLM.use_typ_vals_chem=1', 'peleLM.memory_checks=0',
+                'ode.rtol=1.0e-6', 'ode.atol=1.0e-5', 'ode.atomic_reductions=0', 
             'cvode.max_order=' + str(params["maxord"]),
             'ode.nlscoef=' + str(params["nonlin_conv_coef"]),
             'ode.maxncf=' + str(params["max_conv_fails"])
@@ -72,10 +76,11 @@ def execute(params):
     # Run the command and grab the output
     print("Running: " + " ".join(argslist),flush=True)
     start = time.time()
-    subprocess.run(argslist)
-    #p = subprocess.run(argslist,capture_output=True)
+    #subprocess.run(argslist,cwd=pelefolder)
+    p = subprocess.run(argslist,capture_output=True,cwd=pelefolder)
     end = time.time()
     runtime = end - start
+    print("Runtime: " + str(runtime))
     """
     # Decode the stdout and stderr as they are in "bytes" format
     stdout = p.stdout.decode('ascii')
@@ -114,20 +119,20 @@ def objectives(point):
 def main():
     global nodes
     global cores
-    global solver_type
+    global solve_type
     global additional_params
 
     # Parse command line arguments
     args = parse_args()
     nrun = args.nrun
-    solver_type = args.solver_type
+    solve_type = args.solve_type
     additional_params = args.additional_params
     problem_name = 'pele-cvode'
     TUNER_NAME = 'GPTune'
 
-    if solver_type == 'newton_gmres':
+    if solve_type == 'newton_gmres':
         problem_name += '-newton-gmres'
-    elif solver_type == 'fixedpoint':
+    elif solve_type == 'fixedpoint':
         problem_name += '-fixedpoint'
     
     if additional_params:
@@ -169,12 +174,12 @@ def main():
         Integer(3, 50, transform="normalize", name="max_conv_fails")
     ]
     constraints = {}
-    if newton_gmres:
+    if solve_type == 'newton_gmres':
         parameter_space_list += [
             Integer(3, 500, transform="normalize", name="maxl"),
             Real(1e-5, 0.9, transform="normalize", name="epslin")
         ]
-    else:
+    elif solve_type == 'fixedpoint':
         parameter_space_list += [ 
             Integer(1, 20, transform="normalize", name="fixedpointvecs")
         ]
@@ -263,19 +268,19 @@ def main():
                 { 'name': 'nonlin_conv_coef', 'type': 'real', 'values': [ elem[1] for elem in data.P[tid] ] },
                 { 'name': 'max_conv_fails', 'type': 'integer', 'values': [ elem[2] for elem in data.P[tid] ] }
             ]
-            if newton_gmres:
+            if solve_type == 'newton_gmres':
                 param_datas += [
                     { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
                     { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
                 ]
-            else:
+            elif solve_type == 'fixedpoint':
                 param_datas += [
                     { 'name': 'fixedpointvecs', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
                 ]
 
             if additional_params:
                 start_index = 4
-                if newton_gmres:
+                if solve_type == 'newton_gmres':
                     start_index += 1
                 param_datas += [
                     { 'name': 'eta_cf', 'type': 'real', 'values': [ elem[start_index] for elem in data.P[tid] ] },
