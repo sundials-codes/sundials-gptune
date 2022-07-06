@@ -63,6 +63,7 @@ def execute(params):
         argslist += fixedpoint_args
     elif solve_type == 'newton_direct':
         newton_direct_args = [
+        'cvode.solve_type=magma_direct',
         'ode.msbp=' + str(params['msbp']),
         'ode.msbj=' + str(params['msbj']),
         'ode.dgmax=' + str(params['dgmax'])
