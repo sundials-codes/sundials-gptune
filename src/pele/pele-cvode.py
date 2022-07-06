@@ -61,6 +61,13 @@ def execute(params):
         'ode.max_fp_accel=' + str(params['fixedpointvecs'])
         ]
         argslist += fixedpoint_args
+    elif solve_type == 'newton_direct':
+        newton_direct_args = [
+        'ode.msbp=' + str(params['msbp']),
+        'ode.msbj=' + str(params['msbj']),
+        'ode.dgmax=' + str(params['dgmax'])
+        ]
+        argslist += newton_direct_args
 
     if additional_params:
         additional_params_args = [
@@ -134,6 +141,8 @@ def main():
         problem_name += '-newton-gmres'
     elif solve_type == 'fixedpoint':
         problem_name += '-fixedpoint'
+    elif solve_type == 'newton_direct':
+        problem_name += '-newton-direct'
     
     if additional_params:
         problem_name += '-additional'
@@ -183,6 +192,13 @@ def main():
         parameter_space_list += [ 
             Integer(1, 20, transform="normalize", name="fixedpointvecs")
         ]
+    elif solve_type == 'newton_direct':
+        parameter_space_list += [
+            Integer(1, 200, transform="normalize", name="msbp"),
+            Integer(1, 200, transform="normalize", name="msbj"),
+            Real(1e-2, 0.5, transform="normalize", name="dgmax"),
+        ]
+        constraints['cst_msb'] = 'msbj >= msbp'
 
     if additional_params:
         parameter_space_list += [ 
@@ -277,11 +293,19 @@ def main():
                 param_datas += [
                     { 'name': 'fixedpointvecs', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
                 ]
+            elif solve_type == 'newton_direct':
+                param_datas += [
+                    { 'name': 'msbp', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
+                    { 'name': 'msbj', 'type': 'integer', 'values': [ elem[4] for elem in data.P[tid] ] },
+                    { 'name': 'dgmax', 'type': 'real', 'values': [ elem[5] for elem in data.P[tid] ] }
+                ]
 
             if additional_params:
                 start_index = 4
                 if solve_type == 'newton_gmres':
                     start_index += 1
+                if solve_type == 'newton_direct':
+                    start_index += 2
                 param_datas += [
                     { 'name': 'eta_cf', 'type': 'real', 'values': [ elem[start_index] for elem in data.P[tid] ] },
                     { 'name': 'eta_max_fx', 'type': 'real', 'values': [ elem[start_index+1] for elem in data.P[tid] ] },
