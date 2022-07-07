@@ -10,6 +10,7 @@ from autotune.problem import *
 from gptune import * # import all
 import argparse
 import postprocess
+import time
 import re
 
 def parse_args():
@@ -42,7 +43,7 @@ def execute(params):
                 'geometry.prob_lo=0.0 0.0 0.0', 'geometry.prob_hi=0.008 0.008 0.016', 'amr.n_cell=32 32 64', 'amr.max_level=1', 'amr.plot_int=-1',
                 'amr.max_step=10', 'amr.cfl=0.5', 'amr.fixed_dt=1e-7', 'amr.dt_shrink=1.0', 'amrex.abort_on_out_of_gpu_memory=1',
                 'amrex.the_arena_is_managed=0', 'peleLM.chem_integrator=ReactorCvode', 'peleLM.use_typ_vals_chem=1', 'peleLM.memory_checks=0',
-                'ode.rtol=1.0e-16', 'ode.atol=1.0e-15', 'ode.atomic_reductions=0', 
+                'ode.rtol=1.0e-6', 'ode.atol=1.0e-5', 'ode.atomic_reductions=0', 
             'cvode.max_order=' + str(params["maxord"]),
             'ode.nlscoef=' + str(params["nonlin_conv_coef"]),
             'ode.maxncf=' + str(params["max_conv_fails"])
@@ -83,8 +84,9 @@ def execute(params):
 
     # Run the command and grab the output
     print("Running: " + " ".join(argslist),flush=True)
+    start = time.time()
     p = subprocess.run(argslist,capture_output=True,cwd=pelefolder)
-
+    end = time.time()
     # Set default value to fallback failure value
     runtime = 1e8
     # Parse runtime from output if everything went smoothly
@@ -94,40 +96,14 @@ def execute(params):
         # Get a list of lines
         stdoutlines = stdout.split('\n')
         # Find the line with data about the main() function
-        regex = re.compile("PeleLM::main()*")
+        r = re.compile("PeleLM::main()*")
         regexstringlist = list(filter(r.match, stdoutlines))
         if len(regexstringlist) == 2:
-            runtimeline = refexstringlist[1] # First time this text appears is not the correct runtime
+            runtimeline = regexstringlist[1] # First time this text appears is not the correct runtime
             runtime = float(runtimeline.split()[2])
+        
 
     print("Runtime: " + str(runtime))
-    """
-    # Decode the stdout and stderr as they are in "bytes" format
-    stdout = p.stdout.decode('ascii')
-    stderr = p.stderr.decode('ascii')
-    
-    runtime = 0
-    error = 0
-    # If no errors occurred in the run, and the output was printed as expected, proceed
-    # else, declare a failed point.
-    if not stderr and stdout and "," in stdout:
-        results = stdout.split(",")
-        runtime = float(results[0])
-        error = float(results[1])
-    else:
-        runtime = 1e8
-        error = 1e8
-    
-    if error < 1e-15:
-        runtime = 1e8
-        error = 1e8
-    
-    if error > 5e-3:
-        runtime = 1e8
-    
-    print(f"Finished. runtime: {runtime}, error: {error}",flush=True)
-    #print("done running shell command")
-    """
     return [runtime]
 
 def objectives(point):
