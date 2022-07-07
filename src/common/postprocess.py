@@ -3,7 +3,16 @@ import numpy as np
 
 def plot_runtime(runtimes,problem_name,bad_runtime_value):
     plot_runtimes = list(filter(lambda x: x != bad_runtime_value, runtimes))
+    current_best_runtime = 1e10
+    best_runtimes = []
+    best_runtime_indices = []
+    for i in range(len(plot_runtimes)): 
+        if plot_runtimes[i] < current_best_runtime:
+            best_runtimes.append(plot_runtimes[i])
+            best_runtime_indices.append(i)
+            current_best_runtime = plot_runtimes[i]
     plt.plot(plot_runtimes)
+    plt.scatter(best_runtime_indices,best_runtimes)
     plt.title('Runtime vs Sample Number, with failed Samples filtered')
     plt.xlabel('Filtered Sample Number')
     plt.ylabel('Runtime (s)')
