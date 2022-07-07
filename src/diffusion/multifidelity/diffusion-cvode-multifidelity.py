@@ -258,21 +258,14 @@ def main():
     """ Print all input and parameter samples """
     for tid in range(NI):
         print("tid: %d" % (tid))
-        print(f"   t = {data.I[tid][0]:.2f}")
+        print(f"   t = {data.I[tid][0]}")
         print("    Ps ", data.P[tid])
         print("    Os ", data.O[tid].tolist())
         nth = np.argmin(data.O[tid])
         Popt = data.P[tid][nth]
-        # find which arm and which sample the optimal param is from
-        for arm in range(len(data_hist.P)):
-            try:
-                idx = (data_hist.P[arm]).index(Popt)
-                arm_opt = arm
-            except ValueError:
-                pass
-        print('    Popt ', Popt, 'Oopt ', min(data.O[tid])[0], 'nth ', nth, 'nth-bandit (s, nth) = ', (arm_opt, idx))
 
         if args.gen_plots:
+            print("GENERATING PLOTS")
             runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
             postprocess.plot_runtime(runtimes,problem_name,1e8)
             param_datas = [
@@ -308,6 +301,16 @@ def main():
             postprocess.plot_cat_bool_param_freq_period(param_datas,problem_name,4)
             #postprocess.plot_real_int_param_std_period(param_datas,problem_name,4)
             postprocess.plot_real_int_param_std_window(param_datas,problem_name,10) 
+
+        # find which arm and which sample the optimal param is from
+        for arm in range(len(data_hist.P)):
+            try:
+                idx = (data_hist.P[arm]).index(Popt)
+                arm_opt = arm
+            except ValueError:
+                pass
+        print('    Popt ', Popt, 'Oopt ', min(data.O[tid])[0], 'nth ', nth, 'nth-bandit (s, nth) = ', (arm_opt, idx))
+
 
 if __name__ == "__main__":
     main()
