@@ -1,0 +1,13 @@
+#!/bin/bash
+# This job should be submitted from within sundials-gptune/src/diffusion/multitask directory
+#BSUB -P CSC326
+#BSUB -q killable
+#BSUB -W 10:00
+#BSUB -nnodes 1
+#BSUB -J diffusion-cvode-multitask-fixedpoint
+#BSUB -o diffusion-cvode-multitask-fixedpoint.out
+#BSUB -e diffusion-cvode-multitask-fixedpoint.err
+#BSUB -N
+
+. ../../setup-env-summit.sh
+jsrun -n 1 python diffusion-cvode-multitask.py -nrun 300 -gen_plots
