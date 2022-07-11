@@ -24,6 +24,7 @@ def parse_args():
     parser.add_argument('-solve_type', type=str, default='fixedpoint', help='Solver type. Ex: fixedpoint/newton_gmres')
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
     parser.add_argument('-additional_params', action='store_true', dest='additional_params')
+    parser.add_argument('-mechanism',type=str, default='dodecane_lu', help='Chemical mechanism. Ex: dodecane_lu/dodecane_lu_qss')
     #parser.add_argument('-multifidelity', type=str, default='-1', help='Turn on multifidelity. Value template: low,high,multiplicativefactor')
     parser.set_defaults(gen_plots=False)
     parser.set_defaults(additional_params=False)
@@ -48,7 +49,7 @@ def parse_error(fcompare_out):
 
 def execute(params):
     pelefolder = os.getenv("PELEEXEROOT")
-    peleexe = "PeleLMeX3d.gnu.TPROF.MPI.CUDA.ex"
+    peleexe = "PeleLMeX3d.gnu.TPROF.MPI.CUDA.ex." + mechanism
     peleinput = "inputs.3d_Dodecane"
     fcomparefolder = os.getenv("FCOMPAREROOT")
     fcompareexe = "fcompare.gnu.ex" 
@@ -140,13 +141,15 @@ def main():
     global cores
     global solve_type
     global additional_params
+    global mechanism
 
     # Parse command line arguments
     args = parse_args()
     nrun = args.nrun
     solve_type = args.solve_type
     additional_params = args.additional_params
-    problem_name = 'pele-cvode'
+    mechanism = args.mechanism
+    problem_name = 'pele-' + mechanism + '-cvode'
     TUNER_NAME = 'GPTune'
 
     if solve_type == 'newton_gmres':
