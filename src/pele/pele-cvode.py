@@ -32,10 +32,26 @@ def parse_args():
 
     return args
 
+def parse_error(fcompare_out):
+    error = -1e8
+    if len(fcompare_out) > 0:
+        finest_level_out = fcompare_out.split("level")[-1]
+        finest_level_lines = finest_level_out.split("\n")
+        for line in finest_level_lines:
+            if len(line) > 0: 
+                line_list = line.split()
+                if line_list[0] == "temp" or "Y(" in line_list[0]:
+                    error = max(error,float(line_list[2]))
+        return error
+    else:
+        return 1e8
+
 def execute(params):
-    pelefolder = os.getenv("SUNDIALSPELEBUILDROOT") + "/PeleLMeX/Exec/RegTests/FlameSheet/"
+    pelefolder = os.getenv("PELEEXEROOT")
     peleexe = "PeleLMeX3d.gnu.TPROF.MPI.CUDA.ex"
     peleinput = "inputs.3d_Dodecane"
+    fcomparefolder = os.getenv("FCOMPAREROOT")
+    fcompareexe = "fcompare.gnu.ex" 
     mpirun_command = os.getenv("MPIRUN")
     
     # Build up command with command-line options from current set of parameters
@@ -84,9 +100,7 @@ def execute(params):
 
     # Run the command and grab the output
     print("Running: " + " ".join(argslist),flush=True)
-    start = time.time()
     p = subprocess.run(argslist,capture_output=True,cwd=pelefolder)
-    end = time.time()
     # Set default value to fallback failure value
     runtime = 1e8
     # Parse runtime from output if everything went smoothly
@@ -104,6 +118,15 @@ def execute(params):
         
 
     print("Runtime: " + str(runtime))
+
+    argslist_fcompare = [fcomparefolder + '/' + fcompareexe, 'ref00010', 'plt00010']
+    p = subprocess.run(argslist_fcompare, capture_output=True,cwd=pelefolder)
+    fcompare_out = p.stdout.decode('ascii')
+    error = parse_error(fcompare_out)
+
+    if error > 5e-2:
+        runtime = 1e8
+
     return [runtime]
 
 def objectives(point):

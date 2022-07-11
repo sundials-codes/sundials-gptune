@@ -2,6 +2,8 @@ export GPTUNEROOT=/ccs/home/afish/workspace/GPTune
 export SUNDIALSBUILDROOT=/ccs/home/afish/workspace/feature-gptune-optimization-nonintegrated-mpi
 export SUNDIALSPELEBUILDROOT=/ccs/home/afish/workspace/sundials-pele
 export SUNDIALSGPTUNEROOT=/gpfs/alpine/csc326/proj-shared/afish/sundials-gptune
+export PELEEXEROOT=/gpfs/alpine/csc326/proj-shared/afish/pele_exe/FlameSheet
+export FCOMPAREROOT=/gpfs/alpine/csc326/proj-shared/afish/pele_exe/fcompare
 
 export SCIKITOPTIMIZE=$GPTUNEROOT/scikit-optimize
 export AUTOTUNE=$GPTUNEROOT/autotune
