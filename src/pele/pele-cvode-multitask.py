@@ -24,8 +24,6 @@ def parse_args():
     parser.add_argument('-solve_type', type=str, default='fixedpoint', help='Solver type. Ex: fixedpoint/newton_gmres/newton_bcgs/newton_direct/newton_all/newton_iter')
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
     parser.add_argument('-additional_params', action='store_true', dest='additional_params')
-    parser.add_argument('-mechanism',type=str, default='dodecane_lu', help='Chemical mechanism. Ex: dodecane_lu/dodecane_lu_qss/drm19')
-    #parser.add_argument('-multifidelity', type=str, default='-1', help='Turn on multifidelity. Value template: low,high,multiplicativefactor')
     parser.set_defaults(gen_plots=False)
     parser.set_defaults(additional_params=False)
 
@@ -34,7 +32,8 @@ def parse_args():
     return args
 
 def parse_error(fcompare_out):
-    error = -1e8
+    error = 1e8
+    found_first_err = False
     if len(fcompare_out) > 0:
         finest_level_out = fcompare_out.split("level")[-1]
         finest_level_lines = finest_level_out.split("\n")
@@ -42,10 +41,12 @@ def parse_error(fcompare_out):
             if len(line) > 0: 
                 line_list = line.split()
                 if line_list[0] == "temp" or "Y(" in line_list[0]:
-                    error = max(error,float(line_list[2]))
-        return error
-    else:
-        return 1e8
+                    if found_first_err:
+                        error = max(error,float(line_list[2]))
+                    else:
+                        error = float(line_list[2])
+                        found_first_err = True
+    return error
 
 def get_input_file(mechanism):
     if mechanism == "dodecane_lu":
@@ -57,6 +58,7 @@ def get_input_file(mechanism):
 
 def execute(params):
     pelefolder = os.getenv("PELEEXEROOT")
+    mechanism = params['mechanism']
     peleexe = "PeleLMeX3d.gnu.TPROF.MPI.CUDA.ex." + mechanism
     peleinput = get_input_file(mechanism)
     pltfile = 'plt.' + mechanism + '.' + solve_type
@@ -165,8 +167,7 @@ def main():
     nrun = args.nrun
     solve_type = args.solve_type
     additional_params = args.additional_params
-    mechanism = args.mechanism
-    problem_name = 'pele-' + mechanism + '-cvode'
+    problem_name = 'pele-cvode-multitask'
     TUNER_NAME = 'GPTune'
 
     if solve_type == 'newton_gmres':
@@ -213,7 +214,7 @@ def main():
     os.environ['MACHINE_NAME'] = machine
     os.environ['TUNER_NAME'] = TUNER_NAME
 
-    input_space = Space([Categoricalnorm([problem_name], transform="onehot", name="problemname")])
+    input_space = Space([Categoricalnorm(['dodecane_lu', 'dodecane_lu_qss', 'drm19'], transform="onehot", name='mechanism')])
 
     parameter_space_list = [
         Integer(1, 5, transform="normalize", name="maxord"),
@@ -226,17 +227,18 @@ def main():
             Integer(3, 500, transform="normalize", name="maxl"),
             Real(1e-5, 0.9, transform="normalize", name="epslin")
         ]
-    elif solve_type == 'fixedpoint':
-        parameter_space_list += [ 
-            Integer(1, 20, transform="normalize", name="fixedpointvecs")
-        ]
-    elif solve_type == 'newton_direct' or solve_type == 'newton_all':
+    if solve_type == 'newton_direct' or solve_type == 'newton_all':
         parameter_space_list += [
             Integer(1, 200, transform="normalize", name="msbp"),
             Integer(1, 200, transform="normalize", name="msbj"),
             Real(1e-2, 0.5, transform="normalize", name="dgmax"),
         ]
         constraints['cst_msb'] = 'msbj >= msbp'
+
+    if solve_type == 'fixedpoint':
+        parameter_space_list += [ 
+            Integer(1, 20, transform="normalize", name="fixedpointvecs")
+        ]
 
     if solve_type == 'newton_all':
         parameter_space_list += [
@@ -306,7 +308,7 @@ def main():
     options['verbose'] = False
     options.validate(computer=computer)
 
-    giventask = [[problem_name]]
+    giventask = [['dodecane_lu'], ['dodecane_lu_qss'], ['drm19']]
     NI=len(giventask) 
     NS=nrun
 
@@ -324,14 +326,15 @@ def main():
         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
         if args.gen_plots:
+            problem_task_name = problem_name + '-' + data.I[tid][0]
             runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
-            postprocess.plot_runtime(runtimes,problem_name,1e8)
+            postprocess.plot_runtime(runtimes,problem_task_name,1e8)
             param_datas = [
                 { 'name': 'max_ord', 'type': 'integer', 'values': [ elem[0] for elem in data.P[tid] ] },
                 { 'name': 'nonlin_conv_coef', 'type': 'real', 'values': [ elem[1] for elem in data.P[tid] ] },
                 { 'name': 'max_conv_fails', 'type': 'integer', 'values': [ elem[2] for elem in data.P[tid] ] }
             ]
-            if solve_type == 'newton_gmres':
+            if solve_type == 'newton_gmres' or solve_type == 'newton_bcgs' or solve_type == 'newton_iter':
                 param_datas += [
                     { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
                     { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
@@ -346,13 +349,23 @@ def main():
                     { 'name': 'msbj', 'type': 'integer', 'values': [ elem[4] for elem in data.P[tid] ] },
                     { 'name': 'dgmax', 'type': 'real', 'values': [ elem[5] for elem in data.P[tid] ] }
                 ]
+            elif solve_type == 'newton_all':
+                param_datas += [
+                    { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
+                    { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
+                    { 'name': 'msbp', 'type': 'integer', 'values': [ elem[5] for elem in data.P[tid] ] },
+                    { 'name': 'msbj', 'type': 'integer', 'values': [ elem[6] for elem in data.P[tid] ] },
+                    { 'name': 'dgmax', 'type': 'real', 'values': [ elem[7] for elem in data.P[tid] ] }
+                ]
 
             if additional_params:
                 start_index = 4
-                if solve_type == 'newton_gmres':
+                if solve_type == 'newton_gmres' or solve_type == 'newton_bcgs' or solve_type == 'newton_iter':
                     start_index += 1
                 if solve_type == 'newton_direct':
                     start_index += 2
+                if solve_type == 'newton_all':
+                    start_index += 4
                 param_datas += [
                     { 'name': 'eta_cf', 'type': 'real', 'values': [ elem[start_index] for elem in data.P[tid] ] },
                     { 'name': 'eta_max_fx', 'type': 'real', 'values': [ elem[start_index+1] for elem in data.P[tid] ] },
@@ -362,11 +375,11 @@ def main():
                     { 'name': 'eta_min_ef', 'type': 'real', 'values': [ elem[start_index+5] for elem in data.P[tid] ] }
                 ]
             postprocess.plot_params(param_datas,problem_name)
-            postprocess.plot_params_with_fails(runtimes,param_datas,problem_name,1e8)
-            postprocess.plot_params_vs_runtime(runtimes,param_datas,problem_name,1e8)
-            postprocess.plot_cat_bool_param_freq_period(param_datas,problem_name,4)
-            #postprocess.plot_real_int_param_std_period(param_datas,problem_name,4)
-            postprocess.plot_real_int_param_std_window(param_datas,problem_name,10) 
+            postprocess.plot_params_with_fails(runtimes,param_datas,problem_task_name,1e8)
+            postprocess.plot_params_vs_runtime(runtimes,param_datas,problem_task_name,1e8)
+            postprocess.plot_cat_bool_param_freq_period(param_datas,problem_task_name,4)
+            #postprocess.plot_real_int_param_std_period(param_datas,problem_task_name,4)
+            postprocess.plot_real_int_param_std_window(param_datas,problem_task_name,10) 
 
 if __name__ == "__main__":
     main()
