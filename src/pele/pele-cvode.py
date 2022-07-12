@@ -83,7 +83,7 @@ def execute(params):
         'ode.epslin=' + str(params['epslin']),
         ]
         argslist += newton_gmres_args
-    if solve_type == 'newton_bcgs' or ((solve_type == 'newton_all' or solve_type == 'newton_iter') and params['linear_solver'] == 'bcgs'):
+    elif solve_type == 'newton_bcgs' or ((solve_type == 'newton_all' or solve_type == 'newton_iter') and params['linear_solver'] == 'bcgs'):
         newton_bcgs_args = [
         'cvode.solve_type=BCGS',
         'ode.maxl=' + str(params['maxl']),
@@ -162,6 +162,7 @@ def main():
 
     # Parse command line arguments
     args = parse_args()
+    nodes = args.nodes
     nrun = args.nrun
     solve_type = args.solve_type
     additional_params = args.additional_params
@@ -226,17 +227,18 @@ def main():
             Integer(3, 500, transform="normalize", name="maxl"),
             Real(1e-5, 0.9, transform="normalize", name="epslin")
         ]
-    elif solve_type == 'fixedpoint':
-        parameter_space_list += [ 
-            Integer(1, 20, transform="normalize", name="fixedpointvecs")
-        ]
-    elif solve_type == 'newton_direct' or solve_type == 'newton_all':
+    if solve_type == 'newton_direct' or solve_type == 'newton_all':
         parameter_space_list += [
             Integer(1, 200, transform="normalize", name="msbp"),
             Integer(1, 200, transform="normalize", name="msbj"),
             Real(1e-2, 0.5, transform="normalize", name="dgmax"),
         ]
         constraints['cst_msb'] = 'msbj >= msbp'
+
+    if solve_type == 'fixedpoint':
+        parameter_space_list += [ 
+            Integer(1, 20, transform="normalize", name="fixedpointvecs")
+        ]
 
     if solve_type == 'newton_all':
         parameter_space_list += [
@@ -331,7 +333,7 @@ def main():
                 { 'name': 'nonlin_conv_coef', 'type': 'real', 'values': [ elem[1] for elem in data.P[tid] ] },
                 { 'name': 'max_conv_fails', 'type': 'integer', 'values': [ elem[2] for elem in data.P[tid] ] }
             ]
-            if solve_type == 'newton_gmres':
+            if solve_type == 'newton_gmres' or solve_type == 'newton_bcgs' or solve_type == 'newton_iter':
                 param_datas += [
                     { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
                     { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
@@ -346,13 +348,23 @@ def main():
                     { 'name': 'msbj', 'type': 'integer', 'values': [ elem[4] for elem in data.P[tid] ] },
                     { 'name': 'dgmax', 'type': 'real', 'values': [ elem[5] for elem in data.P[tid] ] }
                 ]
+            elif solve_type == 'newton_all':
+                param_datas += [
+                    { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
+                    { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
+                    { 'name': 'msbp', 'type': 'integer', 'values': [ elem[5] for elem in data.P[tid] ] },
+                    { 'name': 'msbj', 'type': 'integer', 'values': [ elem[6] for elem in data.P[tid] ] },
+                    { 'name': 'dgmax', 'type': 'real', 'values': [ elem[7] for elem in data.P[tid] ] }
+                ]
 
             if additional_params:
                 start_index = 4
-                if solve_type == 'newton_gmres':
+                if solve_type == 'newton_gmres' or solve_type == 'newton_bcgs' or solve_type == 'newton_iter':
                     start_index += 1
                 if solve_type == 'newton_direct':
                     start_index += 2
+                if solve_type == 'newton_all':
+                    start_index += 4
                 param_datas += [
                     { 'name': 'eta_cf', 'type': 'real', 'values': [ elem[start_index] for elem in data.P[tid] ] },
                     { 'name': 'eta_max_fx', 'type': 'real', 'values': [ elem[start_index+1] for elem in data.P[tid] ] },

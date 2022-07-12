@@ -85,7 +85,7 @@ def execute(params):
         'ode.epslin=' + str(params['epslin']),
         ]
         argslist += newton_gmres_args
-    if solve_type == 'newton_bcgs' or ((solve_type == 'newton_all' or solve_type == 'newton_iter') and params['linear_solver'] == 'bcgs'):
+    elif solve_type == 'newton_bcgs' or ((solve_type == 'newton_all' or solve_type == 'newton_iter') and params['linear_solver'] == 'bcgs'):
         newton_bcgs_args = [
         'cvode.solve_type=BCGS',
         'ode.maxl=' + str(params['maxl']),
@@ -164,6 +164,7 @@ def main():
 
     # Parse command line arguments
     args = parse_args()
+    nodes = args.nodes
     nrun = args.nrun
     solve_type = args.solve_type
     additional_params = args.additional_params
