@@ -64,6 +64,8 @@ def execute(params):
     fcomparefolder = os.getenv("FCOMPAREROOT")
     fcompareexe = "fcompare.gnu.ex" 
     mpirun_command = os.getenv("MPIRUN")
+    logfolder = "log"
+    logfilelist = [problem_name,mechanism,solve_type,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])
     
     # Build up command with command-line options from current set of parameters
     argslist = [mpirun_command, '-n', str(nodes*6), '-a', '1', '-c', '1', '-g', '1', './' + peleexe, peleinput,
@@ -83,6 +85,7 @@ def execute(params):
         'ode.epslin=' + str(params['epslin']),
         ]
         argslist += newton_gmres_args
+        loglist += ['gmres',str(params['maxl']),str(params['epslin'])]
     elif solve_type == 'newton_bcgs' or ((solve_type == 'newton_all' or solve_type == 'newton_iter') and params['linear_solver'] == 'bcgs'):
         newton_bcgs_args = [
         'cvode.solve_type=BCGS',
@@ -90,12 +93,14 @@ def execute(params):
         'ode.epslin=' + str(params['epslin']),
         ]
         argslist += newton_bcgs_args
+        loglist += ['bcgs',str(params['maxl']),str(params['epslin'])]
     elif solve_type == 'fixedpoint':
         fixedpoint_args = [
         'cvode.solve_type=fixed_point', 
         'ode.max_fp_accel=' + str(params['fixedpointvecs'])
         ]
         argslist += fixedpoint_args
+        loglist += [str(params['fixedpointvecs'])]
     elif solve_type == 'newton_direct' or (solve_type == 'newton_all' and params['linear_solver'] == 'direct'):
         newton_direct_args = [
         'cvode.solve_type=magma_direct',
@@ -104,6 +109,7 @@ def execute(params):
         'ode.dgmax=' + str(params['dgmax'])
         ]
         argslist += newton_direct_args
+        loglist += ['magma',str(params['msbp']),str(params['msbj']),str(params['dgmax'])]
 
     if additional_params:
         additional_params_args = [
@@ -115,16 +121,17 @@ def execute(params):
         'ode.eta_min_ef=' + str(params['eta_min_ef'])
         ]
         argslist += additional_params_args
+        loglist += [str(params['eta_cf']),str(params['eta_max_fx']),str(params['eta_min_fx']),str(params['eta_max_gs']),str(params['eta_min']),str(params['eta_min_ef'])]
 
     # Run the command and grab the output
     print("Running: " + " ".join(argslist),flush=True)
     p = subprocess.run(argslist,capture_output=True,cwd=pelefolder)
+    # Decode bytes to string
+    stdout = p.stdout.decode('ascii')
     # Set default value to fallback failure value
     runtime = 1e8
     # Parse runtime from output if everything went smoothly
     if p.returncode == 0:
-        # Decode bytes to string
-        stdout = p.stdout.decode('ascii')
         # Get a list of lines
         stdoutlines = stdout.split('\n')
         # Find the line with data about the main() function
@@ -142,9 +149,17 @@ def execute(params):
     fcompare_out = p.stdout.decode('ascii')
     error = parse_error(fcompare_out)
 
+
     if error > 5e-2:
         runtime = 1e8
 
+    logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + error
+    logfilename = loglist.join("_") + ".log"
+    logfullpath = logfolder + "/" + logfilename
+    logfile = open(logfullpath, 'w')
+    logfile.write(logtext)
+    logfile.close()
+     
     return [runtime]
 
 def objectives(point):
@@ -159,6 +174,7 @@ def main():
     global solve_type
     global additional_params
     global mechanism
+    global problem_name
 
     # Parse command line arguments
     args = parse_args()
