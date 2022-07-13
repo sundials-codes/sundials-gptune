@@ -36,9 +36,11 @@ def execute(params):
     diffusion2Dexe = "cvode_diffusion_2D_mpi"
     diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
     mpirun_command = os.getenv("MPIRUN")
+    logfolder = "log"
+    logfilelist = [problem_name,solve_type,str(params['nxy']),str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])
     
     # Build up command with command-line options from current set of parameters
-    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--nx', str(params['nxy']), '--ny', str(params['nxy']),
+    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--stats', '--nx', str(params['nxy']), '--ny', str(params['nxy']),
             '--maxord', str(params["maxord"]),
             '--nlscoef', str(params["nonlin_conv_coef"]),
             '--maxncf', str(params["max_conv_fails"])
@@ -51,11 +53,13 @@ def execute(params):
         '--epslin', str(params['epslin']),
         ]
         argslist += newton_gmres_args
+        logfilelist += ['gmres',str(params['maxl']),str(params['epslin'])]
     else:
         fixedpoint_args = [
         '--fixedpoint', str(params['fixedpointvecs'])
         ]
         argslist += fixedpoint_args
+        logfilelist += [str(params['fixedpointvecs'])]
 
     if additional_params:
         additional_params_args = [
@@ -67,6 +71,7 @@ def execute(params):
         '--eta_min_ef', str(params['eta_min_ef'])
         ]
         argslist += additional_params_args
+        loglist += [str(params['eta_cf']),str(params['eta_max_fx']),str(params['eta_min_fx']),str(params['eta_max_gs']),str(params['eta_min']),str(params['eta_min_ef'])]
 
     # Run the command and grab the output
     print("Running: " + " ".join(argslist),flush=True)
@@ -80,7 +85,8 @@ def execute(params):
     # If no errors occurred in the run, and the output was printed as expected, proceed
     # else, declare a failed point.
     if not stderr and stdout and "," in stdout:
-        results = stdout.split(",")
+        resultline = stdout.split("\n")[-1]
+        results = resultline.split(",")
         runtime = float(results[0])
         error = float(results[1])
     else:
@@ -97,6 +103,13 @@ def execute(params):
     print(f"Finished. runtime: {runtime}, error: {error}",flush=True)
     #print("done running shell command")
     
+    logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + error
+    logfilename = logfilelist.join("_") + ".log"
+    logfullpath = logfolder + "/" + logfilename
+    logfile = open(logfullpath, 'w')
+    logfile.write(logtext)
+    logfile.close()
+     
     return [runtime,error]
 
 def objectives(point):
