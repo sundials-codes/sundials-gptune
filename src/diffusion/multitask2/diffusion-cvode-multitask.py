@@ -37,7 +37,7 @@ def execute(params):
     diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
     mpirun_command = os.getenv("MPIRUN")
     logfolder = "log"
-    logfilelist = [problem_name,solve_type,str(params['nxy']),str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])
+    logfilelist = [problem_name,solve_type,str(params['nxy']),str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
     
     # Build up command with command-line options from current set of parameters
     argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--stats', '--nx', str(params['nxy']), '--ny', str(params['nxy']),
@@ -104,7 +104,7 @@ def execute(params):
     #print("done running shell command")
     
     logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + error
-    logfilename = logfilelist.join("_") + ".log"
+    logfilename = "_".join(logfilelist) + ".log"
     logfullpath = logfolder + "/" + logfilename
     logfile = open(logfullpath, 'w')
     logfile.write(logtext)
@@ -123,6 +123,8 @@ def main():
     global cores
     global newton_gmres
     global additional_params
+    global problem_name
+    global solve_type
 
     # Parse command line arguments
     args = parse_args()
@@ -134,8 +136,10 @@ def main():
 
     if newton_gmres:
         problem_name += '-newton-gmres'
+        solve_type = 'newton_gmres'
     else:
         problem_name += '-fixedpoint'
+        solve_type = 'fixedpoint'
     
     if additional_params:
         problem_name += '-additional'

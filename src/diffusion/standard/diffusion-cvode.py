@@ -22,6 +22,9 @@ def parse_args():
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
     parser.add_argument('-additional_params', action='store_true', dest='additional_params')
     parser.add_argument('-newton_gmres', action='store_true', dest='newton_gmres')
+    parser.add_argument('-diffusion_coeff', type=int, default=1, help='Diffusion coefficient for problem')
+    parser.add_argument('-nxy', type=int, default=128, help='nx and ny value for problem')
+    #parser.add_argument('-ic_scalar', type=int, default=1, help='Initial condition scalar for problem')
     #parser.add_argument('-multifidelity', type=str, default='-1', help='Turn on multifidelity. Value template: low,high,multiplicativefactor')
     parser.set_defaults(gen_plots=False)
     parser.set_defaults(additional_params=False)
@@ -37,10 +40,10 @@ def execute(params):
     diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
     mpirun_command = os.getenv("MPIRUN")
     logfolder = "log"
-    logfilelist = [problem_name,solve_type,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])
+    logfilelist = [problem_name,solve_type,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
     
     # Build up command with command-line options from current set of parameters
-    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--stats', '--nx', '128', '--ny', '128',
+    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--stats', '--kx', str(diffusion_coeff), '--ky', str(diffusion_coeff), '--nx', str(nxy), '--ny', str(nxy),
             '--maxord', str(params["maxord"]),
             '--nlscoef', str(params["nonlin_conv_coef"]),
             '--maxncf', str(params["max_conv_fails"])
@@ -104,7 +107,7 @@ def execute(params):
     #print("done running shell command")
     
     logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + error
-    logfilename = logfilelist.join("_") + ".log"
+    logfilename = "_".join(logfilelist) + ".log"
     logfullpath = logfolder + "/" + logfilename
     logfile = open(logfullpath, 'w')
     logfile.write(logtext)
@@ -123,19 +126,28 @@ def main():
     global cores
     global newton_gmres
     global additional_params
+    global diffusion_coeff
+    global nxy
+    global problem_name
+    global solve_type
 
     # Parse command line arguments
     args = parse_args()
     nrun = args.nrun
     newton_gmres = args.newton_gmres
     additional_params = args.additional_params
-    problem_name = 'diffusion-cvode'
+    diffusion_coeff = args.diffusion_coeff
+    nxy = args.nxy
+   
+    problem_name = 'diffusion-cvode-' + str(diffusion_coeff) + '-' + str(nxy)
     TUNER_NAME = 'GPTune'
 
     if newton_gmres:
         problem_name += '-newton-gmres'
+        solve_type = 'newton_gmres'
     else:
         problem_name += '-fixedpoint'
+        solve_type = 'fixedpoint'
     
     if additional_params:
         problem_name += '-additional'

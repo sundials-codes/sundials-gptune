@@ -22,6 +22,9 @@ def parse_args():
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
     parser.add_argument('-additional_params', action='store_true', dest='additional_params')
     parser.add_argument('-newton_gmres', action='store_true', dest='newton_gmres')
+    parser.add_argument('-diffusion_coeff', type=int, default=1, help='Diffusion coefficient for problem')
+    parser.add_argument('-nxy', type=int, default=128, help='nx and ny value for problem')
+    #parser.add_argument('-ic_scalar', type=int, default=1, help='Initial condition scalar for problem')
     #parser.add_argument('-multifidelity', type=str, default='-1', help='Turn on multifidelity. Value template: low,high,multiplicativefactor')
     parser.set_defaults(gen_plots=False)
     parser.set_defaults(additional_params=False)
@@ -37,10 +40,10 @@ def execute(params):
     diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
     mpirun_command = os.getenv("MPIRUN")
     logfolder = "log"
-    logfilelist = [problem_name,solve_type,str(params['diffusion_coeff']),str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
+    logfilelist = [problem_name,solve_type,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
     
     # Build up command with command-line options from current set of parameters
-    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--stats', '--kx', str(params['diffusion_coeff']), '--ky', str(params['diffusion_coeff']), '--nx', '128', '--ny', '128',
+    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--stats', '--kx', str(diffusion_coeff), '--ky', str(diffusion_coeff), '--nx', str(nxy), '--ny', str(nxy),
             '--maxord', str(params["maxord"]),
             '--nlscoef', str(params["nonlin_conv_coef"]),
             '--maxncf', str(params["max_conv_fails"])
@@ -104,7 +107,7 @@ def execute(params):
     #print("done running shell command")
     
     logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + error
-    logfilename = "_".join(logfilelist) + ".log"
+    logfilename = logfilelist.join("_") + ".log"
     logfullpath = logfolder + "/" + logfilename
     logfile = open(logfullpath, 'w')
     logfile.write(logtext)
@@ -123,23 +126,24 @@ def main():
     global cores
     global newton_gmres
     global additional_params
-    global problem_name
-    global solve_type
+    global diffusion_coeff
+    global nxy
 
     # Parse command line arguments
     args = parse_args()
     nrun = args.nrun
     newton_gmres = args.newton_gmres
     additional_params = args.additional_params
-    problem_name = 'diffusion-cvode-multitask'
+    diffusion_coeff = args.diffusion_coeff
+    nxy = args.nxy
+   
+    problem_name = 'diffusion-cvode'
     TUNER_NAME = 'GPTune'
 
     if newton_gmres:
         problem_name += '-newton-gmres'
-        solve_type = 'newton_gmres'
     else:
         problem_name += '-fixedpoint'
-        solve_type = 'fixedpoint'
     
     if additional_params:
         problem_name += '-additional'
@@ -172,7 +176,7 @@ def main():
     os.environ['MACHINE_NAME'] = machine
     os.environ['TUNER_NAME'] = TUNER_NAME
 
-    input_space = Space([Real(0.0, 1000.0, transform="normalize", name="diffusion_coeff")])
+    input_space = Space([Categoricalnorm([problem_name], transform="onehot", name="problemname")])
 
     parameter_space_list = [
         Integer(1, 5, transform="normalize", name="maxord"),
@@ -249,7 +253,7 @@ def main():
     options['verbose'] = False
     options.validate(computer=computer)
 
-    giventask = [[1], [5], [20]]
+    giventask = [[problem_name]]
     NI=len(giventask) 
     NS=nrun
 
@@ -266,43 +270,15 @@ def main():
         print("    Os ", data.O[tid].tolist())
         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
-        if args.gen_plots:
-            problem_task_name = problem_name + '-' + str(data.I[tid][0])
-            runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
-            postprocess.plot_runtime(runtimes,problem_task_name,1e8)
-            param_datas = [
-                { 'name': 'max_ord', 'type': 'integer', 'values': [ elem[0] for elem in data.P[tid] ] },
-                { 'name': 'nonlin_conv_coef', 'type': 'real', 'values': [ elem[1] for elem in data.P[tid] ] },
-                { 'name': 'max_conv_fails', 'type': 'integer', 'values': [ elem[2] for elem in data.P[tid] ] }
-            ]
-            if newton_gmres:
-                param_datas += [
-                    { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
-                    { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
-                ]
-            else:
-                param_datas += [
-                    { 'name': 'fixedpointvecs', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
-                ]
-
-            if additional_params:
-                start_index = 4
-                if newton_gmres:
-                    start_index += 1
-                param_datas += [
-                    { 'name': 'eta_cf', 'type': 'real', 'values': [ elem[start_index] for elem in data.P[tid] ] },
-                    { 'name': 'eta_max_fx', 'type': 'real', 'values': [ elem[start_index+1] for elem in data.P[tid] ] },
-                    { 'name': 'eta_min_fx', 'type': 'real', 'values': [ elem[start_index+2] for elem in data.P[tid] ] },
-                    { 'name': 'eta_max_gs', 'type': 'real', 'values': [ elem[start_index+3] for elem in data.P[tid] ] },
-                    { 'name': 'eta_min', 'type': 'real', 'values': [ elem[start_index+4] for elem in data.P[tid] ] },
-                    { 'name': 'eta_min_ef', 'type': 'real', 'values': [ elem[start_index+5] for elem in data.P[tid] ] }
-                ]
-            postprocess.plot_params(param_datas,problem_task_name)
-            postprocess.plot_params_with_fails(runtimes,param_datas,problem_task_name,1e8)
-            postprocess.plot_params_vs_runtime(runtimes,param_datas,problem_task_name,1e8)
-            postprocess.plot_cat_bool_param_freq_period(param_datas,problem_task_name,4)
-            #postprocess.plot_real_int_param_std_period(param_datas,problem_name,4)
-            postprocess.plot_real_int_param_std_window(param_datas,problem_task_name,10) 
+        outfile = open(problem_name + ".csv","w")
+        outfile.write("maxord,nonlin_conv_coef,max_conv_fails,maxl,epslin,runtime")
+        for i in range(len(data.P[tid])):
+            outlinelist = list(data.P[tid][i]) + list(data.O[tid][i])
+            outlineliststr = [str(x) for x in outlinelist]
+            outline = ",".join(outlineliststr) + "\n"
+            outfile.write(outline)
+    
+        outfile.close()
 
 if __name__ == "__main__":
     main()
