@@ -19,6 +19,7 @@ def parse_args():
     parser.add_argument('-cores', type=int, default=2,help='Number of cores per machine node')
     parser.add_argument('-machine', type=str,default='-1', help='Name of the computer (not hostname)')
     parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
+    parser.add_argument('-tla_nxy', type=int, default=0, help='Diffusion coefficient to predict parameters for')
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
     parser.add_argument('-additional_params', action='store_true', dest='additional_params')
     parser.add_argument('-newton_gmres', action='store_true', dest='newton_gmres')
@@ -265,6 +266,16 @@ def main():
         print("    Ps ", data.P[tid])
         print("    Os ", data.O[tid].tolist())
         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+
+        if args.tla_nxy != 0:
+            newtask = [[args.tle_nxy]]
+            (aprxopts,objval,stats) = gt.TLA1(newtask, NS=None)
+            print("stats: ",stats)
+
+            """ Print the optimal parameters and function evaluations"""    
+            for tid in range(len(newtask)):
+                print("new task: %s"%(str(newtask[tid])))
+                print('    predicted Popt: ', aprxopts[tid], ' objval: ',objval[tid])   
 
         if args.gen_plots:
             problem_task_name = problem_name + '-' + str(data.I[tid][0])
