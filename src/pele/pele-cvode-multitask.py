@@ -67,7 +67,7 @@ def execute(params):
     fcompareexe = "fcompare.gnu.ex" 
     mpirun_command = os.getenv("MPIRUN")
     logfolder = "log"
-    logfilelist = [problem_name,mechanism,solve_type,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])
+    logfilelist = [problem_name,mechanism,solve_type,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
     
     # Build up command with command-line options from current set of parameters
     argslist = [mpirun_command, '-n', str(nodes*6), '-a', '1', '-c', '1', '-g', '1', './' + peleexe, peleinput,
@@ -154,8 +154,8 @@ def execute(params):
     if error > 5e-2:
         runtime = 1e8
 
-    logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + error
-    logfilename = logfilelist.join("_") + ".log"
+    logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + str(error)
+    logfilename = "_".join(logfilelist) + ".log"
     logfullpath = logfolder + "/" + logfilename
     logfile = open(logfullpath, 'w')
     logfile.write(logtext)
