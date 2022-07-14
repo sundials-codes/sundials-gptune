@@ -85,7 +85,7 @@ def execute(params):
     # If no errors occurred in the run, and the output was printed as expected, proceed
     # else, declare a failed point.
     if not stderr and stdout and "," in stdout:
-        resultline = stdout.split("\n")[-1]
+        resultline = stdout.split("\n")[-2]
         results = resultline.split(",")
         runtime = float(results[0])
         error = float(results[1])
@@ -103,7 +103,7 @@ def execute(params):
     print(f"Finished. runtime: {runtime}, error: {error}",flush=True)
     #print("done running shell command")
     
-    logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + error
+    logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + str(error)
     logfilename = "_".join(logfilelist) + ".log"
     logfullpath = logfolder + "/" + logfilename
     logfile = open(logfullpath, 'w')
