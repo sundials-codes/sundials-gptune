@@ -1,7 +1,7 @@
 #!/bin/bash
 # This job should be submitted from within sundials-gptune/src/diffusion/multitask directory
 #BSUB -P CSC326
-#BSUB -W 10:00
+#BSUB -W 24:00
 #BSUB -q killable
 #BSUB -nnodes 1
 #BSUB -J diffusion-cvode-multitask-newton-gmres

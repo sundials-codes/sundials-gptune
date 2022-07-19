@@ -24,11 +24,13 @@ def parse_args():
     parser.add_argument('-newton_gmres', action='store_true', dest='newton_gmres')
     parser.add_argument('-diffusion_coeff', type=int, default=1, help='Diffusion coefficient for problem')
     parser.add_argument('-nxy', type=int, default=128, help='nx and ny value for problem')
+    parser.add_argument('-print_csv', action='store_true', dest='print_csv')
     #parser.add_argument('-ic_scalar', type=int, default=1, help='Initial condition scalar for problem')
     #parser.add_argument('-multifidelity', type=str, default='-1', help='Turn on multifidelity. Value template: low,high,multiplicativefactor')
     parser.set_defaults(gen_plots=False)
     parser.set_defaults(additional_params=False)
     parser.set_defaults(newton_gmres=False)
+    parser.set_defaults(print_csv=False)
 
     args = parser.parse_args()
 
@@ -273,6 +275,17 @@ def main():
         print("    Ps ", data.P[tid])
         print("    Os ", data.O[tid].tolist())
         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+
+        if args.print_csv:
+            outfile = open(problem_name + ".csv","w")
+            outfile.write("maxord,nonlin_conv_coef,max_conv_fails,maxl,epslin,runtime")
+            for i in range(len(data.P[tid])):
+                outlinelist = list(data.P[tid][i]) + list(data.O[tid][i])
+                outlineliststr = [str(x) for x in outlinelist]
+                outline = ",".join(outlineliststr) + "\n"
+                outfile.write(outline)
+        
+            outfile.close()
 
         if args.gen_plots:
             runtimes = [ elem[0] for elem in data.O[tid].tolist() ]

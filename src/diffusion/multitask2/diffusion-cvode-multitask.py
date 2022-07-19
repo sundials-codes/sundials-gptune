@@ -262,7 +262,7 @@ def main():
     for tid in range(NI):
         print(tid)
         print("tid: %d" % (tid))
-        print("    t: " + (data.I[tid][0]))
+        print("    t: " + str(data.I[tid][0]))
         print("    Ps ", data.P[tid])
         print("    Os ", data.O[tid].tolist())
         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
