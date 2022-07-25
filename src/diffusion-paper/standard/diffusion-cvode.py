@@ -21,21 +21,42 @@ def parse_args():
     parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
     parser.add_argument('-additional_params', action='store_true', dest='additional_params')
-    parser.add_argument('-newton_gmres', action='store_true', dest='newton_gmres')
-    parser.add_argument('-diffusion_coeff', type=int, default=1, help='Diffusion coefficient for problem')
-    parser.add_argument('-nxy', type=int, default=128, help='nx and ny value for problem')
+    parser.add_argument('-solve_type', type=str, default='newton_gmres', help='Solver type(s) to optimize. Ex: all/fixedpoint/newton/newton_iter/newton_gmres/newton_pcg')
     parser.add_argument('-print_csv', action='store_true', dest='print_csv')
     parser.add_argument('-sensitivity_analysis', action='store_true', dest='sensitivity_analysis')
-    #parser.add_argument('-ic_scalar', type=int, default=1, help='Initial condition scalar for problem')
-    #parser.add_argument('-multifidelity', type=str, default='-1', help='Turn on multifidelity. Value template: low,high,multiplicativefactor')
     parser.set_defaults(gen_plots=False)
     parser.set_defaults(additional_params=False)
-    parser.set_defaults(newton_gmres=False)
     parser.set_defaults(print_csv=False)
 
     args = parser.parse_args()
 
     return args
+
+def get_args(solve_type_):
+    argslist = []
+    logfilelist = []
+    if solve_type_ == 'newton_gmres':
+        newton_gmres_args = [
+        '--gmres',
+        '--liniters', str(params['maxl']),
+        '--epslin', str(params['epslin']),
+        ]
+        argslist += newton_gmres_args
+        logfilelist += ['gmres',str(params['maxl']),str(params['epslin'])]
+    elif solve_type_ == 'newton_pcg':
+        newton_pcg_args = [
+        '--liniters', str(params['maxl']),
+        '--epslin', str(params['epslin']),
+        ]
+        argslist += newton_pcg_args
+        logfilelist += [str(params['maxl']),str(params['epslin'])]
+    elif solve_type_ == 'fixedpoint':
+        fixedpoint_args = [
+        '--fixedpoint', str(params['fixedpointvecs'])
+        ]
+        argslist += fixedpoint_args
+        logfilelist += [str(params['fixedpointvecs'])]
+    return (argslist, logfilelist)
 
 def execute(params):
     diffusion2Dfolder = os.getenv("SUNDIALSBUILDROOT") + "/benchmarks/diffusion_2D/mpi_serial/"
@@ -46,26 +67,20 @@ def execute(params):
     logfilelist = [problem_name,solve_type,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
     
     # Build up command with command-line options from current set of parameters
-    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--stats', '--kx', str(diffusion_coeff), '--ky', str(diffusion_coeff), '--nx', str(nxy), '--ny', str(nxy),
+    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--stats', '--kx', params['kxy'], '--ky', params['kxy'], '--nx', params['nxy'], '--ny', params['nxy'],
             '--maxord', str(params["maxord"]),
             '--nlscoef', str(params["nonlin_conv_coef"]),
             '--maxncf', str(params["max_conv_fails"])
     ]
 
-    if newton_gmres:
-        newton_gmres_args = [
-        '--gmres',
-        '--liniters', str(params['maxl']),
-        '--epslin', str(params['epslin']),
-        ]
-        argslist += newton_gmres_args
-        logfilelist += ['gmres',str(params['maxl']),str(params['epslin'])]
+    if solve_type == 'newton_iter' or solve_type == 'all':
+        (argslist_,logfilelist_) = get_args(params['solver'])
+        argslist += argslist_
+        losfilelist += logfilelist_
     else:
-        fixedpoint_args = [
-        '--fixedpoint', str(params['fixedpointvecs'])
-        ]
-        argslist += fixedpoint_args
-        logfilelist += [str(params['fixedpointvecs'])]
+        (argslist_,logfilelist_) = get_args(solve_type)
+        argslist += argslist_
+        losfilelist += logfilelist_
 
     if additional_params:
         additional_params_args = [
@@ -77,7 +92,7 @@ def execute(params):
         '--eta_min_ef', str(params['eta_min_ef'])
         ]
         argslist += additional_params_args
-        logfilelist += [str(params['eta_cf']),str(params['eta_max_fx']),str(params['eta_min_fx']),str(params['eta_max_gs']),str(params['eta_min']),str(params['eta_min_ef'])]
+        logfilelist += ['additional',str(params['eta_cf']),str(params['eta_max_fx']),str(params['eta_min_fx']),str(params['eta_max_gs']),str(params['eta_min']),str(params['eta_min_ef'])]
 
     # Run the command and grab the output
     print("Running: " + " ".join(argslist),flush=True)
@@ -127,7 +142,6 @@ def objectives(point):
 def main():
     global nodes
     global cores
-    global newton_gmres
     global additional_params
     global diffusion_coeff
     global nxy
@@ -137,21 +151,14 @@ def main():
     # Parse command line arguments
     args = parse_args()
     nrun = args.nrun
-    newton_gmres = args.newton_gmres
+    solve_type = args.solve_type
     additional_params = args.additional_params
     diffusion_coeff = args.diffusion_coeff
     nxy = args.nxy
    
-    problem_name = 'diffusion-cvode-' + str(diffusion_coeff) + '-' + str(nxy)
+    problem_name = 'diffusion-cvode-' + str(diffusion_coeff) + '-' + str(nxy) + '-' + solve_type
     TUNER_NAME = 'GPTune'
 
-    if newton_gmres:
-        problem_name += '-newton-gmres'
-        solve_type = 'newton_gmres'
-    else:
-        problem_name += '-fixedpoint'
-        solve_type = 'fixedpoint'
-    
     if additional_params:
         problem_name += '-additional'
 
@@ -183,7 +190,10 @@ def main():
     os.environ['MACHINE_NAME'] = machine
     os.environ['TUNER_NAME'] = TUNER_NAME
 
-    input_space = Space([Categoricalnorm([problem_name], transform="onehot", name="problemname")])
+    input_space = Space([
+        Integer(1, 5000, transform="normalize", name="kxy"),
+        Integer(1, 5000, transform="normalize", name="nxy") 
+    ])
 
     parameter_space_list = [
         Integer(1, 5, transform="normalize", name="maxord"),
@@ -191,15 +201,24 @@ def main():
         Integer(3, 50, transform="normalize", name="max_conv_fails")
     ]
     constraints = {}
-    if newton_gmres:
+
+    if solve_type == 'all':
         parameter_space_list += [
             Integer(3, 500, transform="normalize", name="maxl"),
-            Real(1e-5, 0.9, transform="normalize", name="epslin")
+            Real(1e-5, 0.9, transform="normalize", name="epslin"),
+            Integer(1, 20, transform="normalize", name="fixedpointvecs")
         ]
-    else:
+    elif solve_type == 'newton_iter' or solve_type == 'newton_gmres' or solve_type == 'newton_pcg':
+        parameter_space_list += [
+            Integer(3, 500, transform="normalize", name="maxl"),
+            Real(1e-5, 0.9, transform="normalize", name="epslin"),
+        ]
+    elif solve_type == 'fixedpoint':
         parameter_space_list += [ 
             Integer(1, 20, transform="normalize", name="fixedpointvecs")
         ]
+    else:
+        print('WARNING: Did not recognize solve_type: ' + str(solve_type))
 
     if additional_params:
         parameter_space_list += [ 
@@ -279,7 +298,12 @@ def main():
 
         if args.print_csv:
             outfile = open(problem_name + ".csv","w")
-            outfile.write("maxord,nonlin_conv_coef,max_conv_fails,maxl,epslin,runtime")
+            headerlinelist = []
+            for param in problem.parameter_space:
+                headerlinelist.append(param.name)
+            headerlinelist.append('runtime')
+            headerline = ",".join(headerlinelist) + "\n"
+            outfile.write(headerline)
             for i in range(len(data.P[tid])):
                 outlinelist = list(data.P[tid][i]) + list(data.O[tid][i])
                 outlineliststr = [str(x) for x in outlinelist]
@@ -333,20 +357,18 @@ def main():
                 { 'name': 'nonlin_conv_coef', 'type': 'real', 'values': [ elem[1] for elem in data.P[tid] ] },
                 { 'name': 'max_conv_fails', 'type': 'integer', 'values': [ elem[2] for elem in data.P[tid] ] }
             ]
-            if newton_gmres:
+            if solve_type == 'all' or solve_type == 'newton_iter' or solve_type == 'newton_gmres' or solve_type == 'newton_pcg':
                 param_datas += [
                     { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
                     { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
                 ]
-            else:
+            if solve_type == 'all' or solve_type == 'fixedpoint':
                 param_datas += [
                     { 'name': 'fixedpointvecs', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
                 ]
 
             if additional_params:
-                start_index = 4
-                if newton_gmres:
-                    start_index += 1
+                start_index = len(param_datas)
                 param_datas += [
                     { 'name': 'eta_cf', 'type': 'real', 'values': [ elem[start_index] for elem in data.P[tid] ] },
                     { 'name': 'eta_max_fx', 'type': 'real', 'values': [ elem[start_index+1] for elem in data.P[tid] ] },

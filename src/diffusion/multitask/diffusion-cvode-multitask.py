@@ -250,7 +250,8 @@ def main():
     options['verbose'] = False
     options.validate(computer=computer)
 
-    giventask = [[1], [5], [20], [40]]
+    #giventask = [[1], [5], [20], [40]]
+    giventask = [[1],[5],[20]]
     NI=len(giventask) 
     NS=nrun
 

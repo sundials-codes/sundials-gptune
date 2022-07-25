@@ -24,14 +24,11 @@ def parse_args():
     parser.add_argument('-newton_gmres', action='store_true', dest='newton_gmres')
     parser.add_argument('-diffusion_coeff', type=int, default=1, help='Diffusion coefficient for problem')
     parser.add_argument('-nxy', type=int, default=128, help='nx and ny value for problem')
-    parser.add_argument('-print_csv', action='store_true', dest='print_csv')
-    parser.add_argument('-sensitivity_analysis', action='store_true', dest='sensitivity_analysis')
     #parser.add_argument('-ic_scalar', type=int, default=1, help='Initial condition scalar for problem')
     #parser.add_argument('-multifidelity', type=str, default='-1', help='Turn on multifidelity. Value template: low,high,multiplicativefactor')
     parser.set_defaults(gen_plots=False)
     parser.set_defaults(additional_params=False)
     parser.set_defaults(newton_gmres=False)
-    parser.set_defaults(print_csv=False)
 
     args = parser.parse_args()
 
@@ -77,7 +74,7 @@ def execute(params):
         '--eta_min_ef', str(params['eta_min_ef'])
         ]
         argslist += additional_params_args
-        logfilelist += [str(params['eta_cf']),str(params['eta_max_fx']),str(params['eta_min_fx']),str(params['eta_max_gs']),str(params['eta_min']),str(params['eta_min_ef'])]
+        loglist += [str(params['eta_cf']),str(params['eta_max_fx']),str(params['eta_min_fx']),str(params['eta_max_gs']),str(params['eta_min']),str(params['eta_min_ef'])]
 
     # Run the command and grab the output
     print("Running: " + " ".join(argslist),flush=True)
@@ -91,7 +88,7 @@ def execute(params):
     # If no errors occurred in the run, and the output was printed as expected, proceed
     # else, declare a failed point.
     if not stderr and stdout and "," in stdout:
-        resultline = stdout.split("\n")[-2]
+        resultline = stdout.split("\n")[-1]
         results = resultline.split(",")
         runtime = float(results[0])
         error = float(results[1])
@@ -109,8 +106,8 @@ def execute(params):
     print(f"Finished. runtime: {runtime}, error: {error}",flush=True)
     #print("done running shell command")
     
-    logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + str(error)
-    logfilename = "_".join(logfilelist) + ".log"
+    logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + error
+    logfilename = logfilelist.join("_") + ".log"
     logfullpath = logfolder + "/" + logfilename
     logfile = open(logfullpath, 'w')
     logfile.write(logtext)
@@ -131,8 +128,6 @@ def main():
     global additional_params
     global diffusion_coeff
     global nxy
-    global problem_name
-    global solve_type
 
     # Parse command line arguments
     args = parse_args()
@@ -142,15 +137,13 @@ def main():
     diffusion_coeff = args.diffusion_coeff
     nxy = args.nxy
    
-    problem_name = 'diffusion-cvode-' + str(diffusion_coeff) + '-' + str(nxy)
+    problem_name = 'diffusion-cvode'
     TUNER_NAME = 'GPTune'
 
     if newton_gmres:
         problem_name += '-newton-gmres'
-        solve_type = 'newton_gmres'
     else:
         problem_name += '-fixedpoint'
-        solve_type = 'fixedpoint'
     
     if additional_params:
         problem_name += '-additional'
@@ -277,90 +270,15 @@ def main():
         print("    Os ", data.O[tid].tolist())
         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
-        if args.print_csv:
-            outfile = open(problem_name + ".csv","w")
-            outfile.write("maxord,nonlin_conv_coef,max_conv_fails,maxl,epslin,runtime")
-            for i in range(len(data.P[tid])):
-                outlinelist = list(data.P[tid][i]) + list(data.O[tid][i])
-                outlineliststr = [str(x) for x in outlinelist]
-                outline = ",".join(outlineliststr) + "\n"
-                outfile.write(outline)
-        
-            outfile.close()
-
-        if args.sensitivity_analysis:
-            problem_space = { "parameter_space": [], "input_space": [], "output_space": [] }
-            for key in problem_space.keys():
-                var_list = []
-                if key == "parameter_space":
-                    var_list = problem.parameter_space
-                elif key == "input_space":
-                    var_list = problem.input_space
-                elif key == "output_space":
-                    var_list = problem.output_space
- 
-                for i in var_list:
-                    param_dict = {"name": i.name}
-                    if type(i) is Integer:
-                        param_dict["lower_bound"] = i.bounds[0]
-                        param_dict["upper_bound"] = i.bounds[1]
-                        param_dict["type"] = "int"
-                        param_dict["transformer"] = "normalize"
-                    if type(i) is Real:
-                        param_dict["lower_bound"] = i.bounds[0]
-                        param_dict["upper_bound"] = i.bounds[1]
-                        param_dict["type"] = "real"
-                        if key == "output_space":
-                            param_dict["transformer"] = "identity"
-                        else:
-                            param_dict["transformer"] = "normalize"
-                    if type(i) is Categoricalnorm:
-                        param_dict["categories"] = list(i.categories)
-                        param_dict["transformer"] = "onehot"
-                        param_dict["type"] = "categorical"
-                    
-                    problem_space[key].append(param_dict)
-            print(problem_space)
-            print("Begin Sensitivity Analysis")
-            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=problem_name,function_evaluations=[])
-            print(sensitivity_data)
-
-        if args.gen_plots:
-            runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
-            postprocess.plot_runtime(runtimes,problem_name,1e8)
-            param_datas = [
-                { 'name': 'max_ord', 'type': 'integer', 'values': [ elem[0] for elem in data.P[tid] ] },
-                { 'name': 'nonlin_conv_coef', 'type': 'real', 'values': [ elem[1] for elem in data.P[tid] ] },
-                { 'name': 'max_conv_fails', 'type': 'integer', 'values': [ elem[2] for elem in data.P[tid] ] }
-            ]
-            if newton_gmres:
-                param_datas += [
-                    { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
-                    { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
-                ]
-            else:
-                param_datas += [
-                    { 'name': 'fixedpointvecs', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
-                ]
-
-            if additional_params:
-                start_index = 4
-                if newton_gmres:
-                    start_index += 1
-                param_datas += [
-                    { 'name': 'eta_cf', 'type': 'real', 'values': [ elem[start_index] for elem in data.P[tid] ] },
-                    { 'name': 'eta_max_fx', 'type': 'real', 'values': [ elem[start_index+1] for elem in data.P[tid] ] },
-                    { 'name': 'eta_min_fx', 'type': 'real', 'values': [ elem[start_index+2] for elem in data.P[tid] ] },
-                    { 'name': 'eta_max_gs', 'type': 'real', 'values': [ elem[start_index+3] for elem in data.P[tid] ] },
-                    { 'name': 'eta_min', 'type': 'real', 'values': [ elem[start_index+4] for elem in data.P[tid] ] },
-                    { 'name': 'eta_min_ef', 'type': 'real', 'values': [ elem[start_index+5] for elem in data.P[tid] ] }
-                ]
-            postprocess.plot_params(param_datas,problem_name)
-            postprocess.plot_params_with_fails(runtimes,param_datas,problem_name,1e8)
-            postprocess.plot_params_vs_runtime(runtimes,param_datas,problem_name,1e8)
-            postprocess.plot_cat_bool_param_freq_period(param_datas,problem_name,4)
-            #postprocess.plot_real_int_param_std_period(param_datas,problem_name,4)
-            postprocess.plot_real_int_param_std_window(param_datas,problem_name,10) 
+        outfile = open(problem_name + ".csv","w")
+        outfile.write("maxord,nonlin_conv_coef,max_conv_fails,maxl,epslin,runtime")
+        for i in range(len(data.P[tid])):
+            outlinelist = list(data.P[tid][i]) + list(data.O[tid][i])
+            outlineliststr = [str(x) for x in outlinelist]
+            outline = ",".join(outlineliststr) + "\n"
+            outfile.write(outline)
+    
+        outfile.close()
 
 if __name__ == "__main__":
     main()
