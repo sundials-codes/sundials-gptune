@@ -19,6 +19,8 @@ def parse_args():
     parser.add_argument('-cores', type=int, default=2,help='Number of cores per machine node')
     parser.add_argument('-machine', type=str,default='-1', help='Name of the computer (not hostname)')
     parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
+    parser.add_argument('-kxy', type=int, default=10, help='Diffusion coefficient')
+    parser.add_argument('-nxy', type=int, default=128, help='Number of points in each direction')
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
     parser.add_argument('-additional_params', action='store_true', dest='additional_params')
     parser.add_argument('-solve_type', type=str, default='newton_gmres', help='Solver type(s) to optimize. Ex: all/fixedpoint/newton/newton_iter/newton_gmres/newton_pcg')
@@ -143,8 +145,6 @@ def main():
     global nodes
     global cores
     global additional_params
-    global diffusion_coeff
-    global nxy
     global problem_name
     global solve_type
 
@@ -153,10 +153,10 @@ def main():
     nrun = args.nrun
     solve_type = args.solve_type
     additional_params = args.additional_params
-    diffusion_coeff = args.diffusion_coeff
+    kxy = args.kxy
     nxy = args.nxy
    
-    problem_name = 'diffusion-cvode-' + str(diffusion_coeff) + '-' + str(nxy) + '-' + solve_type
+    problem_name = 'diffusion-cvode-' + str(kxy) + '-' + str(nxy) + '-' + solve_type
     TUNER_NAME = 'GPTune'
 
     if additional_params:
@@ -281,7 +281,7 @@ def main():
     options['verbose'] = False
     options.validate(computer=computer)
 
-    giventask = [[problem_name]]
+    giventask = [[kxy,nxy]]
     NI=len(giventask) 
     NS=nrun
 

@@ -1,0 +1,13 @@
+#!/bin/bash
+# This job should be submitted from within sundials-gptune/src/pele directory
+#BSUB -P CSC326
+#BSUB -q killable
+#BSUB -W 24:00
+#BSUB -nnodes 1
+#BSUB -J pele-cvode-dodecane_lu-newton-gmres
+#BSUB -o pele-cvode-dodecane_lu-newton-gmres.out
+#BSUB -e pele-cvode-dodecane_lu-newton-gmres.err
+#BSUB -N
+
+. ../setup-env-summit.sh
+jsrun -n 1 python pele-cvode.py -solve_type newton_gmres -nrun 400 -gen_plots -mechanism dodecane_lu -max_steps 2
