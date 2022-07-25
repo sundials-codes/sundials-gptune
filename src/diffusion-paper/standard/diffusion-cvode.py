@@ -204,12 +204,14 @@ def main():
 
     if solve_type == 'all':
         parameter_space_list += [
+            Categoricalnorm(['newton_gmres','newton_pcg','fixedpoint'],transform='onehot',name='solver'),
             Integer(3, 500, transform="normalize", name="maxl"),
             Real(1e-5, 0.9, transform="normalize", name="epslin"),
             Integer(1, 20, transform="normalize", name="fixedpointvecs")
         ]
     elif solve_type == 'newton_iter' or solve_type == 'newton_gmres' or solve_type == 'newton_pcg':
         parameter_space_list += [
+            Categoricalnorm(['newton_gmres','newton_pcg'],transform='onehot',name='solver'),
             Integer(3, 500, transform="normalize", name="maxl"),
             Real(1e-5, 0.9, transform="normalize", name="epslin"),
         ]
