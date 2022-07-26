@@ -295,25 +295,18 @@ def main():
             json_data = json.load(json_file)
             
              
-            function_evaluations = json_data['surrogate_model'][-1]['function_evaluations']
+            function_evaluations = json_data['func_eval']
             problem_space = { 
                 "parameter_space": json_data['surrogate_model'][-1]['parameter_space'], 
                 "input_space": json_data['surrogate_model'][-1]['input_space'], 
                 "output_space": json_data['surrogate_model'][-1]['output_space']
             }
             
-            print("problem_space")
-            print(problem_space)
-            print("function_evaluations")
-            print(function_evaluations)
-            print("Begin Sensitivity Analysis")
-            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=[problem_name],function_evaluations=function_evaluations)
+            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=[problem_name],function_evaluations=function_evaluations,num_samples=256)
             print(sensitivity_data)
+            print("S1")
+            print(sensitivity_data["S1"])
             
-            """ 
-            model_data = json_data['surrogate_model'][-1]
-            sensitivity_data = SensitivityAnalysis(model_data=model_data, task_parameters=[problem_name], num_samples=1000)
-            """
             json_file.close()
 
         if args.gen_plots:
