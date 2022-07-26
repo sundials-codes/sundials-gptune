@@ -69,7 +69,7 @@ def execute(params):
     logfilelist = [problem_name,solve_type,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
     
     # Build up command with command-line options from current set of parameters
-    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--stats', '--kx', params['kxy'], '--ky', params['kxy'], '--nx', params['nxy'], '--ny', params['nxy'],
+    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--stats', '--kx', str(params['kxy']), '--ky', str(params['kxy']), '--nx', str(params['nxy']), '--ny', str(params['nxy']),
             '--maxord', str(params["maxord"]),
             '--nlscoef', str(params["nonlin_conv_coef"]),
             '--maxncf', str(params["max_conv_fails"])
@@ -315,43 +315,27 @@ def main():
             outfile.close()
 
         if args.sensitivity_analysis:
-            problem_space = { "parameter_space": [], "input_space": [], "output_space": [] }
-            for key in problem_space.keys():
-                var_list = []
-                if key == "parameter_space":
-                    var_list = problem.parameter_space
-                elif key == "input_space":
-                    var_list = problem.input_space
-                elif key == "output_space":
-                    var_list = problem.output_space
- 
-                for i in var_list:
-                    param_dict = {"name": i.name}
-                    if type(i) is Integer:
-                        param_dict["lower_bound"] = i.bounds[0]
-                        param_dict["upper_bound"] = i.bounds[1]
-                        param_dict["type"] = "int"
-                        param_dict["transformer"] = "normalize"
-                    if type(i) is Real:
-                        param_dict["lower_bound"] = i.bounds[0]
-                        param_dict["upper_bound"] = i.bounds[1]
-                        param_dict["type"] = "real"
-                        if key == "output_space":
-                            param_dict["transformer"] = "identity"
-                        else:
-                            param_dict["transformer"] = "normalize"
-                    if type(i) is Categoricalnorm:
-                        param_dict["categories"] = list(i.categories)
-                        param_dict["transformer"] = "onehot"
-                        param_dict["type"] = "categorical"
-                    
-                    problem_space[key].append(param_dict)
-            print(problem_space)
-            print("Begin Sensitivity Analysis")
-            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=problem_name,function_evaluations=[])
+            json_filename = './gptune.db/' + problem_name + '.json'
+            json_file = open(json_filename) 
+            json_data = json.load(json_file)
+            
+             
+            function_evaluations = json_data['func_eval']
+            problem_space = { 
+                "parameter_space": json_data['surrogate_model'][-1]['parameter_space'], 
+                "input_space": json_data['surrogate_model'][-1]['input_space'], 
+                "output_space": json_data['surrogate_model'][-1]['output_space']
+            }
+            
+            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=[problem_name],function_evaluations=function_evaluations,num_samples=256)
             print(sensitivity_data)
-
+            print("S1")
+            print(sensitivity_data["S1"])
+            
+            json_file.close()
+        """
         if args.gen_plots:
+            filename_prefix = 
             runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
             postprocess.plot_runtime(runtimes,problem_name,1e8)
             param_datas = [
@@ -385,6 +369,7 @@ def main():
             postprocess.plot_cat_bool_param_freq_period(param_datas,problem_name,4)
             #postprocess.plot_real_int_param_std_period(param_datas,problem_name,4)
             postprocess.plot_real_int_param_std_window(param_datas,problem_name,10) 
+        """
 
 if __name__ == "__main__":
     main()
