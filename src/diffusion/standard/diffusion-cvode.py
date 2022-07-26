@@ -302,7 +302,7 @@ def main():
                 "output_space": json_data['surrogate_model'][-1]['output_space']
             }
             
-            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=[problem_name],function_evaluations=function_evaluations,num_samples=256)
+            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=[problem_name],function_evaluations=function_evaluations,num_samples=1024)
             print(sensitivity_data)
             print("S1")
             print(sensitivity_data["S1"])

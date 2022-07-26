@@ -299,7 +299,7 @@ def main():
         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
         if args.print_csv:
-            outfile = open(problem_name + ".csv","w")
+            outfile = open(problem_name + '-' + str(kxy) + '-' + str(nxy) + ".csv","w")
             headerlinelist = []
             for param in problem.parameter_space:
                 headerlinelist.append(param.name)
@@ -327,7 +327,7 @@ def main():
                 "output_space": json_data['surrogate_model'][-1]['output_space']
             }
             
-            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=[problem_name],function_evaluations=function_evaluations,num_samples=256)
+            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=[kxy,nxy],function_evaluations=function_evaluations,num_samples=256)
             print(sensitivity_data)
             print("S1")
             print(sensitivity_data["S1"])

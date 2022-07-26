@@ -69,12 +69,12 @@ def execute(params):
     fcompareexe = "fcompare.gnu.ex" 
     mpirun_command = os.getenv("MPIRUN")
     logfolder = "log"
-    logfilelist = [problem_name,mechanism,solve_type,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
+    logfilelist = [problem_name,mechanism,solve_type,str(params['max_steps']),str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
     
     # Build up command with command-line options from current set of parameters
     argslist = [mpirun_command, '-n', str(nodes*6), '-a', '1', '-c', '1', '-g', '1', './' + peleexe, peleinput,
                 'geometry.prob_lo=0.0 0.0 0.0', 'geometry.prob_hi=0.008 0.008 0.016', 'amr.n_cell=32 32 64', 'amr.max_level=1', 'amr.plot_int=100', 
-                'amr.plot_file=' + pltfile, 'amr.max_step=' + str(max_steps), 'amr.cfl=0.5', 'amr.fixed_dt=1e-7', 'amr.dt_shrink=1.0', 'amrex.abort_on_out_of_gpu_memory=1',
+                'amr.plot_file=' + pltfile, 'amr.max_step=' + str(params['max_steps']), 'amr.cfl=0.5', 'amr.fixed_dt=1e-7', 'amr.dt_shrink=1.0', 'amrex.abort_on_out_of_gpu_memory=1',
                 'amrex.the_arena_is_managed=0', 'peleLM.chem_integrator=ReactorCvode', 'peleLM.use_typ_vals_chem=1', 'peleLM.memory_checks=0',
                 'ode.rtol=1.0e-6', 'ode.atol=1.0e-5', 'ode.atomic_reductions=0', 
             'cvode.max_order=' + str(params["maxord"]),
@@ -176,9 +176,7 @@ def main():
     global cores
     global solve_type
     global additional_params
-    global mechanism
     global problem_name
-    global max_steps
 
     # Parse command line arguments
     args = parse_args()
@@ -187,7 +185,7 @@ def main():
     solve_type = args.solve_type
     additional_params = args.additional_params
     max_steps = args.max_steps
-    problem_name = 'pele-cvode-' + args.mechanism + '-' + str(max_steps)
+    problem_name = 'pele-cvode-'
     TUNER_NAME = 'GPTune'
 
     if solve_type == 'newton_gmres':
@@ -234,7 +232,10 @@ def main():
     os.environ['MACHINE_NAME'] = machine
     os.environ['TUNER_NAME'] = TUNER_NAME
 
-    input_space = Space([Categoricalnorm(['dodecane_lu', 'dodecane_lu_qss', 'drm19'], transform="onehot", name='mechanism')])
+    input_space = Space([
+        Integer(1,500,transform='normalize',name='max_steps'),
+        Categoricalnorm(['dodecane_lu', 'dodecane_lu_qss', 'drm19'], transform="onehot", name='mechanism')
+    ])
 
     parameter_space_list = [
         Integer(1, 5, transform="normalize", name="maxord"),
@@ -328,7 +329,7 @@ def main():
     options['verbose'] = False
     options.validate(computer=computer)
 
-    giventask = [[args.mechanism]]
+    giventask = [[args.max_steps,args.mechanism]]
     NI=len(giventask) 
     NS=nrun
     
@@ -347,6 +348,38 @@ def main():
         print("    Os ", data.O[tid].tolist())
         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
+        if args.print_csv:
+            outfile = open(problem_name + '-' + args.mechanism + '-' + args.max_steps + ".csv","w")
+            outfile.write("maxord,nonlin_conv_coef,max_conv_fails,maxl,epslin,runtime")
+            for i in range(len(data.P[tid])):
+                outlinelist = list(data.P[tid][i]) + list(data.O[tid][i])
+                outlineliststr = [str(x) for x in outlinelist]
+                outline = ",".join(outlineliststr) + "\n"
+                outfile.write(outline)
+        
+            outfile.close()
+
+        if args.sensitivity_analysis:
+            json_filename = './gptune.db/' + problem_name + '.json'
+            json_file = open(json_filename) 
+            json_data = json.load(json_file)
+            
+             
+            function_evaluations = json_data['func_eval']
+            problem_space = { 
+                "parameter_space": json_data['surrogate_model'][-1]['parameter_space'], 
+                "input_space": json_data['surrogate_model'][-1]['input_space'], 
+                "output_space": json_data['surrogate_model'][-1]['output_space']
+            }
+            
+            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=[args.max_steps,args.mechanism],function_evaluations=function_evaluations,num_samples=1024)
+            print(sensitivity_data)
+            print("S1")
+            print(sensitivity_data["S1"])
+            
+            json_file.close()
+
+        """
         if args.gen_plots:
             problem_task_name = problem_name + '-' + data.I[tid][0]
             runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
@@ -402,6 +435,6 @@ def main():
             postprocess.plot_cat_bool_param_freq_period(param_datas,problem_task_name,4)
             #postprocess.plot_real_int_param_std_period(param_datas,problem_task_name,4)
             postprocess.plot_real_int_param_std_window(param_datas,problem_task_name,10) 
-
+        """
 if __name__ == "__main__":
     main()
