@@ -10,6 +10,7 @@ from autotune.problem import *
 from gptune import * # import all
 import argparse
 import postprocess
+import json
 
 def parse_args():
 
@@ -289,41 +290,31 @@ def main():
             outfile.close()
 
         if args.sensitivity_analysis:
-            problem_space = { "parameter_space": [], "input_space": [], "output_space": [] }
-            for key in problem_space.keys():
-                var_list = []
-                if key == "parameter_space":
-                    var_list = problem.parameter_space
-                elif key == "input_space":
-                    var_list = problem.input_space
-                elif key == "output_space":
-                    var_list = problem.output_space
- 
-                for i in var_list:
-                    param_dict = {"name": i.name}
-                    if type(i) is Integer:
-                        param_dict["lower_bound"] = i.bounds[0]
-                        param_dict["upper_bound"] = i.bounds[1]
-                        param_dict["type"] = "int"
-                        param_dict["transformer"] = "normalize"
-                    if type(i) is Real:
-                        param_dict["lower_bound"] = i.bounds[0]
-                        param_dict["upper_bound"] = i.bounds[1]
-                        param_dict["type"] = "real"
-                        if key == "output_space":
-                            param_dict["transformer"] = "identity"
-                        else:
-                            param_dict["transformer"] = "normalize"
-                    if type(i) is Categoricalnorm:
-                        param_dict["categories"] = list(i.categories)
-                        param_dict["transformer"] = "onehot"
-                        param_dict["type"] = "categorical"
-                    
-                    problem_space[key].append(param_dict)
+            json_filename = './gptune.db/' + problem_name + '.json'
+            json_file = open(json_filename) 
+            json_data = json.load(json_file)
+            
+             
+            function_evaluations = json_data['surrogate_model'][-1]['function_evaluations']
+            problem_space = { 
+                "parameter_space": json_data['surrogate_model'][-1]['parameter_space'], 
+                "input_space": json_data['surrogate_model'][-1]['input_space'], 
+                "output_space": json_data['surrogate_model'][-1]['output_space']
+            }
+            
+            print("problem_space")
             print(problem_space)
+            print("function_evaluations")
+            print(function_evaluations)
             print("Begin Sensitivity Analysis")
-            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=problem_name,function_evaluations=[])
+            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=[problem_name],function_evaluations=function_evaluations)
             print(sensitivity_data)
+            
+            """ 
+            model_data = json_data['surrogate_model'][-1]
+            sensitivity_data = SensitivityAnalysis(model_data=model_data, task_parameters=[problem_name], num_samples=1000)
+            """
+            json_file.close()
 
         if args.gen_plots:
             runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
