@@ -34,7 +34,7 @@ def parse_args():
 
     return args
 
-def get_args(solve_type_):
+def get_args(solve_type_, params):
     argslist = []
     logfilelist = []
     if solve_type_ == 'newton_gmres':
@@ -76,13 +76,13 @@ def execute(params):
     ]
 
     if solve_type == 'newton_iter' or solve_type == 'all':
-        (argslist_,logfilelist_) = get_args(params['solver'])
+        (argslist_,logfilelist_) = get_args(params['solver'], params)
         argslist += argslist_
-        losfilelist += logfilelist_
+        logfilelist += logfilelist_
     else:
-        (argslist_,logfilelist_) = get_args(solve_type)
+        (argslist_,logfilelist_) = get_args(solve_type, params)
         argslist += argslist_
-        losfilelist += logfilelist_
+        logfilelist += logfilelist_
 
     if additional_params:
         additional_params_args = [
@@ -156,7 +156,7 @@ def main():
     kxy = args.kxy
     nxy = args.nxy
    
-    problem_name = 'diffusion-cvode-' + str(kxy) + '-' + str(nxy) + '-' + solve_type
+    problem_name = 'diffusion-cvode-' + solve_type
     TUNER_NAME = 'GPTune'
 
     if additional_params:
