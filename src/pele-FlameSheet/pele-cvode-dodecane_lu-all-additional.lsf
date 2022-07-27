@@ -1,0 +1,13 @@
+#!/bin/bash
+# This job should be submitted from within sundials-gptune/src/pele directory
+#BSUB -P CSC326
+#BSUB -q killable
+#BSUB -W 24:00
+#BSUB -nnodes 1
+#BSUB -J pele-cvode-dodecane_lu-all-additional
+#BSUB -o pele-cvode-dodecane_lu-all-additional.out
+#BSUB -e pele-cvode-dodecane_lu-all-additional.err
+#BSUB -N
+
+. ../setup-env-summit.sh
+jsrun -n 1 python pele-cvode.py -solve_type all -additional_params -nrun 400 -gen_plots -mechanism dodecane_lu

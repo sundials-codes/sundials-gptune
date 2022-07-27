@@ -1,0 +1,14 @@
+#!/bin/bash
+# This job should be submitted from within sundials-gptune/src/diffusion-paper/standard directory
+#BSUB -P CSC326
+#BSUB -W 24:00
+#BSUB -q killable
+#BSUB -nnodes 1
+#BSUB -J diffusion-cvode-100-128-fixedpoint-additional
+#BSUB -o diffusion-cvode-100-128-fixedpoint-additional.out
+#BSUB -e diffusion-cvode-100-128-fixedpoint-additional.err
+#BSUB -N
+
+. ../../setup-env-summit.sh
+jsrun -n 1 python diffusion-cvode.py -solve_type fixedpoint -nrun 1000 -gen_plots -kxy 100 -nxy 128 -additional_params -print_csv
+
