@@ -58,6 +58,113 @@ def get_input_file(mechanism):
     elif mechanism == "drm19":
         return "input.3d-regt"
 
+def get_varying_argslist(solve_type_,params):
+    args_list = []
+    logfilelist = []
+    if solve_type_ == 'all':
+        args_list += [
+            'cvode.solve_type=' + str(params['solver']),
+            'ode.maxl='+str(params['maxl']),
+            'ode.epslin='+str(params['epslin']),
+            'ode.max_fp_accel='+str(params['fixedpointvecs']),
+            'ode.msbp='+str(params['msbp']),
+            'ode.msbj='+str(params['msbj']),
+            'ode.dgmax='+str(params['dgmax'])
+        ]
+        logfilelist += [
+            str(params['solver']),
+            str(params['maxl']),
+            str(params['epslin']),
+            str(params['fixedpointvecs']),
+            str(params['msbp']),
+            str(params['msbj']),
+            str(params['dgmax'])
+        ]
+    elif solve_type == 'newton_iter':
+        args_list += [
+            'cvode.solve_type=' + str(params['solver']),
+            'ode.maxl='+str(params['maxl']),
+            'ode.epslin='+str(params['epslin']),
+        ]
+        logfilelist += [
+            str(params['solver']),
+            str(params['maxl']),
+            str(params['epslin']),
+        ]
+    elif solve_type == 'newton_gmres':
+        args_list += [
+            'cvode.solve_type=GMRES',
+            'ode.maxl='+str(params['maxl']),
+            'ode.epslin='+str(params['epslin']),
+        ]
+        logfilelist += [
+            'GMRES',
+            str(params['maxl']),
+            str(params['epslin']),
+        ]
+    elif solve_type == 'newton_bcgs':
+        args_list += [
+            'cvode.solve_type=BCGS',
+            'ode.maxl='+str(params['maxl']),
+            'ode.epslin='+str(params['epslin']),
+        ]
+        logfilelist += [
+            'BCGS',
+            str(params['maxl']),
+            str(params['epslin']),
+        ]
+    elif solve_type == 'newton_direct':
+        args_list += [
+            'cvode.solve_type=' + str(params['solver']),
+            'ode.msbp='+str(params['msbp']),
+            'ode.msbj='+str(params['msbj']),
+            'ode.dgmax='+str(params['dgmax'])
+        ]
+        logfilelist += [
+            str(params['solver']),
+            str(params['msbp']),
+            str(params['msbj']),
+            str(params['dgmax'])
+        ]
+    elif solve_type == 'newton_magma':
+        args_list += [
+            'cvode.solve_type=magma_direct',
+            'ode.msbp='+str(params['msbp']),
+            'ode.msbj='+str(params['msbj']),
+            'ode.dgmax='+str(params['dgmax'])
+        ]
+        logfilelist += [
+            'magma_direct',
+            str(params['msbp']),
+            str(params['msbj']),
+            str(params['dgmax'])
+        ]
+    elif solve_type == 'newton_sparse':
+        args_list += [
+            'cvode.solve_type=sparse_direct',
+            'ode.msbp='+str(params['msbp']),
+            'ode.msbj='+str(params['msbj']),
+            'ode.dgmax='+str(params['dgmax'])
+        ]
+        logfilelist += [
+            'sparse_direct',
+            str(params['msbp']),
+            str(params['msbj']),
+            str(params['dgmax'])
+        ]
+    elif solve_type == 'fixedpoint':
+        args_list += [
+            'cvode.solve_type=fixed_point',
+            'ode.max_fp_accel='+str(params['fixedpointvecs']),
+        ]
+        logfilelist += [
+            'fixed_point',
+            str(params['fixedpointvecs']),
+        ]
+    else:
+        print('WARNING: Did not recognize solve_type: ' + str(solve_type))
+    return (args_list,logfilelist)
+
 def execute(params):
     pelefolder = os.getenv("PELEEXEROOT")
     mechanism = params['mechanism']
@@ -82,38 +189,9 @@ def execute(params):
             'ode.maxncf=' + str(params["max_conv_fails"])
     ]
 
-    if solve_type == 'newton_gmres' or ((solve_type == 'newton_all' or solve_type == 'newton_iter') and params['linear_solver'] == 'gmres'):
-        newton_gmres_args = [
-        'cvode.solve_type=GMRES',
-        'ode.maxl=' + str(params['maxl']),
-        'ode.epslin=' + str(params['epslin']),
-        ]
-        argslist += newton_gmres_args
-        logfilelist += ['gmres',str(params['maxl']),str(params['epslin'])]
-    elif solve_type == 'newton_bcgs' or ((solve_type == 'newton_all' or solve_type == 'newton_iter') and params['linear_solver'] == 'bcgs'):
-        newton_bcgs_args = [
-        'cvode.solve_type=BCGS',
-        'ode.maxl=' + str(params['maxl']),
-        'ode.epslin=' + str(params['epslin']),
-        ]
-        argslist += newton_bcgs_args
-        logfilelist += ['bcgs',str(params['maxl']),str(params['epslin'])]
-    elif solve_type == 'fixedpoint':
-        fixedpoint_args = [
-        'cvode.solve_type=fixed_point', 
-        'ode.max_fp_accel=' + str(params['fixedpointvecs'])
-        ]
-        argslist += fixedpoint_args
-        logfilelist += [str(params['fixedpointvecs'])]
-    elif solve_type == 'newton_direct' or (solve_type == 'newton_all' and params['linear_solver'] == 'direct'):
-        newton_direct_args = [
-        'cvode.solve_type=magma_direct',
-        'ode.msbp=' + str(params['msbp']),
-        'ode.msbj=' + str(params['msbj']),
-        'ode.dgmax=' + str(params['dgmax'])
-        ]
-        argslist += newton_direct_args
-        logfilelist += ['magma',str(params['msbp']),str(params['msbj']),str(params['dgmax'])]
+    (argslist_,logfilelist_) = get_varying_args_list(solve_type,params)
+    argslist += arglist_
+    logfilelist += logfilelist_
 
     if additional_params:
         additional_params_args = [
@@ -243,32 +321,51 @@ def main():
         Integer(3, 50, transform="normalize", name="max_conv_fails")
     ]
     constraints = {}
-    if solve_type == 'newton_gmres' or solve_type == 'newton_bcgs' or solve_type == 'newton_all' or solve_type == 'newton_iter':
+
+    if solve_type == 'all':
+        parameter_space_list += [
+            Integer(3, 500, transform="normalize", name="maxl"),
+            Real(1e-5, 0.9, transform="normalize", name="epslin"),
+            Integer(1, 20, transform="normalize", name="fixedpointvecs"),
+            Integer(1, 200, transform="normalize", name="msbp"),
+            Integer(1, 200, transform="normalize", name="msbj"),
+            Real(1e-2, 0.5, transform="normalize", name="dgmax"),
+            Integer(1, 20, transform="normalize", name="fixedpointvecs")
+            Categoricalnorm(['fixed_point', 'GMRES', 'BCGS', 'magma_direct', 'sparse_direct'], transform='onehot', name='solver')
+        ]
+        constraint["msbpmsbj"] = "msbj >= msbp" 
+    elif solve_type == 'newton_iter':
+        parameter_space_list += [
+            Integer(3, 500, transform="normalize", name="maxl"),
+            Real(1e-5, 0.9, transform="normalize", name="epslin"),
+            Categoricalnorm(['GMRES', 'BCGS'], transform='onehot', name='solver')
+        ]
+    elif solve_type == 'newton_gmres' or solve_type == 'newton_bcgs':
         parameter_space_list += [
             Integer(3, 500, transform="normalize", name="maxl"),
             Real(1e-5, 0.9, transform="normalize", name="epslin")
         ]
-    if solve_type == 'newton_direct' or solve_type == 'newton_all':
+    elif solve_type == 'newton_direct':
         parameter_space_list += [
             Integer(1, 200, transform="normalize", name="msbp"),
             Integer(1, 200, transform="normalize", name="msbj"),
             Real(1e-2, 0.5, transform="normalize", name="dgmax"),
+            Categoricalnorm(['magma_direct', 'sparse_direct'], transform='onehot', name='solver')
         ]
-        constraints['cst_msb'] = 'msbj >= msbp'
-
-    if solve_type == 'fixedpoint':
+        constraint["msbpmsbj"] = "msbj >= msbp" 
+    elif solve_type == 'newton_magma' or solve_type == 'newton_sparse':
+        parameter_space_list += [
+            Integer(1, 200, transform="normalize", name="msbp"),
+            Integer(1, 200, transform="normalize", name="msbj"),
+            Real(1e-2, 0.5, transform="normalize", name="dgmax")
+        ]
+        constraint["msbpmsbj"] = "msbj >= msbp" 
+    elif solve_type == 'fixedpoint':
         parameter_space_list += [ 
             Integer(1, 20, transform="normalize", name="fixedpointvecs")
         ]
-
-    if solve_type == 'newton_all':
-        parameter_space_list += [
-            Categoricalnorm(['gmres', 'bcgs', 'direct'], transform='onehot', name='linear_solver')
-        ]
-    elif solve_type == 'newton_iter':
-        parameter_space_list += [
-            Categoricalnorm(['gmres', 'bcgs'], transform='onehot', name='linear_solver')
-        ]
+    else:
+        print('WARNING: Did not recognize solve_type: ' + str(solve_type))
 
     if additional_params:
         parameter_space_list += [ 
