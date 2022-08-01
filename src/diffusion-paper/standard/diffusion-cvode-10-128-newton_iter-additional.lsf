@@ -10,5 +10,5 @@
 #BSUB -N
 
 . ../../setup-env-summit.sh
-jsrun -n 1 python diffusion-cvode.py -solve_type newton_iter -nrun 1000 -gen_plots -kxy 10 -nxy 128 -additional_params -print_csv
+jsrun -n 1 python diffusion-cvode.py -solve_type newton_iter -nrun 2200 -nitial 2200 -gen_plots -kxy 10 -nxy 128 -additional_params -print_csv
 

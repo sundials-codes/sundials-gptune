@@ -19,6 +19,7 @@ def parse_args():
     parser.add_argument('-cores', type=int, default=2,help='Number of cores per machine node')
     parser.add_argument('-machine', type=str,default='-1', help='Name of the computer (not hostname)')
     parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
+    parset.add_argument('-nrun', type=int, default=-1, help='Number of runs in the random search phase per task')
     parser.add_argument('-kxy', type=int, default=10, help='Diffusion coefficient')
     parser.add_argument('-nxy', type=int, default=128, help='Number of points in each direction')
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
@@ -284,16 +285,19 @@ def main():
     giventask = [[kxy,nxy]]
     NI=len(giventask) 
     NS=nrun
+    NS1=int(NS/2)
+    if (args.ninitial != -1):
+        NS1 = args.ninitial
 
     data = Data(problem)
     gt = GPTune(problem, computer=computer, data=data, historydb=historydb, options=options,driverabspath=os.path.abspath(__file__))
-    (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=int(NS/2), T_sampleflag=[True]*NI)
+    (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=NS1, T_sampleflag=[True]*NI)
     print("stats: ", stats)
     """ Print all input and parameter samples """
     for tid in range(NI):
         print(tid)
         print("tid: %d" % (tid))
-        print("    t: " + (data.I[tid][0]))
+        print("    t: " + str(data.I[tid][0]))
         print("    Ps ", data.P[tid])
         print("    Os ", data.O[tid].tolist())
         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
