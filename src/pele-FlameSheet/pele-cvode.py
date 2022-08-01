@@ -369,12 +369,12 @@ def main():
 
     if additional_params:
         parameter_space_list += [ 
-            Real(1e-5, 0.9, transform="normalize", name="eta_cf"),
-            Real(1e-5, 20, transform="normalize", name="eta_max_fx"),
-            Real(1e-5, 20, transform="normalize", name="eta_min_fx"),
-            Real(1e-2, 20, transform="normalize", name="eta_max_gs"),
+            Real(1e-2, 0.9, transform="normalize", name="eta_cf"),
+            Real(1, 5, transform="normalize", name="eta_max_fx"),
+            Real(0, 0.9, transform="normalize", name="eta_min_fx"),
+            Real(1.1, 20, transform="normalize", name="eta_max_gs"),
             Real(1e-2, 1, transform="normalize", name="eta_min"),
-            Real(1e-5, 0.9, transform="normalize", name="eta_min_ef")
+            Real(1e-2, 0.9, transform="normalize", name="eta_min_ef")
         ]
         constraints['cst1'] = 'eta_max_fx > eta_min_fx'
 
@@ -460,8 +460,7 @@ def main():
             json_filename = './gptune.db/' + problem_name + '.json'
             json_file = open(json_filename) 
             json_data = json.load(json_file)
-            
-             
+                     
             function_evaluations = json_data['func_eval']
             problem_space = { 
                 "parameter_space": json_data['surrogate_model'][-1]['parameter_space'], 
