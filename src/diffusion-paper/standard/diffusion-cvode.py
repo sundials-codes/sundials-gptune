@@ -52,13 +52,13 @@ def get_args(solve_type_, params):
         '--epslin', str(params['epslin']),
         ]
         argslist += newton_pcg_args
-        logfilelist += [str(params['maxl']),str(params['epslin'])]
+        logfilelist += ['pcg',str(params['maxl']),str(params['epslin'])]
     elif solve_type_ == 'fixedpoint':
         fixedpoint_args = [
         '--fixedpoint', str(params['fixedpointvecs'])
         ]
         argslist += fixedpoint_args
-        logfilelist += [str(params['fixedpointvecs'])]
+        logfilelist += ['fixedpoint',str(params['fixedpointvecs'])]
     return (argslist, logfilelist)
 
 def execute(params):
@@ -67,7 +67,7 @@ def execute(params):
     diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
     mpirun_command = os.getenv("MPIRUN")
     logfolder = "log"
-    logfilelist = [problem_name,solve_type,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
+    logfilelist = [problem_name,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
     
     # Build up command with command-line options from current set of parameters
     argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--stats', '--kx', str(params['kxy']), '--ky', str(params['kxy']), '--nx', str(params['nxy']), '--ny', str(params['nxy']),
