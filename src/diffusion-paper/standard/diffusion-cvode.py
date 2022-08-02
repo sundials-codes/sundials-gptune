@@ -19,7 +19,7 @@ def parse_args():
     parser.add_argument('-cores', type=int, default=2,help='Number of cores per machine node')
     parser.add_argument('-machine', type=str,default='-1', help='Name of the computer (not hostname)')
     parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
-    parset.add_argument('-nrun', type=int, default=-1, help='Number of runs in the random search phase per task')
+    parser.add_argument('-ninitial', type=int, default=-1, help='Number of runs in the random search phase per task')
     parser.add_argument('-kxy', type=int, default=10, help='Diffusion coefficient')
     parser.add_argument('-nxy', type=int, default=128, help='Number of points in each direction')
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')

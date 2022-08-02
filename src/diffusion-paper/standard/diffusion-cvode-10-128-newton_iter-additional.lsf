@@ -9,6 +9,7 @@
 #BSUB -e diffusion-cvode-10-128-newton_iter-additional.err
 #BSUB -N
 
+export SUNPROFILER_PRINT=./log/diffusion-cvode-10-128-all-additional.log
 . ../../setup-env-summit.sh
 jsrun -n 1 python diffusion-cvode.py -solve_type newton_iter -nrun 2200 -nitial 2200 -gen_plots -kxy 10 -nxy 128 -additional_params -print_csv
 
