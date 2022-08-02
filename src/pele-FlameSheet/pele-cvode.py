@@ -21,6 +21,7 @@ def parse_args():
     parser.add_argument('-cores', type=int, default=2,help='Number of cores per machine node')
     parser.add_argument('-machine', type=str,default='-1', help='Name of the computer (not hostname)')
     parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
+    parser.add_argument('-ninitial', type=int, default=-1, help='Number of samples in the initial search phase')
     parser.add_argument('-solve_type', type=str, default='fixedpoint', help='Solver type. Ex: fixedpoint/newton_gmres/newton_bcgs/newton_direct/newton_all/newton_iter')
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
     parser.add_argument('-additional_params', action='store_true', dest='additional_params')
@@ -330,7 +331,7 @@ def main():
             Integer(1, 200, transform="normalize", name="msbp"),
             Integer(1, 200, transform="normalize", name="msbj"),
             Real(1e-2, 0.5, transform="normalize", name="dgmax"),
-            Integer(1, 20, transform="normalize", name="fixedpointvecs")
+            Integer(1, 20, transform="normalize", name="fixedpointvecs"),
             Categoricalnorm(['fixed_point', 'GMRES', 'BCGS', 'magma_direct', 'sparse_direct'], transform='onehot', name='solver')
         ]
         constraint["msbpmsbj"] = "msbj >= msbp" 
@@ -429,12 +430,15 @@ def main():
     giventask = [[args.max_steps,args.mechanism]]
     NI=len(giventask) 
     NS=nrun
+    NS1=int(NS/2)
+    if args.ninitial != -1:
+        NS1 = args.ninitial
     
     print(args.mechanism)
 
     data = Data(problem)
     gt = GPTune(problem, computer=computer, data=data, historydb=historydb, options=options,driverabspath=os.path.abspath(__file__))
-    (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=int(NS/2), T_sampleflag=[True]*NI)
+    (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=NS1, T_sampleflag=[True]*NI)
     print("stats: ", stats)
     """ Print all input and parameter samples """
     for tid in range(NI):
