@@ -10,6 +10,18 @@ from autotune.problem import *
 from gptune import * # import all
 import argparse
 import postprocess
+from scipy.interpolate import RBFInterpolator
+
+class GlobalData:
+    nodes = 0
+    cores = 0
+    param_hist = []
+    interp_output_hist = []
+    problem_name = ''
+    solve_type = ''
+    additional_params = False
+
+globdata = GlobalData()
 
 def parse_args():
 
@@ -67,25 +79,25 @@ def execute(params):
     diffusion2Dfullpath = diffusion2Dfolder + diffusion2Dexe
     mpirun_command = os.getenv("MPIRUN")
     logfolder = "log"
-    logfilelist = [problem_name,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
+    logfilelist = [globdata.problem_name,str(params['maxord']),str(params['nonlin_conv_coef']),str(params['max_conv_fails'])]
     
     # Build up command with command-line options from current set of parameters
-    argslist = [mpirun_command, '-n', str(nodes*cores), diffusion2Dfullpath, '--kx', str(params['kxy']), '--ky', str(params['kxy']), '--nx', str(params['nxy']), '--ny', str(params['nxy']),
+    argslist = [mpirun_command, '-n', str(globdata.nodes*globdata.cores), diffusion2Dfullpath, '--kx', str(params['kxy']), '--ky', str(params['kxy']), '--nx', str(params['nxy']), '--ny', str(params['nxy']),
             '--maxord', str(params["maxord"]),
             '--nlscoef', str(params["nonlin_conv_coef"]),
             '--maxncf', str(params["max_conv_fails"])
     ]
 
-    if solve_type == 'newton_iter' or solve_type == 'all':
+    if globdata.solve_type == 'newton_iter' or globdata.solve_type == 'all':
         (argslist_,logfilelist_) = get_args(params['solver'], params)
         argslist += argslist_
         logfilelist += logfilelist_
     else:
-        (argslist_,logfilelist_) = get_args(solve_type, params)
+        (argslist_,logfilelist_) = get_args(globdata.solve_type, params)
         argslist += argslist_
         logfilelist += logfilelist_
 
-    if additional_params:
+    if globdata.additional_params:
         additional_params_args = [
         '--eta_cf', str(params['eta_cf']),
         '--eta_max_fx', str(params['eta_max_fx']),
@@ -146,50 +158,90 @@ def objectives(point):
 
 def update_model_hist(runtime,params,stdout):
     if runtime < 1e8:
-        param_hist.append(get_param_list(params))
-        interp_output_hist.append(get_interp_output(stdout))
+        globdata.param_hist.append(get_param_list(params))
+        globdata.interp_output_hist.append(get_interp_output(stdout))
+        np.savetxt(globdata.problem_name + '-paramhist-' +  str(params['kxy']) + '-' + str(params['nxy']) + '.csv',np.array(globdata.param_hist),delimiter=',')
+        np.savetxt(globdata.problem_name + '-interpoutputhist-' +  str(params['kxy']) + '-' + str(params['nxy']) + '.csv',np.array(globdata.interp_output_hist),delimiter=',')
+            
+def initialize_model_hist(kxy,nxy):
+    print("problem_name: " + globdata.problem_name)
+    print(kxy)
+    print(nxy)
+    filename = globdata.problem_name + '-paramhist-' + str(kxy) + '-' + str(nxy) + '.csv'
+    print("filename: " + filename)
+    if os.path.exists(filename):
+        param_hist_np = np.genfromtxt(globdata.problem_name + '-paramhist-' + str(kxy) + '-' + str(nxy) + '.csv',delimiter=',')
+        interp_output_hist_np = np.genfromtxt(globdata.problem_name + '-interpoutputhist-' + str(kxy) + '-' + str(nxy)  + '.csv',delimiter=',')
+        return (param_hist_np.tolist(),interp_output_hist_np.tolist())
+    else:
+        return ([],[])  
 
 def get_param_list(params):
-       param_list = [
-            params['kxy'],
-            params['nxy'],
-            params['maxord'],
-            params['nonlin_conv_coef'],
-            params['max_conv_fails']
-        ]
-    solve_type_ = solve_type
-    if solve_type == 'newton_iter' or solve_type == 'all':
+    param_list = [
+        #params['kxy'],
+        #params['nxy'],
+        params['maxord'],
+        params['nonlin_conv_coef'],
+        params['max_conv_fails']
+    ]
+    solve_type_ = globdata.solve_type
+    if globdata.solve_type == 'newton_iter' or globdata.solve_type == 'all':
         solve_type_ = params['solver']
-
-    if solve_type_ == 'newton_gmres':
+    
+    if globdata.solve_type == 'all':
+        if solve_type_ == 'newton_gmres':
+            param_list += [
+                1,
+                0,
+                0,
+                params['maxl'],
+                params['epslin'],
+                0
+            ]
+        elif solve_type_ == 'newton_pcg':
+            param_list += [
+                0,
+                1,
+                0,
+                params['maxl'],
+                params['epslin'],
+                0
+            ]
+        elif solve_type_ == 'fixedpoint':
+            param_list += [
+                0,
+                0,
+                1,
+                0,
+                0,
+                params['fixedpointvecs']
+            ]
+    elif globdata.solve_type == 'newton_iter':
+        if solve_type_ == 'newton_gmres':
+            param_list += [
+                1,
+                0,
+                params['maxl'],
+                params['epslin'],
+            ]
+        elif solve_type_ == 'newton_pcg':
+            param_list += [
+                0,
+                1,
+                params['maxl'],
+                params['epslin'],
+            ]
+    elif globdata.solve_type == 'fixedpoint':
         param_list += [
-            1,
-            0,
-            0,
-            params['maxl'],
-            params['epslin'],
-            0
-        ]
-    elif solve_type_ == 'newton_pcg':
-        param_list += [
-            0,
-            1,
-            0,
-            params['maxl'],
-            params['epslin'],
-            0
-        ]
-    elif solve_type_ == 'fixedpoint':
-        param_list += [
-            0,
-            0,
-            1,
-            0,
-            0,
             params['fixedpointvecs']
         ]
-
-    if additional_params:
+    elif globdata.solve_type == 'newton_gmres' or globdata.solve_type == 'newton_pcg':
+        param_list += [
+            params['maxl'],
+            params['epslin'],
+        ]
+ 
+    if globdata.additional_params:
         param_list += [
             params['eta_cf'],
             params['eta_max_fx'],
@@ -208,44 +260,43 @@ def get_interp_output(stdout):
             interp_output = float(line.split()[-1]) 
     return interp_output
         
-
-def model(point):
-    if len(param_hist) == 0:
-        return 1
-    else:
-        interpolator = RBFInterpolator(param_hist,interp_output_hist,kernel='cubic',degree=3)
-        return interpolator([get_param_list(point)])
+def models(point):
+    param_hist_np = np.array(globdata.param_hist)
+    interp_output_hist_np = np.array(globdata.interp_output_hist)
+    
+    #print("param_hist")
+    #print(globdata.param_hist)
+    print(param_hist_np)
+    #print("interp_output_hist")
+    #print(globdata.interp_output_hist) 
+    print(interp_output_hist_np)
+    
+    interpolator = RBFInterpolator(param_hist_np,interp_output_hist_np)
+    return interpolator([get_param_list(point)])
 
 def main():
-    global nodes
-    global cores
-    global additional_params
-    global problem_name
-    global solve_type
-
-    global param_hist
-    param_hist = []
-    global interp_output_hist
-    interp_output_hist = []
-    
-
     # Parse command line arguments
     args = parse_args()
     nrun = args.nrun
-    solve_type = args.solve_type
-    additional_params = args.additional_params
+    globdata.solve_type = args.solve_type
+    globdata.additional_params = args.additional_params
     kxy = args.kxy
     nxy = args.nxy
    
-    problem_name = 'diffusion-cvode-' + solve_type
+    globdata.problem_name = 'diffusion-cvode-perfmodel-' + globdata.solve_type
+    print("MAIN PROBLEM_NAME: " + globdata.problem_name)
     TUNER_NAME = 'GPTune'
 
-    if additional_params:
-        problem_name += '-additional'
+    if globdata.additional_params:
+        globdata.problem_name = globdata.problem_name + '-additional'
 
-    print("problem_name: " + problem_name)
+    print("problem_name: " + globdata.problem_name)
+
+    model_hist = initialize_model_hist(kxy,nxy)
+    globdata.param_hist = model_hist[0]
+    globdata.interp_output_hist = model_hist[1]
     meta_config_dict = { 
-        'tuning_problem_name': problem_name,
+        'tuning_problem_name': globdata.problem_name,
         'machine_configuration': {
             'machine_name': 'mymachine',
             'myprocessor': {
@@ -266,8 +317,10 @@ def main():
     }
 
     (machine, processor, nodes, cores) = GetMachineConfiguration(meta_dict = meta_config_dict)
+    globdata.nodes = nodes
+    globdata.cores = cores
     historydb = HistoryDB(meta_dict = meta_config_dict)
-    print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
+    print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(globdata.nodes) + " num_cores: " + str(globdata.cores))
     os.environ['MACHINE_NAME'] = machine
     os.environ['TUNER_NAME'] = TUNER_NAME
 
@@ -283,27 +336,27 @@ def main():
     ]
     constraints = {}
 
-    if solve_type == 'all':
+    if globdata.solve_type == 'all':
         parameter_space_list += [
             Categoricalnorm(['newton_gmres','newton_pcg','fixedpoint'],transform='onehot',name='solver'),
             Integer(3, 500, transform="normalize", name="maxl"),
             Real(1e-5, 0.9, transform="normalize", name="epslin"),
             Integer(1, 20, transform="normalize", name="fixedpointvecs")
         ]
-    elif solve_type == 'newton_iter' or solve_type == 'newton_gmres' or solve_type == 'newton_pcg':
+    elif globdata.solve_type == 'newton_iter' or globdata.solve_type == 'newton_gmres' or globdata.solve_type == 'newton_pcg':
         parameter_space_list += [
             Categoricalnorm(['newton_gmres','newton_pcg'],transform='onehot',name='solver'),
             Integer(3, 500, transform="normalize", name="maxl"),
             Real(1e-5, 0.9, transform="normalize", name="epslin"),
         ]
-    elif solve_type == 'fixedpoint':
+    elif globdata.solve_type == 'fixedpoint':
         parameter_space_list += [ 
             Integer(1, 20, transform="normalize", name="fixedpointvecs")
         ]
     else:
-        print('WARNING: Did not recognize solve_type: ' + str(solve_type))
+        print('WARNING: Did not recognize solve_type: ' + str(globdata.solve_type))
 
-    if additional_params:
+    if globdata.additional_params:
         parameter_space_list += [ 
             Real(1e-2, 0.9, transform="normalize", name="eta_cf"),
             Real(1, 5, transform="normalize", name="eta_max_fx"),
@@ -315,15 +368,15 @@ def main():
         constraints['cst1'] = 'eta_max_fx > eta_min_fx'
 
     parameter_space = Space(parameter_space_list)
-    constants = {"nodes": nodes, "cores": cores}
+    constants = {"nodes": globdata.nodes, "cores": globdata.cores}
 
     output_space = Space([
         Real(0.0,1e7, name="runtime") 
         ])
 
-    problem = TuningProblem(input_space, parameter_space, output_space, objectives, constraints, None, constants=constants)
+    problem = TuningProblem(input_space, parameter_space, output_space, objectives, constraints, models, constants=constants)
 
-    computer = Computer(nodes=nodes, cores=cores, hosts=None)
+    computer = Computer(nodes=globdata.nodes, cores=globdata.cores, hosts=None)
     options = Options()
 
     options['model_restarts'] = 1
@@ -383,7 +436,7 @@ def main():
         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
         if args.print_csv:
-            outfile = open(problem_name + '-' + str(kxy) + '-' + str(nxy) + ".csv","w")
+            outfile = open(globdata.problem_name + '-' + str(kxy) + '-' + str(nxy) + ".csv","w")
             headerlinelist = []
             for param in problem.parameter_space:
                 headerlinelist.append(param.name)
@@ -399,7 +452,7 @@ def main():
             outfile.close()
 
         if args.sensitivity_analysis:
-            json_filename = './gptune.db/' + problem_name + '.json'
+            json_filename = './gptune.db/' + globdata.problem_name + '.json'
             json_file = open(json_filename) 
             json_data = json.load(json_file)
             
@@ -421,7 +474,7 @@ def main():
         if args.gen_plots:
             filename_prefix = 
             runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
-            postprocess.plot_runtime(runtimes,problem_name,1e8)
+            postprocess.plot_runtime(runtimes,globdata.problem_name,1e8)
             param_datas = [
                 { 'name': 'max_ord', 'type': 'integer', 'values': [ elem[0] for elem in data.P[tid] ] },
                 { 'name': 'nonlin_conv_coef', 'type': 'real', 'values': [ elem[1] for elem in data.P[tid] ] },
