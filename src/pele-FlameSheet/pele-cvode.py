@@ -24,10 +24,12 @@ def parse_args():
     parser.add_argument('-ninitial', type=int, default=-1, help='Number of samples in the initial search phase')
     parser.add_argument('-solve_type', type=str, default='fixedpoint', help='Solver type. Ex: fixedpoint/newton_gmres/newton_bcgs/newton_direct/newton_all/newton_iter')
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
+    parser.add_argument('-print_csv', action='store_true', dest='print_csv')
     parser.add_argument('-additional_params', action='store_true', dest='additional_params')
     parser.add_argument('-mechanism', type=str, default='dodecane_lu', help='Chemical mechanism. Ex: dodecane_lu/dodecane_lu_qss/drm19')
     parser.add_argument('-max_steps', type=int, default=10, help='Max number of steps per objective function evaluation')
     parser.set_defaults(gen_plots=False)
+    parser.set_defaults(print_csv=False)
     parser.set_defaults(additional_params=False)
 
     args = parser.parse_args()
@@ -190,8 +192,8 @@ def execute(params):
             'ode.maxncf=' + str(params["max_conv_fails"])
     ]
 
-    (argslist_,logfilelist_) = get_varying_args_list(solve_type,params)
-    argslist += arglist_
+    (argslist_,logfilelist_) = get_varying_argslist(solve_type,params)
+    argslist += argslist_
     logfilelist += logfilelist_
 
     if additional_params:
@@ -451,7 +453,6 @@ def main():
 
         if args.print_csv:
             outfile = open(problem_name + '-' + args.mechanism + '-' + args.max_steps + ".csv","w")
-            outfile.write("maxord,nonlin_conv_coef,max_conv_fails,maxl,epslin,runtime")
             for i in range(len(data.P[tid])):
                 outlinelist = list(data.P[tid][i]) + list(data.O[tid][i])
                 outlineliststr = [str(x) for x in outlinelist]
