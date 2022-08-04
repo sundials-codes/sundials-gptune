@@ -20,6 +20,13 @@ class GlobalData:
     problem_name = ''
     solve_type = ''
     additional_params = False
+    interpolator = None
+    
+    def print(self):
+        print("nodes: ",self.nodes,", cores: ",self.cores)
+        print("problem_name: ",self.problem_name,", solve_type: ",self.solve_type,", additional_params: ",self.additional_params)
+        print("param_hist: ",self.param_hist)
+        print("interp_output_hist: ",self.interp_output_hist)
 
 globdata = GlobalData()
 
@@ -160,6 +167,7 @@ def update_model_hist(runtime,params,stdout):
     if runtime < 1e8:
         globdata.param_hist.append(get_param_list(params))
         globdata.interp_output_hist.append(get_interp_output(stdout))
+        globdata.interpolator = RBFInterpolator(globdata.param_hist,globdata.interp_output_hist)
         np.savetxt(globdata.problem_name + '-paramhist-' +  str(params['kxy']) + '-' + str(params['nxy']) + '.csv',np.array(globdata.param_hist),delimiter=',')
         np.savetxt(globdata.problem_name + '-interpoutputhist-' +  str(params['kxy']) + '-' + str(params['nxy']) + '.csv',np.array(globdata.interp_output_hist),delimiter=',')
             
@@ -172,9 +180,12 @@ def initialize_model_hist(kxy,nxy):
     if os.path.exists(filename):
         param_hist_np = np.genfromtxt(globdata.problem_name + '-paramhist-' + str(kxy) + '-' + str(nxy) + '.csv',delimiter=',')
         interp_output_hist_np = np.genfromtxt(globdata.problem_name + '-interpoutputhist-' + str(kxy) + '-' + str(nxy)  + '.csv',delimiter=',')
-        return (param_hist_np.tolist(),interp_output_hist_np.tolist())
+        globdata.param_hist = param_hist_np.tolist()
+        globdata.interp_output_hist = interp_output_hist_np.tolist()
+        globdata.interpolator = RBFInterpolator(globdata.param_hist,globdata.interp_output_hist)
     else:
-        return ([],[])  
+        globdata.param_hist = []
+        globdata.interp_output_hist = []
 
 def get_param_list(params):
     param_list = [
@@ -261,18 +272,8 @@ def get_interp_output(stdout):
     return interp_output
         
 def models(point):
-    param_hist_np = np.array(globdata.param_hist)
-    interp_output_hist_np = np.array(globdata.interp_output_hist)
-    
-    #print("param_hist")
-    #print(globdata.param_hist)
-    print(param_hist_np)
-    #print("interp_output_hist")
-    #print(globdata.interp_output_hist) 
-    print(interp_output_hist_np)
-    
-    interpolator = RBFInterpolator(param_hist_np,interp_output_hist_np)
-    return interpolator([get_param_list(point)])
+    globdata.print()
+    return globdata.interpolator([get_param_list(point)])
 
 def main():
     # Parse command line arguments
@@ -292,9 +293,7 @@ def main():
 
     print("problem_name: " + globdata.problem_name)
 
-    model_hist = initialize_model_hist(kxy,nxy)
-    globdata.param_hist = model_hist[0]
-    globdata.interp_output_hist = model_hist[1]
+    initialize_model_hist(kxy,nxy)
     meta_config_dict = { 
         'tuning_problem_name': globdata.problem_name,
         'machine_configuration': {
