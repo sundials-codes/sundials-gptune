@@ -1,5 +1,5 @@
 #!/bin/bash
-# Run this from in the {...}/sundials-gptune/src directory
+# Run this from in the /gpfs/alpine/csc326/proj-shared/afish/sundials-gptune/src directory
 
 cd ./diffusion-paper/standard
 bsub diffusion-cvode-10-128-all-additional.lsf
