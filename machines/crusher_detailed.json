@@ -1,0 +1,35 @@
+{
+  "machine_name": "Crusher",
+  "slurm": "yes",
+  "interconnect": [
+    {
+      "interconnect_name": "Cray Infinity Fabric",
+      "interconnect_tags": [
+        "Cray",
+        "InfinityFabric"
+      ]
+    }
+  ],
+  "processor_model": [
+    {
+      "memory_size": "512",
+      "num_cores": "64",
+      "num_nodes": "192",
+      "num_sockets": "2",
+      "processor_model_name": "AMD EPYC 7A53",
+      "processor_model_tags": [
+        "AMD",
+        "EPYC"
+      ]
+    }
+  ],
+  "system_model": [
+    {
+      "system_model_name": "Cray Shasta",
+      "system_model_tags": [
+        "Cray",
+        "Shasta"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "machine_name": "Crusher",
+  "slurm": "yes",
+  "amd_epyc_7a53": {
+    "nodes": "192",
+    "cores": "64"
+  }
+}

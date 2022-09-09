@@ -1,17 +1,22 @@
 #! /usr/bin/env python3
-import sys
-import os
+import argparse
 import logging
-import numpy as np
 import math
+import os
+import re
+import sys
+import time
+
+import numpy as np
+from autotune.problem import *
 from autotune.search import *
 from autotune.space import *
-from autotune.problem import *
-from gptune import * # import all
-import argparse
+from gptune import *  # import all
+
+sys.path.insert(1, '../common/')
 import postprocess
-import time
-import re
+from decision_tree import *
+
 
 def parse_args():
 
@@ -388,154 +393,162 @@ def main():
         Real(0.0,1e7, name="runtime") 
         ])
 
-    problem = TuningProblem(input_space, parameter_space, output_space, objectives, constraints, None, constants=constants)
+    print(parameter_space_list)
+    print(constraints)
 
-    computer = Computer(nodes=nodes, cores=cores, hosts=None)
-    options = Options()
+    path = [choose_implicit_or_explicit, implicit, choose_nonlinear_solver, newton,
+            choose_matrix_based_or_free, choose_direct_or_iterative, linear_solver_matrix_based_iterative]
+    print(path_params(decision_tree, path))
+    print(path_constraints(decision_tree, path))
 
-    options['model_restarts'] = 1
+    # problem = TuningProblem(input_space, parameter_space, output_space, objectives, constraints, None, constants=constants)
 
-    options['distributed_memory_parallelism'] = False
-    options['shared_memory_parallelism'] = False
+    # computer = Computer(nodes=nodes, cores=cores, hosts=None)
+    # options = Options()
 
-    options['objective_evaluation_parallelism'] = False
-    # options['objective_multisample_threads'] = 1
-    # options['objective_multisample_processes'] = 4
-    # options['objective_nprocmax'] = 1
+    # options['model_restarts'] = 1
 
-    options['model_processes'] = 1
-    # options['model_threads'] = 1
-    # options['model_restart_processes'] = 1
+    # options['distributed_memory_parallelism'] = False
+    # options['shared_memory_parallelism'] = False
 
-    options['search_multitask_processes'] = 1
-    options['search_multitask_threads'] = 1
-    options['search_threads'] = 16
+    # options['objective_evaluation_parallelism'] = False
+    # # options['objective_multisample_threads'] = 1
+    # # options['objective_multisample_processes'] = 4
+    # # options['objective_nprocmax'] = 1
 
-    # options['sample_algo'] = 'MCS'
+    # options['model_processes'] = 1
+    # # options['model_threads'] = 1
+    # # options['model_restart_processes'] = 1
 
-    # Use the following two lines if you want to specify a certain random seed for the random pilot sampling
-    options['sample_class'] = 'SampleLHSMDU'  # 'SampleOpenTURNS'
-    options['sample_random_seed'] = 0
-    # Use the following two lines if you want to specify a certain random seed for surrogate modeling
-    options['model_class'] = 'Model_GPy_LCM' #'Model_LCM'
-    options['model_random_seed'] = 0
-    # Use the following two lines if you want to specify a certain random seed for the search phase
-    options['search_class'] = 'SearchPyMoo'
-    options['search_random_seed'] = 0
+    # options['search_multitask_processes'] = 1
+    # options['search_multitask_threads'] = 1
+    # options['search_threads'] = 16
 
-    # If using multiple objectives, uncomment following line 
-    # options['search_algo'] = 'nsga2'
+    # # options['sample_algo'] = 'MCS'
 
-    options['verbose'] = False
-    options.validate(computer=computer)
+    # # Use the following two lines if you want to specify a certain random seed for the random pilot sampling
+    # options['sample_class'] = 'SampleLHSMDU'  # 'SampleOpenTURNS'
+    # options['sample_random_seed'] = 0
+    # # Use the following two lines if you want to specify a certain random seed for surrogate modeling
+    # options['model_class'] = 'Model_GPy_LCM' #'Model_LCM'
+    # options['model_random_seed'] = 0
+    # # Use the following two lines if you want to specify a certain random seed for the search phase
+    # options['search_class'] = 'SearchPyMoo'
+    # options['search_random_seed'] = 0
 
-    giventask = [[args.max_steps,args.mechanism]]
-    NI=len(giventask) 
-    NS=nrun
-    NS1=int(NS/2)
-    if args.ninitial != -1:
-        NS1 = args.ninitial
+    # # If using multiple objectives, uncomment following line 
+    # # options['search_algo'] = 'nsga2'
+
+    # options['verbose'] = False
+    # options.validate(computer=computer)
+
+    # giventask = [[args.max_steps,args.mechanism]]
+    # NI=len(giventask) 
+    # NS=nrun
+    # NS1=int(NS/2)
+    # if args.ninitial != -1:
+    #     NS1 = args.ninitial
     
-    print(args.mechanism)
+    # print(args.mechanism)
 
-    data = Data(problem)
-    gt = GPTune(problem, computer=computer, data=data, historydb=historydb, options=options,driverabspath=os.path.abspath(__file__))
-    (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=NS1, T_sampleflag=[True]*NI)
-    print("stats: ", stats)
-    """ Print all input and parameter samples """
-    for tid in range(NI):
-        print(tid)
-        print("tid: %d" % (tid))
-        print("    t: " + (data.I[tid][0]))
-        print("    Ps ", data.P[tid])
-        print("    Os ", data.O[tid].tolist())
-        print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+    # data = Data(problem)
+    # gt = GPTune(problem, computer=computer, data=data, historydb=historydb, options=options,driverabspath=os.path.abspath(__file__))
+    # (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=NS1, T_sampleflag=[True]*NI)
+    # print("stats: ", stats)
+    # """ Print all input and parameter samples """
+    # for tid in range(NI):
+    #     print(tid)
+    #     print("tid: %d" % (tid))
+    #     print("    t: " + (data.I[tid][0]))
+    #     print("    Ps ", data.P[tid])
+    #     print("    Os ", data.O[tid].tolist())
+    #     print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
-        if args.print_csv:
-            outfile = open(problem_name + '-' + args.mechanism + '-' + args.max_steps + ".csv","w")
-            for i in range(len(data.P[tid])):
-                outlinelist = list(data.P[tid][i]) + list(data.O[tid][i])
-                outlineliststr = [str(x) for x in outlinelist]
-                outline = ",".join(outlineliststr) + "\n"
-                outfile.write(outline)
+    #     if args.print_csv:
+    #         outfile = open(problem_name + '-' + args.mechanism + '-' + args.max_steps + ".csv","w")
+    #         for i in range(len(data.P[tid])):
+    #             outlinelist = list(data.P[tid][i]) + list(data.O[tid][i])
+    #             outlineliststr = [str(x) for x in outlinelist]
+    #             outline = ",".join(outlineliststr) + "\n"
+    #             outfile.write(outline)
         
-            outfile.close()
+    #         outfile.close()
 
-        if args.sensitivity_analysis:
-            json_filename = './gptune.db/' + problem_name + '.json'
-            json_file = open(json_filename) 
-            json_data = json.load(json_file)
+    #     if args.sensitivity_analysis:
+    #         json_filename = './gptune.db/' + problem_name + '.json'
+    #         json_file = open(json_filename) 
+    #         json_data = json.load(json_file)
                      
-            function_evaluations = json_data['func_eval']
-            problem_space = { 
-                "parameter_space": json_data['surrogate_model'][-1]['parameter_space'], 
-                "input_space": json_data['surrogate_model'][-1]['input_space'], 
-                "output_space": json_data['surrogate_model'][-1]['output_space']
-            }
+    #         function_evaluations = json_data['func_eval']
+    #         problem_space = { 
+    #             "parameter_space": json_data['surrogate_model'][-1]['parameter_space'], 
+    #             "input_space": json_data['surrogate_model'][-1]['input_space'], 
+    #             "output_space": json_data['surrogate_model'][-1]['output_space']
+    #         }
             
-            sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=[args.max_steps,args.mechanism],function_evaluations=function_evaluations,num_samples=1024)
-            print(sensitivity_data)
-            print("S1")
-            print(sensitivity_data["S1"])
+    #         sensitivity_data = SensitivityAnalysis(problem_space=problem_space,input_task=[args.max_steps,args.mechanism],function_evaluations=function_evaluations,num_samples=1024)
+    #         print(sensitivity_data)
+    #         print("S1")
+    #         print(sensitivity_data["S1"])
             
-            json_file.close()
+    #         json_file.close()
 
-        """
-        if args.gen_plots:
-            problem_task_name = problem_name + '-' + data.I[tid][0]
-            runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
-            postprocess.plot_runtime(runtimes,problem_task_name,1e8)
-            param_datas = [
-                { 'name': 'max_ord', 'type': 'integer', 'values': [ elem[0] for elem in data.P[tid] ] },
-                { 'name': 'nonlin_conv_coef', 'type': 'real', 'values': [ elem[1] for elem in data.P[tid] ] },
-                { 'name': 'max_conv_fails', 'type': 'integer', 'values': [ elem[2] for elem in data.P[tid] ] }
-            ]
-            if solve_type == 'newton_gmres' or solve_type == 'newton_bcgs' or solve_type == 'newton_iter':
-                param_datas += [
-                    { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
-                    { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
-                ]
-            elif solve_type == 'fixedpoint':
-                param_datas += [
-                    { 'name': 'fixedpointvecs', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
-                ]
-            elif solve_type == 'newton_direct':
-                param_datas += [
-                    { 'name': 'msbp', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
-                    { 'name': 'msbj', 'type': 'integer', 'values': [ elem[4] for elem in data.P[tid] ] },
-                    { 'name': 'dgmax', 'type': 'real', 'values': [ elem[5] for elem in data.P[tid] ] }
-                ]
-            elif solve_type == 'newton_all':
-                param_datas += [
-                    { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
-                    { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
-                    { 'name': 'msbp', 'type': 'integer', 'values': [ elem[5] for elem in data.P[tid] ] },
-                    { 'name': 'msbj', 'type': 'integer', 'values': [ elem[6] for elem in data.P[tid] ] },
-                    { 'name': 'dgmax', 'type': 'real', 'values': [ elem[7] for elem in data.P[tid] ] }
-                ]
+    #     """
+    #     if args.gen_plots:
+    #         problem_task_name = problem_name + '-' + data.I[tid][0]
+    #         runtimes = [ elem[0] for elem in data.O[tid].tolist() ]
+    #         postprocess.plot_runtime(runtimes,problem_task_name,1e8)
+    #         param_datas = [
+    #             { 'name': 'max_ord', 'type': 'integer', 'values': [ elem[0] for elem in data.P[tid] ] },
+    #             { 'name': 'nonlin_conv_coef', 'type': 'real', 'values': [ elem[1] for elem in data.P[tid] ] },
+    #             { 'name': 'max_conv_fails', 'type': 'integer', 'values': [ elem[2] for elem in data.P[tid] ] }
+    #         ]
+    #         if solve_type == 'newton_gmres' or solve_type == 'newton_bcgs' or solve_type == 'newton_iter':
+    #             param_datas += [
+    #                 { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
+    #                 { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
+    #             ]
+    #         elif solve_type == 'fixedpoint':
+    #             param_datas += [
+    #                 { 'name': 'fixedpointvecs', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
+    #             ]
+    #         elif solve_type == 'newton_direct':
+    #             param_datas += [
+    #                 { 'name': 'msbp', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
+    #                 { 'name': 'msbj', 'type': 'integer', 'values': [ elem[4] for elem in data.P[tid] ] },
+    #                 { 'name': 'dgmax', 'type': 'real', 'values': [ elem[5] for elem in data.P[tid] ] }
+    #             ]
+    #         elif solve_type == 'newton_all':
+    #             param_datas += [
+    #                 { 'name': 'maxl', 'type': 'integer', 'values': [ elem[3] for elem in data.P[tid] ] },
+    #                 { 'name': 'epslin', 'type': 'real', 'values': [ elem[4] for elem in data.P[tid] ] },
+    #                 { 'name': 'msbp', 'type': 'integer', 'values': [ elem[5] for elem in data.P[tid] ] },
+    #                 { 'name': 'msbj', 'type': 'integer', 'values': [ elem[6] for elem in data.P[tid] ] },
+    #                 { 'name': 'dgmax', 'type': 'real', 'values': [ elem[7] for elem in data.P[tid] ] }
+    #             ]
 
-            if additional_params:
-                start_index = 4
-                if solve_type == 'newton_gmres' or solve_type == 'newton_bcgs' or solve_type == 'newton_iter':
-                    start_index += 1
-                if solve_type == 'newton_direct':
-                    start_index += 2
-                if solve_type == 'newton_all':
-                    start_index += 4
-                param_datas += [
-                    { 'name': 'eta_cf', 'type': 'real', 'values': [ elem[start_index] for elem in data.P[tid] ] },
-                    { 'name': 'eta_max_fx', 'type': 'real', 'values': [ elem[start_index+1] for elem in data.P[tid] ] },
-                    { 'name': 'eta_min_fx', 'type': 'real', 'values': [ elem[start_index+2] for elem in data.P[tid] ] },
-                    { 'name': 'eta_max_gs', 'type': 'real', 'values': [ elem[start_index+3] for elem in data.P[tid] ] },
-                    { 'name': 'eta_min', 'type': 'real', 'values': [ elem[start_index+4] for elem in data.P[tid] ] },
-                    { 'name': 'eta_min_ef', 'type': 'real', 'values': [ elem[start_index+5] for elem in data.P[tid] ] }
-                ]
-            postprocess.plot_params(param_datas,problem_name)
-            postprocess.plot_params_with_fails(runtimes,param_datas,problem_task_name,1e8)
-            postprocess.plot_params_vs_runtime(runtimes,param_datas,problem_task_name,1e8)
-            postprocess.plot_cat_bool_param_freq_period(param_datas,problem_task_name,4)
-            #postprocess.plot_real_int_param_std_period(param_datas,problem_task_name,4)
-            postprocess.plot_real_int_param_std_window(param_datas,problem_task_name,10) 
-        """
+    #         if additional_params:
+    #             start_index = 4
+    #             if solve_type == 'newton_gmres' or solve_type == 'newton_bcgs' or solve_type == 'newton_iter':
+    #                 start_index += 1
+    #             if solve_type == 'newton_direct':
+    #                 start_index += 2
+    #             if solve_type == 'newton_all':
+    #                 start_index += 4
+    #             param_datas += [
+    #                 { 'name': 'eta_cf', 'type': 'real', 'values': [ elem[start_index] for elem in data.P[tid] ] },
+    #                 { 'name': 'eta_max_fx', 'type': 'real', 'values': [ elem[start_index+1] for elem in data.P[tid] ] },
+    #                 { 'name': 'eta_min_fx', 'type': 'real', 'values': [ elem[start_index+2] for elem in data.P[tid] ] },
+    #                 { 'name': 'eta_max_gs', 'type': 'real', 'values': [ elem[start_index+3] for elem in data.P[tid] ] },
+    #                 { 'name': 'eta_min', 'type': 'real', 'values': [ elem[start_index+4] for elem in data.P[tid] ] },
+    #                 { 'name': 'eta_min_ef', 'type': 'real', 'values': [ elem[start_index+5] for elem in data.P[tid] ] }
+    #             ]
+    #         postprocess.plot_params(param_datas,problem_name)
+    #         postprocess.plot_params_with_fails(runtimes,param_datas,problem_task_name,1e8)
+    #         postprocess.plot_params_vs_runtime(runtimes,param_datas,problem_task_name,1e8)
+    #         postprocess.plot_cat_bool_param_freq_period(param_datas,problem_task_name,4)
+    #         #postprocess.plot_real_int_param_std_period(param_datas,problem_task_name,4)
+    #         postprocess.plot_real_int_param_std_window(param_datas,problem_task_name,10) 
+    #     """
 if __name__ == "__main__":
     main()
