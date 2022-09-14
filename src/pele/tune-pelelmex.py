@@ -26,15 +26,15 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Tune PeleLMeX SUNDIALS configuration with GPTune")
 
     parser.add_argument('tuning_spec', type=str, help='Path to tuning problem sepcification file')
-    parser.add_argument('-nodes', type=int, default=1, help='Number of machine nodes that to run the executable with')
-    parser.add_argument('-gpus', type=int, default=1, help='Number of ')
-    parser.add_argument('-nrun', type=int, default=20, help='Number of runs per task')
-    parser.add_argument('-ninitial', type=int, default=-1, help='Number of samples in the initial search phase')
+    parser.add_argument('-ns', '--samples-per-task', type=int, default=20,
+                        help='Number of samples per task')
+    parser.add_argument('-ninit', '--initial-samples', type=int, default=10,
+                        help='Number of samples in the initial search phase')
+    parser.add_argument('-ttols', '--tune-tolerances', action='store_true', dest='tune_tolerances')
     parser.add_argument('-gen_plots', action='store_true', dest='gen_plots')
     parser.add_argument('-print_csv', action='store_true', dest='print_csv')
-    parser.add_argument('-max_steps', type=int, default=10, help='Max number of steps per objective function evaluation')
-    parser.set_defaults(gen_plots=False)
-    parser.set_defaults(print_csv=False)
+    # parser.set_defaults(gen_plots=False)
+    # parser.set_defaults(print_csv=False)
 
     args = parser.parse_args()
 
@@ -51,141 +51,63 @@ def parse_error(fcompare_out):
                 line_list = line.split()
                 if line_list[0] == "temp" or "Y(" in line_list[0]:
                     if found_first_err:
-                        error = max(error,float(line_list[2]))
+                        error = max(error, float(line_list[2]))
                     else:
-                        error = float(line_list[2])
+                        error = float(line_list[2]) # relative tolerance
                         found_first_err = True
     return error
 
-def get_varying_argslist(solve_type_,params):
-    args_list = []
-    logfilelist = []
-    if solve_type_ == 'all':
-        args_list += [
-            'cvode.solve_type=' + str(params['solver']),
-            'ode.maxl='+str(params['maxl']),
-            'ode.epslin='+str(params['epslin']),
-            'ode.max_fp_accel='+str(params['fixedpointvecs']),
-            'ode.msbp='+str(params['msbp']),
-            'ode.msbj='+str(params['msbj']),
-            'ode.dgmax='+str(params['dgmax'])
-        ]
-        logfilelist += [
-            str(params['solver']),
-            str(params['maxl']),
-            str(params['epslin']),
-            str(params['fixedpointvecs']),
-            str(params['msbp']),
-            str(params['msbj']),
-            str(params['dgmax'])
-        ]
-    elif solve_type == 'newton_iter':
-        args_list += [
-            'cvode.solve_type=' + str(params['solver']),
-            'ode.maxl='+str(params['maxl']),
-            'ode.epslin='+str(params['epslin']),
-        ]
-        logfilelist += [
-            str(params['solver']),
-            str(params['maxl']),
-            str(params['epslin']),
-        ]
-    elif solve_type == 'newton_gmres':
-        args_list += [
-            'cvode.solve_type=GMRES',
-            'ode.maxl='+str(params['maxl']),
-            'ode.epslin='+str(params['epslin']),
-        ]
-        logfilelist += [
-            'GMRES',
-            str(params['maxl']),
-            str(params['epslin']),
-        ]
-    elif solve_type == 'newton_bcgs':
-        args_list += [
-            'cvode.solve_type=BCGS',
-            'ode.maxl='+str(params['maxl']),
-            'ode.epslin='+str(params['epslin']),
-        ]
-        logfilelist += [
-            'BCGS',
-            str(params['maxl']),
-            str(params['epslin']),
-        ]
-    elif solve_type == 'newton_direct':
-        args_list += [
-            'cvode.solve_type=' + str(params['solver']),
-            'ode.msbp='+str(params['msbp']),
-            'ode.msbj='+str(params['msbj']),
-            'ode.dgmax='+str(params['dgmax'])
-        ]
-        logfilelist += [
-            str(params['solver']),
-            str(params['msbp']),
-            str(params['msbj']),
-            str(params['dgmax'])
-        ]
-    elif solve_type == 'newton_magma':
-        args_list += [
-            'cvode.solve_type=magma_direct',
-            'ode.msbp='+str(params['msbp']),
-            'ode.msbj='+str(params['msbj']),
-            'ode.dgmax='+str(params['dgmax'])
-        ]
-        logfilelist += [
-            'magma_direct',
-            str(params['msbp']),
-            str(params['msbj']),
-            str(params['dgmax'])
-        ]
-    elif solve_type == 'newton_sparse':
-        args_list += [
-            'cvode.solve_type=sparse_direct',
-            'ode.msbp='+str(params['msbp']),
-            'ode.msbj='+str(params['msbj']),
-            'ode.dgmax='+str(params['dgmax'])
-        ]
-        logfilelist += [
-            'sparse_direct',
-            str(params['msbp']),
-            str(params['msbj']),
-            str(params['dgmax'])
-        ]
-    elif solve_type == 'fixedpoint':
-        args_list += [
-            'cvode.solve_type=fixed_point',
-            'ode.max_fp_accel='+str(params['fixedpointvecs']),
-        ]
-        logfilelist += [
-            'fixed_point',
-            str(params['fixedpointvecs']),
-        ]
+def get_parmparse_key(key):
+    if key == 'linear_solver' or key == 'nonlinear_solver':
+        return 'cvode.solver_type'
+    elif key == 'rtol' or key == 'atol':
+        return f'ode.{key}'
     else:
-        print('WARNING: Did not recognize solve_type: ' + str(solve_type))
-    return (args_list,logfilelist)
+        return f'cvode.{key}'
+
+def get_parmparse_value(value):
+    if value == 'magma_batched_lu':
+        return 'magma_direct'
+    else:
+        return f'{value}'
+
+def get_parmparse_options(point):
+    params = {get_parmparse_key(k): get_parmparse_value(v) for k, v in point.items() if k != 'metadata' and k != 'pelelmex-inputs'}
+    args_list = [f'{k}={v}' for k, v in params.items()]
+    return args_list
 
 def execute(point):
     metadata = point["metadata"]
     tuning_problem_name = metadata["tuning_problem_name"]
     work_dir = metadata["working_directory"]
-
-    pltfile = f'plt.{tuning_problem_name}'
+    log_dir = metadata["log_directory"]
+    max_step = metadata["additional_stuff"]["amr_max_step"]
+    pltfile = f'{log_dir}/plt.{metadata["tuning_problem_name"]}'
+    chkfile = f'{log_dir}/chk.{metadata["tuning_problem_name"]}'
 
     # Build up command with command-line options from current set of parameters
+    varying_params = get_parmparse_options(point)
     argslist = []
     argslist.extend(metadata["run_command"])
     argslist.append(metadata["executable"])
     argslist.extend(metadata["inputs"])
     argslist.extend([
-        f'amr.plot_file={pltfile}'
+        f'amr.max_step={max_step}',
+        f'amr.plot_file={pltfile}',
+        f'amr.check_file={chkfile}',
+        'ode.verbose=2'
     ])
-    # argslist.extend(get_varying_argslist())
+    argslist.extend(varying_params)
 
     # Run the command and grab the output
     print("Running: " + " ".join(argslist), flush=True)
     p = subprocess.run(argslist, capture_output=True, cwd=work_dir)
     # Decode bytes to string
     stdout = p.stdout.decode('ascii')
+    stderr = p.stderr.decode('ascii')
+
+    if p.stderr:
+        print(stderr)
 
     # Set default value to fallback failure value
     runtime = 1e8
@@ -197,29 +119,32 @@ def execute(point):
         r = re.compile("PeleLM::main()*")
         regexstringlist = list(filter(r.match, stdoutlines))
         if len(regexstringlist) == 2:
-            runtimeline = regexstringlist[1] # First time this text appears is not the correct runtime
+            # First match is exclusive time, we want the second match which is inclusive time
+            runtimeline = regexstringlist[1]
             runtime = float(runtimeline.split()[2])
-    print("Runtime: " + str(runtime))
+    print(f"Runtime: {runtime}")
 
     # Ensure the error is not too big
-    reffile = 'ref.' + tuning_problem_name
+    reffile = metadata["additional_stuff"]["fcompare_reffile"]
     fcompareexe = metadata["additional_stuff"]["fcompare_executable"]
-    argslist_fcompare = [fcompareexe, reffile + '00010', pltfile + '00010']
-    p = subprocess.run(argslist_fcompare, capture_output=True,cwd=work_dir)
+    argslist_fcompare = [fcompareexe, reffile, pltfile + f'0{max_step}']
+    p = subprocess.run(argslist_fcompare, capture_output=True, cwd=work_dir)
     fcompare_out = p.stdout.decode('ascii')
     error = parse_error(fcompare_out)
+    # If the error is higher than our tolerance, set the runtime to be absurdly high
+    # to push the tuner away from these parameter values.
     if error > 5e-2:
         runtime = 1e8
+    print(f"Error: {error}")
 
-    # Log the runtime and error
-    logtext = stdout + "\nruntime: " + str(runtime) + "\nerror: " + str(error)
-    logdir = metadata["log_directory"]
+    # Log the runtime, error, and parameter values
+    logtext = stdout + stderr + "\nruntime: " + str(runtime) + "\nerror: " + str(error) + "\nvarying_params: " + str(varying_params)
     logfilename = f"{tuning_problem_name}.log"
-    logfile = open(logdir + "/" + logfilename, 'w')
+    logfile = open(log_dir + "/" + logfilename, 'w')
     logfile.write(logtext)
     logfile.close()
 
-    return [runtime]
+    return [runtime, error]
 
 def objectives(point):
     execute_result = execute(point)
@@ -230,17 +155,18 @@ def objectives(point):
 def main():
     # Parse command line arguments
     args = parse_args()
-    nodes = args.nodes
-    nrun = args.nrun
-    max_steps = args.max_steps
     TUNER_NAME = 'GPTune'
 
     meta_config_dict = json.load(open(args.tuning_spec, "r"))
 
     decision_tree = DecisionTree()
-    decision_tree_path = [ getattr(decision_tree, node) for node in meta_config_dict["decision_tree_path"] ]
+    decision_tree.draw()
+    decision_tree_path = decision_tree.expand_path(meta_config_dict["decision_tree_path"])
     tuning_params_list = path_params(decision_tree.graph(), decision_tree_path)
+    if args.tune_tolerances:
+        tuning_params_list.extend([Real(1e-4, 1e-12, transform="normalize", name="atol"), Real(1e-2, 1e-10, transform="normalize", name="rtol")])
     tuning_params_hash = hashlib.sha256(str(tuning_params_list).encode('utf-8'))
+    # print(tuning_params_list)
 
     problem_name = f'{meta_config_dict["tuning_problem_base_name"]}_{tuning_params_hash.hexdigest()}'
     meta_config_dict["tuning_problem_name"] = problem_name
@@ -249,18 +175,18 @@ def main():
 
     machine, processor, nodes, cores = GetMachineConfiguration(meta_dict = meta_config_dict)
     historydb = HistoryDB(meta_dict = meta_config_dict)
-    print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
+    print("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
     os.environ['MACHINE_NAME'] = machine
     os.environ['TUNER_NAME'] = TUNER_NAME
 
     input_tasks = meta_config_dict["inputs"]
     input_space = Space([
-        # Integer(1, max_steps, transform='normalize', name='max_steps'),
         Categoricalnorm(meta_config_dict["inputs"] , transform="onehot", name='pelelmex-inputs')
     ])
 
     parameter_space = Space(tuning_params_list)
     constraints = path_constraints(decision_tree.graph(), decision_tree_path)
+    # print(constraints)
 
     output_space = Space([
       Real(0.0, 1e7, name="runtime")
@@ -311,14 +237,15 @@ def main():
 
     giventask = [input_tasks]
     NI = len(giventask)
-    NS = nrun
+    NS = args.samples_per_task
     NS1 = int(NS/2)
-    if args.ninitial != -1:
-        NS1 = args.ninitial
+    if args.initial_samples != -1:
+        NS1 = args.initial_samples
 
     data = Data(problem)
-    gt = GPTune(problem, computer=computer, data=data, historydb=historydb, options=options,driverabspath=os.path.abspath(__file__))
-    (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=NS1, T_sampleflag=[True]*NI)
+    gt = GPTune(problem, computer=computer, data=data, historydb=historydb, options=options, driverabspath=os.path.abspath(__file__))
+    print(gt.MLA)
+    data, modeler, stats = gt.MLA(NS=NS, NI=NI, Igiven=giventask, NS1=NS1, T_sampleflag=[True]*NI)
     print("stats: ", stats)
     """ Print all input and parameter samples """
     for tid in range(NI):
