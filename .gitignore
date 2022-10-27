@@ -3,3 +3,4 @@
 *.db*
 *.png*
 *.log
+__pycache__

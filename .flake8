@@ -1,0 +1,13 @@
+# -*- conf -*-
+# flake8 settings.
+# This is the only flake8 exception needed when using Black.
+# - E203: white space around slice operators can be required, ignore : warn
+[flake8]
+extend-ignore = E203
+max-line-length = 88
+per-file-ignores =
+
+# Exclude things we usually do not want linting for.
+exclude =
+  .git
+  __pycache__
